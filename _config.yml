@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 小林子的臆想世界
+title: 夏虫不可以语冰
 subtitle:
 description:
-author: 小林子
-language:
+author: Tiny Tiny Fisher
+language: zh-Hans
 timezone:
 
 # URL
@@ -28,7 +28,8 @@ i18n_dir: :lang
 skip_render:
 
 # Writing
-new_post_name: :title.md # File name of new posts
+# File name of new posts
+new_post_name: :year/:year-:month-:day-:title.md 
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
@@ -63,13 +64,14 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yilia
+## theme: yilia
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://github.com/ttfisher/ttfisher.github.com.git
+  repository: https://github.com/ttfisher/ttfisher.github.io.git
   branch: master
   
 jsonContent:
@@ -90,3 +92,10 @@ jsonContent:
       excerpt: false
       categories: false
       tags: true
+
+algolia:
+  applicationID: '0TSUY3VASO'
+  apiKey: '304d5df2e2f136515f540ea8c77beb60'
+  adminApiKey: 'c85cb354d360dd77094797c9d154e192'
+  indexName: 'ttfisher'
+  chunkSize: 5000

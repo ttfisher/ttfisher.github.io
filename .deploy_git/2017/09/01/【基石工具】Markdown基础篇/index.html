@@ -1,0 +1,832 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="基石工具," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。">
+<meta name="keywords" content="基石工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【基石工具】Markdown基础篇">
+<meta property="og:url" content="https://ttfisher.github.io/2017/09/01/【基石工具】Markdown基础篇/index.html">
+<meta property="og:site_name" content="夏虫不可以语冰">
+<meta property="og:description" content="【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。">
+<meta property="og:image" content="https://ttfisher.github.io/img/2017-05-20-01.jpg">
+<meta property="og:updated_time" content="2017-09-02T03:16:31.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【基石工具】Markdown基础篇">
+<meta name="twitter:description" content="【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。">
+<meta name="twitter:image" content="https://ttfisher.github.io/img/2017-05-20-01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/2017/09/01/【基石工具】Markdown基础篇/"/>
+
+
+
+
+
+  <title>【基石工具】Markdown基础篇 | 夏虫不可以语冰</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">夏虫不可以语冰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/2017/09/01/【基石工具】Markdown基础篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tiny Tiny Fisher">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏虫不可以语冰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【基石工具】Markdown基础篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T09:11:00+08:00">
+                2017-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。<br><a id="more"></a></p>
+<h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><blockquote>
+<p>一般在行首加井号表示不同级别的标题 (H1-H6)，例如：# H1, ## H2</p>
+<h1 id="这是H1"><a href="#这是H1" class="headerlink" title="这是H1"></a>这是H1</h1><h2 id="这是H2"><a href="#这是H2" class="headerlink" title="这是H2"></a>这是H2</h2><h3 id="这是H3"><a href="#这是H3" class="headerlink" title="这是H3"></a>这是H3</h3><h4 id="这是H4"><a href="#这是H4" class="headerlink" title="这是H4"></a>这是H4</h4><h5 id="这是H5"><a href="#这是H5" class="headerlink" title="这是H5"></a>这是H5</h5><h6 id="这是H6"><a href="#这是H6" class="headerlink" title="这是H6"></a>这是H6</h6></blockquote>
+<h1 id="斜体和粗体"><a href="#斜体和粗体" class="headerlink" title="斜体和粗体"></a>斜体和粗体</h1><blockquote>
+<p>一般使用左右各1个*号进行包围的部分，是斜体：</p>
+<ul>
+<li><em>我就是斜体</em><br>一般使用左右各2个*号进行包围的部分，是粗体：</li>
+<li><strong>我就是粗体</strong></li>
+</ul>
+</blockquote>
+<h1 id="外部链接引用"><a href="#外部链接引用" class="headerlink" title="外部链接引用"></a>外部链接引用</h1><blockquote>
+<p>一般使用如下语法：[描述内容](链接地址) 添加外部链接</p>
+<ul>
+<li>去<a href="https://ttfisher.github.io/">愚夫的个人博客</a>逛逛吧。</li>
+</ul>
+</blockquote>
+<h1 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h1><blockquote>
+<p>一般添加 *，+，- 于列表描述前表示无序列表</p>
+<ul>
+<li>无序列表1<ul>
+<li>无序列表2</li>
+</ul>
+<ul>
+<li>无序列表3</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h1 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h1><blockquote>
+<p>一般添加 数字加点 于列表描述前表示有序列表</p>
+<ol>
+<li>有序列表1</li>
+<li>有序列表2</li>
+<li>有序列表3</li>
+</ol>
+</blockquote>
+<h1 id="文字引用"><a href="#文字引用" class="headerlink" title="文字引用"></a>文字引用</h1><blockquote>
+<ul>
+<li>一般使用 &gt; 表示文字引用，本条说明本身使用的就是文字引用语法样式。</li>
+<li>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等：</li>
+<li>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 > ;比如<blockquote>
+<p>我是第二层引用</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h1 id="行内代码块"><a href="#行内代码块" class="headerlink" title="行内代码块"></a>行内代码块</h1><blockquote>
+<p>一般使用 `代码内容` 表示行内代码块。</p>
+<ul>
+<li>怎么给方法设置默认返回值呢？<code>public int length() default 255;</code></li>
+</ul>
+</blockquote>
+<h1 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h1><blockquote>
+<p>一般使用 四个缩进空格 表示大段的代码块</p>
+</blockquote>
+<pre><code>public static String extractVideos(String sourceUrl, String filePath, CrawlRegular regular) {
+
+    try{
+        // 读取文件
+        Document doc = Jsoup.parse(StreamIOUtil.read(filePath));
+
+        // 取全文Elements
+        Elements els = doc.children();
+        if (null == els) {
+            return null;
+        }
+
+        // 根据xPath取得匹配区域，只要存在，则证明该页面是视频页面
+        Elements xPathEles = els.select(regular.getxPath());
+        if (null != xPathEles &amp;&amp; xPathEles.size() &gt; 0) {
+            return sourceUrl;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+</code></pre><h1 id="代码块高亮和行数显示"><a href="#代码块高亮和行数显示" class="headerlink" title="代码块高亮和行数显示"></a>代码块高亮和行数显示</h1><blockquote>
+<p>一般使用 ```代码开发语言 开头，以 ``` 结尾包围的代码块即可进行高亮和行数显示</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">extractVideos</span><span class="params">(String sourceUrl, String filePath, CrawlRegular regular)</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">        <span class="comment">// 读取文件</span></div><div class="line">        Document doc = Jsoup.parse(StreamIOUtil.read(filePath));</div><div class="line"></div><div class="line">        <span class="comment">// 取全文Elements</span></div><div class="line">        Elements els = doc.children();</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == els) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">            </div><div class="line">        <span class="comment">// 根据xPath取得匹配区域，只要存在，则证明该页面是视频页面</span></div><div class="line">        Elements xPathEles = els.select(regular.getxPath());</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != xPathEles &amp;&amp; xPathEles.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> sourceUrl;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="插入图像"><a href="#插入图像" class="headerlink" title="插入图像"></a>插入图像</h1><blockquote>
+<p>一般使用 使用 ![描述](图片链接地址) 插入图像<br><img src="/img/2017-05-20-01.jpg" alt="我是Github的吉祥物"></p>
+</blockquote>
+<h1 id="分隔线"><a href="#分隔线" class="headerlink" title="分隔线"></a>分隔线</h1><blockquote>
+<p>一般在一行中用三个以上的 *、-、_ 来建立一个分隔线，行内不能有除空格以外的其他内容</p>
+<ul>
+<li>我是多*分隔线</li>
+</ul>
+<hr>
+<ul>
+<li>我是多-分隔线</li>
+</ul>
+<hr>
+<ul>
+<li>我是多_分隔线</li>
+</ul>
+<hr>
+</blockquote>
+<h1 id="反斜杠"><a href="#反斜杠" class="headerlink" title="反斜杠"></a>反斜杠</h1><blockquote>
+<p>一般使用 \特殊字符 进行字符转义（类似编程语言）</p>
+<ul>
+<li>我就是要展示星号，就在星号前面加入反斜杠（*）</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/基石工具/" rel="tag"># 基石工具</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/01/【基石工具】Markdown进阶篇/" rel="prev" title="【基石工具】Markdown进阶篇">
+                【基石工具】Markdown进阶篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/head.jpg"
+               alt="Tiny Tiny Fisher" />
+          <p class="site-author-name" itemprop="name">Tiny Tiny Fisher</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标题"><span class="nav-number">1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#这是H1"><span class="nav-number">2.</span> <span class="nav-text">这是H1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#这是H2"><span class="nav-number">2.1.</span> <span class="nav-text">这是H2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#这是H3"><span class="nav-number">2.1.1.</span> <span class="nav-text">这是H3</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#这是H4"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">这是H4</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#这是H5"><span class="nav-number">2.1.1.1.1.</span> <span class="nav-text">这是H5</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#这是H6"><span class="nav-number">2.1.1.1.1.1.</span> <span class="nav-text">这是H6</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#斜体和粗体"><span class="nav-number">3.</span> <span class="nav-text">斜体和粗体</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#外部链接引用"><span class="nav-number">4.</span> <span class="nav-text">外部链接引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无序列表"><span class="nav-number">5.</span> <span class="nav-text">无序列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有序列表"><span class="nav-number">6.</span> <span class="nav-text">有序列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文字引用"><span class="nav-number">7.</span> <span class="nav-text">文字引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#行内代码块"><span class="nav-number">8.</span> <span class="nav-text">行内代码块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码块"><span class="nav-number">9.</span> <span class="nav-text">代码块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码块高亮和行数显示"><span class="nav-number">10.</span> <span class="nav-text">代码块高亮和行数显示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插入图像"><span class="nav-number">11.</span> <span class="nav-text">插入图像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分隔线"><span class="nav-number">12.</span> <span class="nav-text">分隔线</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反斜杠"><span class="nav-number">13.</span> <span class="nav-text">反斜杠</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tiny Tiny Fisher</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
