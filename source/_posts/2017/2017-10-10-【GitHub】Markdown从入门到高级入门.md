@@ -106,8 +106,8 @@ tags: GitHub
 ```
 
 ## 插入图像
-&emsp;&emsp;一般使用 使用 \!\[描述\](图片链接地址) 插入图像
-![我是Github的吉祥物](/img/2017-05-20-01.jpg)
+&emsp;&emsp;一般使用 使用 \!\[描述\](图片链接地址) 插入图像，当然也可以用HTML语言的div来实现（考虑到能想得起玩儿Markdown的同学应该都有些编程基础，所以这里就不赘述了），Please enjoy this moment.
+<div align=center><img src="/img/2018-05-17-01.jpg" width = "75%"/></div>
 
 ## 分隔线
 &emsp;&emsp;一般在一行中用三个以上的 \*、\-、\_ 来建立一个分隔线，行内不能有除空格以外的其他内容
