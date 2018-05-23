@@ -316,11 +316,22 @@ disqus:
 # Gentie productKey
 #gentie_productKey:
 
+# Gitment
+# Introduction: https://imsun.net/posts/gitment-introduction/
+gitment:
+  enable: true
+  githubID: ttfisher
+  owner: ttfisher
+  repo: ttfisher.github.io
+  ClientID: ed8fd6c8a8cea69b8b44
+  ClientSecret: f51d1c39409ccf9d1e1037a3a0d0d053001e4327
+  lazy: false
+  
 # changyan
-changyan:
-  enable: false
-  appid:
-  appkey:
+# changyan:
+#   enable: false
+#   appid:
+#   appkey:
 
 # Support for youyan comments system.
 # You can get your uid from http://www.uyan.cc
