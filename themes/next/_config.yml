@@ -181,8 +181,8 @@ toc:
 
 sidebar:
   # Sidebar Position, available value: left | right
-  position: left
-  #position: right
+  #position: left
+  position: right
 
   # Sidebar Display, available value:
   #  - post    expand on posts automatically. Default.
@@ -195,7 +195,7 @@ sidebar:
   #display: remove
 
   # Sidebar offset from top menubar in pixels.
-  offset: 12
+  offset: 15
   offset_float: 0
 
   # Back to top in sidebar
