@@ -1,5 +1,5 @@
 ---
-title: 《Building Maintainable Software》（更新中...）
+title: 品读经典之技术辑（一）：《Building Maintainable Software》
 categories: 
 	- Thinking In Programming
 tags: 
@@ -9,7 +9,7 @@ tags:
 abbrlink: 2abd0b05
 date: 2018-03-01 14:09:59
 ---
-【引言】最近在看的这本书中文版译做《代码不朽》，乍一看，私以为和英文版的初衷略有出入，英文名反而更简单明了。相较于很多经典的IT书籍来讲，这本书算是比较年轻的了，诞生于2016年10月，也不过才1年不到；本书出自SIG研究负责人Joost Visser之手。
+【引言】最近在看的这本书中文版译做《代码不朽》，乍一看，私以为和英文版的初衷略有出入，英文名反而更简单明了。相较于很多经典的IT书籍来讲，这本书算是比较年轻的了，诞生于2016年10月，也不过才1年不到；本书出自SIG研究负责人Joost Visser之手。（未完成...）
 <div align=center><img src="/img/2018-05-24-06.jpg" width="275"/></div>
 <!-- more -->
 

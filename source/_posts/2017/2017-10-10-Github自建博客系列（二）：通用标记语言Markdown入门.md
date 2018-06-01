@@ -1,5 +1,5 @@
 ---
-title: Markdown入门基础
+title: Github自建博客系列（二）：通用标记语言Markdown入门
 categories: 
 	- Git & Git++
 tags: 
@@ -113,8 +113,8 @@ date: 2017-10-10 09:11:00
 ```
 
 ## 插入图像
-&emsp;&emsp;一般使用 使用 \!\[描述\](图片链接地址) 插入图像，当然也可以用HTML语言的div来实现（考虑到能想得起玩儿Markdown的同学应该都有些编程基础，所以这里就不赘述了），Please enjoy this moment.
-<div align=center><img src="/img/2018-05-17-01.jpg" width = "75%"/></div>
+&emsp;&emsp;一般使用 使用\!\[描述\](图片链接地址) 插入图像，当然也可以用HTML语言的div来实现（考虑到能想得起玩儿Markdown的同学应该都有些编程基础，所以这里就不赘述了），Please enjoy this moment!
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-05-17-01.jpg" width="75%">
 
 ## 分隔线
 &emsp;&emsp;一般在一行中用三个以上的 \*、\-、\_ 来建立一个分隔线，行内不能有除空格以外的其他内容
@@ -162,6 +162,7 @@ _________________________________
      如果Excel表格右侧有大量的空列，则会被自动裁剪，算法是根据前100行来检测并计算
 ```
 
+
 ## 流程图
 &emsp;&emsp;使用 三个\`加flow 起始，使用 三个\` 结尾，语法参考：
 
@@ -198,21 +199,3 @@ cond(no)->sub1(left)->op1
 c2(yes)->io->e
 c2(no)->op2->e
 ```
-
-## 时序图（Hexo暂不支持）
-&emsp;&emsp;使用 三个\`加sequence 起始，使用 三个\` 结尾，语法参考：
-
-```sequence
-Alice->Bob: Hello
-Bob->Alice: Hello too
-```
-
-## Todo List（Hexo暂不支持）
-&emsp;&emsp;使用带有 [ ] 或 [x] （未完成或已完成）项的列表语法撰写一个待办事宜列表例如：
-[ ] 未完成任务
-[x] 已完成任务
-
-## 标签和分类
-&emsp;&emsp;一般在文首输入tags添加标签，categories添加分类：
-- tags: 基石工具
-- categories: Java技术

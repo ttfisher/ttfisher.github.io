@@ -1,5 +1,5 @@
 ---
-title: 与GitHub的结缘
+title: Github自建博客系列（一）：与GitHub的结缘
 categories: 
 	- Git & Git++
 tags: 
