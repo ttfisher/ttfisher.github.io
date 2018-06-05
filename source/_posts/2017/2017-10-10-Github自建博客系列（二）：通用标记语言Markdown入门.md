@@ -183,7 +183,7 @@ c2(yes)->io->e
 c2(no)->op2->e
 ```
 
-```flow
+``` flow
 st=>start: Start|past:>http://www.google.com[blank]
 e=>end: End:>http://www.google.com
 op1=>operation: My Operation|past
@@ -199,3 +199,95 @@ cond(no)->sub1(left)->op1
 c2(yes)->io->e
 c2(no)->op2->e
 ```
+# 其他常用语法
+## 常用HTML
+```
+# 插入图片，居中指定宽度
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-04-03.jpg" width="500">
+
+# 字体或颜色设置
+<font face="微软雅黑" color="red" size="6">字体及字体颜色和大小</font>
+<font color="#0000ff">字体颜色</font>
+
+# 文本不同的对齐方式
+<p align="left">居左文本</p>
+<p align="center">居中文本</p>
+<p align="right">居右文本</p>
+
+# 换行
+使用html标签`<br/>`<br/>换行
+
+# 特殊格式：下划线（加粗，斜体等都支持）
+<u>下划线文本</u>
+<b>加粗文本</b>
+<i>斜体文本</i>
+```
+
+## 常见转义符
+|符号|说明|对应编码(+实际用时不需要)|英文怎么说|
+|:--:|:--:|:--:|:--:|
+|&|AND 符号|& + amp;|ampersand|
+|<|小于|& + lt;|little|
+|>|大于|& + gt;|great|
+|空格|& + nbsp;|number space|
+|¿|倒问号|& + iquest;|inverted question|
+|?|问号|& + quest;|question|
+|«|左书名号|& + laquo;|left angle quote|
+|»|右书名号|& + raquo;|right angle quote|
+|"|引号|& + quot;|quote|
+|‘|左单引号|& + lsquo;|left single quote|
+|’|右单引号|& + rsquo:|right single quote|
+|“|左双引号|& + ldquo:|left double quote|
+|”|右双引号|& + rdquo:|right double quote|
+|¶|段落符号|& + para;|paragraph|
+|§|章节符|& + sect;|section|
+|×|乘号|& + times;|times|
+|÷|除号|& + divide;|divide|
+|±|加减号|& + plusmn;|plus minus|
+|ƒ|function|& + fnof;|还没查到|
+|√|根号|& + radic;|radic|
+|∞|无穷大|& + infin;|infinite|
+|°|度|& + deg;|degree|
+|≠|不等号|& + ne;|ne|
+|≡|恒等于|& + equiv;|equivalent|
+|≤|小于等于|& + le;|less than or equal to|
+|≥|大于等于|& + ge;|great than or equal to|
+|⊥|垂直符号|& + perp;|perpendicular|
+|←|左箭头|& + larr;|left arrow|
+|→|右箭头|& + rarr;|right arrow|
+|↑|上箭头|& + uarr;|up arrow|
+|↓|下箭头|& + darr;|down arrow|
+|↔|水平箭头|& + harr;|horizontal arrow|
+|↕|竖直箭头|& + varr;|vertical arrow|
+|⇐|双线左箭头|& + lArr;|left arrow|
+|⇒|双线右箭头|& + rArr;|right arrow|
+|⇑|双线上箭头|& + uArr;|up arrow|
+|⇓|双线上箭头|& + dArr;|down arrow|
+|⇔|双线水平双箭头|& + hArr;|horizontal arrow|
+|⇕|双线竖直箭头|& + vArr;|vertical arrow|
+|♠|黑桃|& + spades;|spades|
+|♥|红桃|& + hearts;|hearts|
+|♣|梅花|& + clubs;|club|
+|♦|方块|& + diams;|diamonds|
+|©|版权|& + copy;|copy right|
+|®|注册商标|& + reg;|registration|
+|™|商标|& + trade;|trade|
+|¥|人民币|& + yen;|
+|€|欧元|& + euro;|euro|
+|¢|美分|& + cent;|cent|
+|£|英磅|& + pound;|pound|
+|⊕||& + oplus;||
+|½|二分之一|& + frac12;|fraction|
+|¼|四分之一|& + frac14;|fraction|
+|‰|千分符号|& + permil;|per mille|
+|∴|所以|& + there4;|there fore|
+|π|圆周率|& + pi;|
+|¹|商标1|& + sup1;|super 1|
+|α|alpha|& + alpha;|alpha|
+|β|beta|& + beta;|beta|
+|γ|gamma|& + gamma;|gamma|
+|δ|delta|& + delta;|delta|
+|θ|theta|& + theta;|theta|
+|λ|lambda|& + lambda;|lambda|
+|σ|sigma|& + sigma;|sigma|
+|τ|tau|& + tau;|tau|
