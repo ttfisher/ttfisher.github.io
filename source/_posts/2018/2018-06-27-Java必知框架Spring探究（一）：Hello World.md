@@ -6,7 +6,7 @@ categories:
 tags:
   - Spring Framework
 abbrlink: 8138b98c
-date: 2018-06-01 09:09:28
+date: 2018-06-27 09:09:28
 ---
 【引言】本篇为Spring Framework的开篇之作，作为Java开发人员必知必会的框架，我们的掌握程度到什么火候了呢？恐怕我们很多人也都只是知其然，但却不知其所以然；我一直信奉的一个原则就是：技不贵多，而贵精。所以，不求甚解我是从来不推崇的，这个系列我们就来求一求Spring的甚解。
 <div align=center><img src="/img/2018-06-04-01.jpg" width="500"/></div>
@@ -42,6 +42,10 @@ date: 2018-06-01 09:09:28
 ## Singleton
 &emsp;&emsp;Spring创建对象默认是使用了单例模式的，不需要再使用单例模式进行处理；这个就不需要多做解释了吧？如果还不知道什么是单例模式的话，那么我建议咱还是先放下对Spring的研究先去学学设计模式吧。
 
+# Spring的劣势
+&emsp;&emsp;生成对象的方式变复杂了（事实上操作还是挺简单的），对于不习惯这种方式的人，会觉得有些别扭和不直观。
+&emsp;&emsp;创建对象因为使用了反射技术，在效率上有些损耗。但相对于IoC提高的维护性和灵活性来说，这点损耗是微不足道的，除非某对象的生成对效率要求特别高。
+
 # Spring的组成
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-06-04-02.png" width="90%">
 &emsp;&emsp;上图是一张经典的Spring框架图，下面针对其中的具体组件简单做一个说明：
@@ -58,4 +62,17 @@ date: 2018-06-01 09:09:28
 + Spring Context
  + Spring Core的BeanFactory使Spring成为一个容器，而上下文模块使它成为一个框架。这个模块扩展了BeanFactory的概念，增加了对国际化（I18N）消息、事件传播以及验证的支持。
  + 另外，这个模块提供了许多企业服务，例如电子邮件、JNDI访问、EJB集成、远程以及时序调度（scheduling）服务。也包括了对模版框架例如Velocity和FreeMarker集成的支持。
-+ 
++ Spring ORM
+ + ORM模块对Hibernate、JDO、TopLinkiBatis等ORM框架提供支持
+ + ORM模块依赖于dom4j.jar、antlr.jar等包
++ Spring DAO
+ + 使用JDBC经常导致大量的重复代码，取得连接、创建语句、处理结果集，然后关闭连接。Spring的JDBC和DAO模块抽取了这些重复代码，因此你可以保持你的数据库访问代码干净简洁，并且可以防止因关闭数据库资源失败而引起的问题。
+ + 这个模块还在几种数据库服务器给出的错误消息之上建立了一个有意义的异常层。使你不用再试图破译神秘的私有的SQL错误消息！
+ + 另外，这个模块还使用了Spring的AOP模块为Spring应用中的对象提供了事务管理服务。
++ Spring WEB
+ + Web上下文模块建立于应用上下文模块之上，提供了一个适合于Web应用的上下文。
+ + 这个模块还提供了一些面向服务支持。例如：实现文件上传的multipart请求，它也提供了Spring和其它Web框架的集成，比如Struts、WebWork。
++ Spring WEB MVC
+ + Spring为构建Web应用提供了一个功能全面的MVC框架。虽然Spring可以很容易地与其它MVC框架集成，例如Struts，但Spring的MVC框架使用IoC对控制逻辑和业务对象提供了完全的分离。
+ + 它也允许你声明性地将请求参数绑定到你的业务对象中，此外，Spring的MVC框架还可以利用Spring的任何其它服务，例如国际化信息与验证。
+ + 我们通常开发过程中常说的Spring就是这里的Spring WEB MVC 

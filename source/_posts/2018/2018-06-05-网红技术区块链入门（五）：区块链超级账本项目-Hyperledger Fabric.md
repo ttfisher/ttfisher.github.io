@@ -6,7 +6,7 @@ categories:
 tags:
   - 区块链
 abbrlink: 22032ed1
-date: 2018-06-05 14:33:36
+date: 2018-06-05 17:00:00
 ---
 【引言】Hyperledger Fabric是The Linux Foundation® 主办的 Hyperledger® 项目之一；旨在作为开发模块化体系结构的区块链应用程序的基础，以便诸如共识和会员服务等组件可以即插即用。（建议参考版本：Hyperledger Fabric v0.6）
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-14.png" width="500">

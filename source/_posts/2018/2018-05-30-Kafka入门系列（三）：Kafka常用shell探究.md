@@ -29,6 +29,15 @@ date: 2018-05-30 16:57:51
 # 下线broker  
 ./kafka-run-class.sh kafka.admin.ShutdownBroker --zookeeper 192.168.142.153:2181 --broker #brokerId# --num.retries 3 --retry.interval.ms 60
 shutdown broker
+
+# zookeeper如何连接
+./zkCli.sh -server host:port cmd args
+
+# 查询偏移量（zookeeper）
+get /consumers/consumer-group/offsets/TOPIC_NAME/0
+
+# 设置偏移量（zookeeper）
+set /consumers/consumer-group/offsets/TOPIC_NAME/0 10086
 ```
 
 # Topic的管理
@@ -84,6 +93,9 @@ Topic:kafka-test3       PartitionCount:16       ReplicationFactor:3     Configs:
 # Topic的两种删除方法
 ./kafka-run-class.sh kafka.admin.DeleteTopicCommand --zookeeper 192.168.142.153:2181 --topic kafka-test3 
 ./kafka-topics.sh --zookeeper 192.168.142.153:2181 --delete --topic kafka-test3  
+
+# 查询最大的offset
+./kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list 192.168.142.153:9092,192.168.142.156:9092,192.168.142.157:9092 -topic kafka-test3 --time -1
 
 ```
 
