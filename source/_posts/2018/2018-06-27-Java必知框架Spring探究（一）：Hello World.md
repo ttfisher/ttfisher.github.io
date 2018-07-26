@@ -47,7 +47,7 @@ date: 2018-06-27 09:09:28
 &emsp;&emsp;创建对象因为使用了反射技术，在效率上有些损耗。但相对于IoC提高的维护性和灵活性来说，这点损耗是微不足道的，除非某对象的生成对效率要求特别高。
 
 # Spring的组成
-<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-04-02.png" width="90%">
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-04-02.jpg" width="90%">
 &emsp;&emsp;上图是一张经典的Spring框架图，下面针对其中的具体组件简单做一个说明：
 + Spring Core
  + 这是Spring框架最基础的部分，它提供了依赖注入（Dependency Injection）特征来实现容器对Bean的管理。

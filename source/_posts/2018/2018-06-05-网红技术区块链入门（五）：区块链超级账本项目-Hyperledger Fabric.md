@@ -9,7 +9,7 @@ abbrlink: 22032ed1
 date: 2018-06-05 17:00:00
 ---
 【引言】Hyperledger Fabric是The Linux Foundation® 主办的 Hyperledger® 项目之一；旨在作为开发模块化体系结构的区块链应用程序的基础，以便诸如共识和会员服务等组件可以即插即用。（建议参考版本：Hyperledger Fabric v0.6）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-14.png" width="500">
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-14.jpg" width="500">
 <!-- more -->
 
 # Fabric的架构
@@ -146,11 +146,11 @@ message Block {
 # Fabric reference
 
 ## 交易的流程
-<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-18.png" width="85%">
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-18.jpg" width="85%">
 
 ## 交易的生命周期
 &emsp;&emsp;1) 应用程序将交易提案提交给背书对等节点。2) 背书策略规定需要多少个背书者和/或何种背书者组合来签署提案。背书者执行链代码，以便在网络对等节点中模拟该提案，并创建一个读/写集。3) 然后背书对等节点将经过签署的提案回复（背书）发回给应用程序。4) 应用程序将交易和签名提交给订购服务，后者 5) 创建一批或一组交易，并将它们传送给提交对等节点。6) 提交对等节点收到一批交易后，对于每个交易，它会 7) 确认满足背书策略，并检查读/写集以检测冲突的交易。如果两项检查都通过，则将该组交易提交到账本，并在状态数据库中反映出每个交易的状态更新。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-19.png" width="85%">
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-19.jpg" width="85%">
 
 ## Model
 &emsp;&emsp;As the graphic shows, the Fabric is a permissioned system (in which all the players know each other as opposed to the anonymous world of Bitcoin), with strong identity management. In a permissioned system, there are thus distinct roles for the users and the validators. Users invoke and deploy their transactions, which are then validated to create a new version of the blockchain (i.e., ledger). The key cryptographic element is an enhanced version of Practical Byzantine Fault Tolerance (PBFT) known as Sieve.
@@ -164,6 +164,6 @@ message Block {
  + Consensus nodes order already-validated tx
 + Scales better, computation effort can be distributed
 + Permits confidential state on blockchain (seen only by endorsers)
-<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-17.png" width="85%">
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-06-05-17.jpg" width="85%">
 
 

@@ -9,7 +9,7 @@ abbrlink: 409c4b9a
 date: 2018-05-30 16:57:51
 ---
 【引言】本篇为Kafka入门系列的第三讲，经过第二讲的操作，我们已经搭建起了一个简单的Kafka集群了，那么怎么管理和使用这个集群呢？我们就先从Kafka提供的一些基础的shell脚本开始吧！
-<div align=center><img src="/img/2018-05-30-02.png" width="330"/></div>
+<div align=center><img src="/img/2018-05-30-02.jpg" width="330"/></div>
 <!-- more -->
 
 # 服务管理

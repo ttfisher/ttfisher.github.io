@@ -10,7 +10,7 @@ abbrlink: f98289eb
 date: 2018-05-30 16:55:45
 ---
 【引言】本篇为Kafka入门系列的第二讲，经过第一讲针对Kafka的基础概念和基本结构讲解，我们已经对Kafka有了一个粗略的认识，本篇即开始在实践中来熟悉和理解Kafka，实践的第一步就是安装和配置的过程。
-<div align=center><img src="/img/2018-05-30-01.png" width="500"/></div>
+<div align=center><img src="/img/2018-05-30-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 安装说明
