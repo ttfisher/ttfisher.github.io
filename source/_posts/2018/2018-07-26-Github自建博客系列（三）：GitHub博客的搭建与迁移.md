@@ -14,8 +14,15 @@ date: 2018-07-26 06:00:00
 # 基础软件准备
 
 ## Git
-&emsp;&emsp;下载地址：https://git-scm.com/downloads ；下载完成后在本机安装（具体下载什么版本就看电脑操作系统和位数了）；一路Next，安装完成后验证一下是否安装成功
-<img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-03.jpg" width="75%">
+&emsp;&emsp;下载地址：https://git-scm.com/downloads ；下载完成后在本机安装（具体下载什么版本就看电脑操作系统和位数了）；一路Next，安装完成后就会有一个Git Bash的程序，正常运行即表示安装成功了；但是接下来还要完成一步设置：打开Git Bash，完成下面的两个命令录入（因为Git是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址。这个步骤也就是报家门的过程，这个我也是看别人的博客才知道这么使用的用意的，具体关于Git的内容，在下一篇文章里面再来详述吧。）
+```
+// 填写你的github用户名
+$ git config --global user.name "your user name" 
+
+// 填写你的github注册邮箱
+$ git config --global user.email "your email address" 
+```
+<img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-08.jpg" width="75%">
 
 ## Nodejs & npm
 &emsp;&emsp;下载地址：https://nodejs.org/zh-cn/download/ ；下载完成后在本机安装（具体下载什么版本就看电脑操作系统和位数了）；一路Next，安装完成后验证一下是否安装成功（因为安装时安装程序默认就会向path追加写入nodejs的路径，所以也不用手工配置path了）
@@ -49,12 +56,6 @@ ssh-keygen -t rsa -C "Github的注册邮箱地址"
 ```
 // 直接输入如下命令确认公钥配置是否成功；遇到Are you sure you want to continue connecting (yes/no)?输入yes继续
 $ ssh -T git@github.com 
-
-// 填写你的github用户名（这个操作和下面一个操作必须要做，目测是为了提交时免去用户验证做的）
-$ git config --global user.name "your user name" 
-
-// 填写你的github注册邮箱
-$ git config --global user.email "your email address" 
 ```
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-08.jpg" width="75%">
 
@@ -243,5 +244,17 @@ npm install -- 安装npm依赖module的（也就是node_modules这个目录）
 ## WARN No layout: index.html?
 > &emsp;&emsp;运行git clone 指令获得主题后（假设是NEXT主题），在theme主题下保存文件夹的名称为：hexo-theme-next-0.4.0；那么如果在config里设置的是next，就会出现这样的WARN，http://localhost:4000/ 显示的是空白。只要把theme下的文件夹名称改为next就显示正常了。实际原因就是主题的名称配置和实际目录名称要对应。
 
-## Git提交时无法提交
+## Git部分文件无法提交
 > &emsp;&emsp;先通过操作资源管理器显示出隐藏的目录和文件，然后删除该目录（比如：next）下的.git，然后通过客户端操作delete(keep local)，再通过客户端进行add添加之后，再进行commit和push。
+
+## hexo d时卡死
+&emsp;&emsp;通过将_config.yml文件中deploy节的提交仓库地址的形式做个修改即可解决此问题，亲测有效。
+```
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  # repository: https://github.com/ttfisher/ttfisher.github.io.git
+  repository: ssh://git@github.com/ttfisher/ttfisher.github.io.git
+  branch: master
+```
