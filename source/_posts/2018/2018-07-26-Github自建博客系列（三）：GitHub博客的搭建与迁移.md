@@ -7,7 +7,7 @@ tags:
 abbrlink: 30aba86c
 date: 2018-07-26 06:00:00
 ---
-【引言】自从年前在GitHub上开了博，偶尔写写文章，不免会遇到换电脑或者重装系统的问题，这时候就得重新配置一遍环境了，当初摸索着搭建起来这么个博客，总得好好维护起来，所以呢，这里也做个搭建和迁移的操作记录，免得以后遗忘吧！写完这一篇，觉得有必要补充一片git的帮助文档，那就将git作为下一篇的主题吧。
+【引言】自从年前在GitHub上开了博，偶尔写写文章，不免会遇到换电脑或者重装系统的问题，这时候就得重新配置一遍环境了，当初摸索着搭建起来这么个博客，总得好好维护起来，所以呢，这里也做个搭建和迁移的操作记录，免得以后遗忘吧！[补充]：写完这篇总结后回头复看的时候，深觉有必要补充一篇关于Git的帮助文档，那就索性将Git定为下一篇博客的主题吧！
 <div align=center><img src="/img/2018-07-26-01.jpg" width="500"/></div>
 <!-- more -->
 
@@ -33,7 +33,7 @@ $ git config --global user.email "your email address"
 > 作为一个能想到玩GitHub的同学，这个步骤还要写的话，就有点侮辱智商了...
 
 ## 创建博客仓库
-&emsp;&emsp;在GitHub仓库管理页面建一个名为username.github.io的仓库，这里的username就是你的github登录用户名；比如说，我的github用户名是ttfisher，那么你就新建ttfisher.github.io的仓库，最终生成的博客站点的访问地址就是 http://ttfisher.github.io ；注册完后就有下面图示的绿色区域效果（注：①账号的邮箱验证必须完成；② 务必按照这个命名规则来创建，这方面就不建议自由发挥了； ③ 仓库创建成功不一定会立即生效，如果发现没生效建议稍等片刻）
+&emsp;&emsp;在GitHub仓库管理页面建一个名为username.github.io的仓库，这里的username就是github登录用户名；比如说，我的github用户名是ttfisher，那么就新建一个名为ttfisher.github.io的仓库，最终生成的博客站点的访问地址就是 http://ttfisher.github.io ；注册完后就有下面图示的绿色区域效果（注：①账号的邮箱验证必须完成；② 务必按照这个命名规则来创建，这方面就不建议自由发挥了； ③ 仓库创建成功不一定会立即生效，如果发现没生效建议稍等片刻）
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-01.jpg" width="75%">
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-02.jpg" width="75%">
 
@@ -63,11 +63,11 @@ $ ssh -T git@github.com
 
 ## 安装和初验
 &emsp;&emsp;Hexo是一个相对来说封装的很好的简单又强大的，支持Github Pages的博客编写和发布工具，最主要的是它是支持Markdown的，而且网上也有很多分享的主题，这对于一个对卖相要求很高的处女座来说，绝对是福音啊！关于Hexo的知识，我这里就不赘述了，有兴趣的找度娘分分钟给你普及了。
-&emsp;&emsp;关于不同主题的使用，后面有一节简短的说明，实际操作也很简单，就是下载包--配置_config.yml文件，然后基本就可以了，具体细节的微调就得自己去摸索了。这里有必要说明一下，在每个主题目录里面，也都有一个_config.yml文件，主要用来控制主题的（比如说：显示菜单啊，显示风格啊，图标啊等等；但这个的作用域比外面的那个小）
+&emsp;&emsp;关于不同主题的使用，后面有一节简短的说明，实际操作也很简单，就是下载包--配置_config.yml文件，然后基本就可以了，具体细节的微调就得自己去摸索了。这里有必要说明一下，在每个主题目录里面，也都有一个_config.yml文件，主要用来控制主题的（比如说：显示菜单啊，显示风格啊，图标啊等等；但这个的作用域比外面hexo那个同名配置文件的要小，不能搞混了）
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-09.jpg" width="75%">
 
 ## 环境初始化（新用户）
-&emsp;&emsp;通过如下命令即可完成Hexo环境的初始化，初始化完成后hexo就会将它运行所需要的基础文件都下载到对应的目录，这样，就可以开始最基础的博客环境配置了。（受限于网络或其他原因，初始化的过程稍稍有一些耗时）
+&emsp;&emsp;对于没有历史存档的新用户，需要先通过如下命令即可完成Hexo环境的初始化，初始化完成后hexo就会将它运行所需要的基础文件都下载到对应的目录（如下图），初始化全部结束后，就可以开始最基础的博客环境配置了。（受限于网络或其他原因，初始化的过程稍稍有一些耗时）
 ```
 Administrator@NRFS2V4EOT1XDKX MINGW64 ~
 $ cd C:
@@ -82,20 +82,25 @@ $ hexo init
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-10.jpg" width="75%">
 
 ## 环境恢复（老用户）
-&emsp;&emsp;针对已经在GitHub有存档的历史博客环境的，就没有必要安装上面的初始化步骤再一步步配置了，直接从GitHub恢复一套到本地就可以开展接下来的工作了
+&emsp;&emsp;针对已经在GitHub有存档的历史博客环境的，就没有必要安装上面的初始化步骤再一步步配置了，直接从GitHub恢复一套副本到本地就可以开展接下来的工作了
 + 首先，copy仓库源码到本地
 ```
 git clone git@github.com:ttfisher/ttfisher.github.io.git
 ```
-+ ttfisher.github.io文件夹下通过Git bash依次执行以下安装和操作命令（hexo前面已经安装了，这里就可以省略前两部的操作了）
++ 然后到本地下载下来的仓库目录（比如：ttfisher.github.io）下通过Git bash依次执行以下安装和操作命令
 ```
-npm install hexo
-hexo init
+npm install hexo  （hexo前面已经安装了，这里就可以省略了）
+hexo init  （hexo初始化只是针对新用户的，这里也可以省略了）
 npm install
 hexo-deployer-git
 ```
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-11.jpg" width="75%">
-+ 通过发布和浏览（hexo g、hexo d），经验证博客系统可以正常启动和浏览；至此即完成了博客的恢复操作，可以愉快的开始继续接下来的博客之旅了
++ 可以先在本地启动测试一下，然后发布到GitHub；至此即完成了博客的恢复操作，可以愉快的开始继续接下来的博客之旅了
+```
+hexo g （生成静态页面）
+hexo s （启动本地预览服务）  -- 一般启动完成后通过 http://localhost:4000/ 即可访问
+hexo d （发布到GitHub）
+```
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-12.jpg" width="75%">
 <img style="clear: both;display: block;margin:auto;" src="/img/2018-07-27-13.jpg" width="75%">
 
@@ -103,7 +108,7 @@ hexo-deployer-git
 # 其他参考信息
 
 ## hexo基本配置
-&emsp;&emsp; 主要的配置文件是_config.yml文件，包括整个网站的显示规则，提交内容等等都是要在这里面配置的，下面对其中比较重要的部分进行一个简单的说明
+&emsp;&emsp; Hexo本身主要的配置文件是_config.yml文件，其中包括整个网站的显示规则，提交内容等等都是要在这里面配置的，下面对其中比较重要的部分进行一个简单的说明
 ```
 -- 注意1：本配置文件的每一项的冒号后面都要留下一个空格，再进行内容填写
 -- 注意2：没有的项可以自己添加，保证格式正确即可
@@ -121,6 +126,7 @@ language: zh-Hans
 timezone:
 
 # URL（permalink：配置最终发布的链接生成的规则，这里用到了crc32这个算法，会算出一个比较短的值，避免URL过长和中文转义）
+# [Note]：想要使用这种url压缩规则，需要在本地先安装一个依赖（npm install hexo-abbrlink --save）
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://ttfisher.github.io/
 root: /
@@ -134,7 +140,7 @@ abbrlink:
   
 permalink_defaults:
 
-# Directory（一些目录定义）
+# Directory（一些目录名称定义）
 source_dir: source
 public_dir: public
 tag_dir: tags
@@ -196,20 +202,26 @@ algolia:
 ```
 
 ## 引入新主题的步骤
+
++ 先下载主题到对应目录
 ```
-# 先下载主题到对应目录（主题推荐：https://www.zhihu.com/question/24422335）
+主题推荐：https://www.zhihu.com/question/24422335
 cd f:/blog
 git clone https://github.com/iissnan/hexo-theme-next themes/next
 git clone https://github.com/litten/hexo-theme-yilia themes/yilia
+```
 
-# 下载完成后，会在themes目录下生成对应的主题包路径，然后到_config.yml指定你想使用的主题即可（默认主题好像是yilia）
++ 下载完成后，会在themes目录下生成对应的主题包路径，然后到_config.yml指定你想使用的主题即可（这里配置的主题名称，必须和themes下面的包名称对应上，否则会出现异常错误；默认主题好像是yilia）
+```
 # Extensions（主题，需要自己下载主题包）
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 ## theme: yilia
 theme: next
+```
 
-# 我选用的是next主题，下面附上一些关于这个主题的使用参考（next本身的和algolia的都有很详细的参考文档）
++ 我选用的是next主题，下面附上一些关于这个主题的使用参考（next本身的和algolia的都有很详细的参考文档）
+```
 http://theme-next.iissnan.com/getting-started.html
 http://theme-next.iissnan.com/third-party-services.html#algolia-search
 ```
@@ -225,8 +237,9 @@ http://theme-next.iissnan.com/third-party-services.html#algolia-search
  + git push origin hexo
 + 若是想将本地修改部署到GitHub上，只需要执行hexo generate -d就可以完成。
 
-## 一些常用的hexo命令
+## 一些常用的命令
 ```
+【Hexo相关】
 hexo new fileName -- 新建
 hexo g -- g=generate；生成（构建）
 hexo s -- s=server；启动服务
@@ -236,16 +249,17 @@ hexo new draft "new draft" -- 创建草稿
 hexo server --drafts -- 预览草稿模式启动（改配置也可实现render_drafts: true）
 hexo publish <filename> -- 将草稿转为正式文章发布
 
-npm install -- 安装npm依赖module的（也就是node_modules这个目录）
+【其他】
+npm install XXX -- 安装npm依赖module的（也就是node_modules这个目录）
 ```
 
 # FAQ
 
 ## WARN No layout: index.html?
-> &emsp;&emsp;运行git clone 指令获得主题后（假设是NEXT主题），在theme主题下保存文件夹的名称为：hexo-theme-next-0.4.0；那么如果在config里设置的是next，就会出现这样的WARN，http://localhost:4000/ 显示的是空白。只要把theme下的文件夹名称改为next就显示正常了。实际原因就是主题的名称配置和实际目录名称要对应。
+&emsp;&emsp;运行git clone 指令获得主题后（假设是NEXT主题），在theme主题下保存文件夹的名称为：hexo-theme-next-0.4.0；那么如果在config里设置的是next，就会出现这样的WARN，http://localhost:4000/ 显示的是空白。只要把theme下的文件夹名称改为next就显示正常了。实际原因就是主题的名称配置和实际目录名称要对应。
 
 ## Git部分文件无法提交
-> &emsp;&emsp;先通过操作资源管理器显示出隐藏的目录和文件，然后删除该目录（比如：next）下的.git，然后通过客户端操作delete(keep local)，再通过客户端进行add添加之后，再进行commit和push。
+&emsp;&emsp;先通过操作资源管理器显示出隐藏的目录和文件，然后删除需要提交的目录（比如：next）下的.git，然后通过客户端操作delete(keep local)，再通过客户端进行add做上添加之标记后，再进行commit和push。
 
 ## hexo d时卡死
 &emsp;&emsp;通过将_config.yml文件中deploy节的提交仓库地址的形式做个修改即可解决此问题，亲测有效。
