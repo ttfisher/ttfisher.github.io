@@ -1,5 +1,5 @@
 ---
-title: Kafka进阶系列（一）：从Kafka的起源说起（更新中...)
+title: Kafka进阶系列（一）：从Kafka的起源说起（未完成...)
 comments: true
 categories:
   - Big Data Component - Kafka

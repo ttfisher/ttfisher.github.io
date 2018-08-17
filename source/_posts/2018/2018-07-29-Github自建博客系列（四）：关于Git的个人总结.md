@@ -1,5 +1,5 @@
 ---
-title: Github自建博客系列（四）：关于Git的个人总结
+title: Github自建博客系列（四）：关于Git的个人总结（未完成...)
 categories:
   - Git & Git++
 tags:

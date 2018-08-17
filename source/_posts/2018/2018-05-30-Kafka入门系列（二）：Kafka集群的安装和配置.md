@@ -27,8 +27,8 @@ date: 2018-05-30 16:55:45
 |docker名|操作系统|hostname|IP地址|备注|
 |  :--:  |  :--:  |  :--:  | :--: |:--:|
 |cl_76_153|centos7.4|1bc72703f1e9|192.168.142.153|Kafka01、Zookeeper01|
-|cl_76_156|centos7.4|b3e6614d0345|192.168.142.153|Kafka02、Zookeeper02|
-|cl_76_157|centos7.4|63c3077b732d|192.168.142.153|Kafka03、Zookeeper03|
+|cl_76_156|centos7.4|b3e6614d0345|192.168.142.156|Kafka02、Zookeeper02|
+|cl_76_157|centos7.4|63c3077b732d|192.168.142.157|Kafka03、Zookeeper03|
 【问】：为什么hostname看上去那么诡异呢？
 【答】：因为这个就是docker生成后的一个随机ID，尝试过在docker里面修改hostname，但是重启之后就又被恢复回去了，后面会单独开个研究docker的专题，再来解决这个疑问。
 

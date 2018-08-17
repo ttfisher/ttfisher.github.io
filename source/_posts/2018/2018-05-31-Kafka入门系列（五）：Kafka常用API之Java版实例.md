@@ -1,5 +1,5 @@
 ---
-title: Kafka入门系列（五）：Kafka常用API之Java版实例（更新中...)
+title: Kafka入门系列（五）：Kafka常用API之Java版实例（未完成...)
 comments: true
 categories:
   - Big Data Component - Kafka

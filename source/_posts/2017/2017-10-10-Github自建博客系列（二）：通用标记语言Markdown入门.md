@@ -4,7 +4,6 @@ categories:
 	- Git & Git++
 tags: 
 	- GitHub
-	- MarkDown
 abbrlink: c6d4da27
 date: 2017-10-10 09:11:00
 ---
