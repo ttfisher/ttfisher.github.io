@@ -162,7 +162,7 @@ social_icons:
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
 #avatar:
-avatar: /img/2017-00-head.jpg
+avatar: /img/00-head.jpg
 
 # Table Of Contents in the Sidebar
 toc:
