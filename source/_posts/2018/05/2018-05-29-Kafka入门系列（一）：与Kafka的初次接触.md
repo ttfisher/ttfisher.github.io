@@ -2,7 +2,7 @@
 title: Kafka入门系列（一）：与Kafka的初次接触
 comments: true
 categories:
-  - Big Data Component - Kafka
+  - Popular Component - Kafka
 tags:
   - Kafka
   - Big Data

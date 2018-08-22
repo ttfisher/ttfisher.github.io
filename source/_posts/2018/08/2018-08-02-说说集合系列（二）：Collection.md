@@ -2,7 +2,7 @@
 title: 说说集合系列（二）：Collection
 comments: true
 categories:
-  - Java one by one - collection plus
+  - Java one by one - Characteristic & Extension
 tags:
   - Java语言特性
   - Java集合

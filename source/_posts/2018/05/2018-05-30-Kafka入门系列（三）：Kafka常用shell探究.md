@@ -1,7 +1,7 @@
 ---
 title: Kafka入门系列（三）：Kafka常用shell探究
 categories:
-  - Big Data Component - Kafka
+  - Popular Component - Kafka
 tags:
   - Kafka
   - Big Data

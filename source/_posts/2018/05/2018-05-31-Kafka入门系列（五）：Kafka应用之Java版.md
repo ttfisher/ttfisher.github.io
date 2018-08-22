@@ -2,7 +2,7 @@
 title: Kafka入门系列（五）：Kafka应用之Java版（未完成...)
 comments: true
 categories:
-  - Big Data Component - Kafka
+  - Popular Component - Kafka
 tags:
   - Kafka
   - Big Data

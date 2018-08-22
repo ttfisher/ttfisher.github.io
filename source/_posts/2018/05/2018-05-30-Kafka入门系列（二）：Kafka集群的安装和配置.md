@@ -2,7 +2,7 @@
 title: Kafka入门系列（二）：Kafka集群的安装和配置
 comments: true
 categories:
-  - Big Data Component - Kafka
+  - Popular Component - Kafka
 tags:
   - Kafka
   - Big Data

@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（四）：关于Git的个人总结（未完成...)
 categories:
-  - Skill Promotion - Git & Git++
+  - Popular Weapon - Git & Git++
 tags:
   - GitHub
 abbrlink: f743d1c

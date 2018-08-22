@@ -2,7 +2,7 @@
 title: Java必知框架Spring探究（一）：Hello World
 comments: true
 categories:
-  - Framework Series - Spring
+  - Popular Framework  - Spring
 tags:
   - Spring Framework
 abbrlink: 8138b98c

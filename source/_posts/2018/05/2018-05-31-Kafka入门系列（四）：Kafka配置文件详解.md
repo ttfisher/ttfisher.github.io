@@ -4,7 +4,7 @@ comments: true
 abbrlink: d67d13cd
 date: 2018-05-31 19:09:28
 categories:
-  - Big Data Component - Kafka
+  - Popular Component - Kafka
 tags:
   - Kafka
   - Big Data

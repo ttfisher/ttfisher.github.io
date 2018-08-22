@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（三）：GitHub博客的搭建与迁移
 categories:
-  - Skill Promotion - Git & Git++
+  - Popular Weapon - Git & Git++
 tags:
   - GitHub
 abbrlink: 30aba86c
@@ -272,3 +272,10 @@ deploy:
   repository: ssh://git@github.com/ttfisher/ttfisher.github.io.git
   branch: master
 ```
+
+## push报ssh.exe找不到
+&emsp;&emsp;通过如下Git小乌龟配置可以查找一下GIT_SSH这个环境变量的值，发现和报错的位置是一致的，但是系统里面可能ssh.exe并不是在这个位置；这样就会导致push源文件的时候报ssh.exe not found；此时只需要修改一下注册表项即可解决（HKEY_CURRENT_USER->Software->TortoiseGit）
+<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-17-01.jpg" width="60%">
+
+## push时报permission denied
+&emsp;&emsp;通常在push时会出现，比较暴力的方法，就是重新生成ssh key，配置到github管理端；目前还没有发现其他好的解决方法。

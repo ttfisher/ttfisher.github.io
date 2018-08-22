@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（一）：与GitHub的结缘
 categories: 
-	- Skill Promotion - Git & Git++
+	- Popular Weapon - Git & Git++
 tags: 
 	- GitHub
 abbrlink: 61a5954

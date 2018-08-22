@@ -1,7 +1,7 @@
 ---
 title: 品读经典之技术辑（一）：《Building Maintainable Software》
 categories: 
-	- Skill Promotion - Thinking In Programming
+	- Popular Books - Programming
 tags: 
 	- 编程思想
 	- 软件架构

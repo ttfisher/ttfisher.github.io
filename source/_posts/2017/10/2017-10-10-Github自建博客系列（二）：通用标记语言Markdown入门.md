@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（二）：通用标记语言Markdown入门
 categories: 
-	- Skill Promotion - Git & Git++
+	- Popular Weapon - Git & Git++
 tags: 
 	- GitHub
 abbrlink: c6d4da27

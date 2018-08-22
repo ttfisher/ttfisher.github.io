@@ -2,7 +2,7 @@
 title: Kafka进阶系列（一）：从Kafka的起源说起（未完成...)
 comments: true
 categories:
-  - Big Data Component - Kafka
+  - Popular Component - Kafka
 tags:
   - Kafka
   - Big Data
