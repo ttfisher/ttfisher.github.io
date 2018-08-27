@@ -3,8 +3,10 @@
    {% set repo = theme.gitment.repo %}
    {% set cid = theme.gitment.ClientID %}
    {% set cs = theme.gitment.ClientSecret %}
-   <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-   <script src="https://billts.site/js/gitment.js"></script>
+   <!-- <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+   <script src="https://billts.site/js/gitment.js"></script> -->
+   <link rel="stylesheet" href="/css/gitment.css">
+   <script src="/css/gitment.js"></script>
    {% if not theme.gitment.lazy %}
        <script type="text/javascript">
            var gitment = new Gitment({

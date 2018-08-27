@@ -1315,11 +1315,11 @@ private void allocateElements(int numElements) {
     }
 
 [结果]:
-	Value is : 1
-	Value is : 2
-	Value is : 3
-	Value is : 4
-	Value is : 5
+    Value is : 1
+    Value is : 2
+    Value is : 3
+    Value is : 4
+    Value is : 5
 ```
 
 ### 继承关系简图

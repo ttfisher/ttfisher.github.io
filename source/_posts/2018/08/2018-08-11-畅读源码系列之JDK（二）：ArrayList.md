@@ -12,9 +12,7 @@ date: 2018-08-11 10:11:00
 <div align=center><img src="/img/2018/2018-08-11-01.jpg" width="500"/></div>
 <!-- more -->
 
-# 类基本定义
-
-## ArrayList
+# 类的定义
 ```java
 /**
  * 【CHENG】：从ArrayList本身的定义出发，可以简单分析出它的基本特性
@@ -29,9 +27,7 @@ public class ArrayList<E> extends AbstractList<E>
 }
 ```
 
-# 属性和构造方法
-
-## 基本属性
+# 成员变量
 ```java
     /**
      * 【CHENG】：字面意思就可以理解：默认容量
@@ -50,7 +46,9 @@ public class ArrayList<E> extends AbstractList<E>
     transient Object[] elementData; // non-private to simplify nested class access
 ```
 
-## 构造方法一
+# 构造方法
+
+## ArrayList()
 ```java
     /**
      * 【CHENG】：平时我们最常用的一种构造方法，不指定大小；默认初始化一个空数组，第一次add就会引发扩容
@@ -60,7 +58,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 ```
 
-## 构造方法二
+## ArrayList(int initialCapacity)
 ```java
     /**
      * 【CHENG】：这个是指定容量的构造方法；通常对于可预知数量的对象存储使用这种方式初始化
@@ -78,7 +76,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 ```
 
-## 构造方法三
+## ArrayList(Collection<? extends E> c)
 ```java
     /**
      * 【CHENG】：基于别的集合来构造
@@ -98,7 +96,7 @@ public class ArrayList<E> extends AbstractList<E>
     }
 ```
 
-# 其他常用方法
+# 增
 
 ## add
 ```java
@@ -185,6 +183,40 @@ public class ArrayList<E> extends AbstractList<E>
     }
 ```
 
+# 删
+
+## remove
+```java
+/**
+ * 【CHENG】：移除一个元素
+ */
+public E remove(int index) {
+    // 【CHENG】：跟get一样，所有操作的第一步是检查index是否合法
+    rangeCheck(index);
+
+    // 【CHENG】：还是那个后面说了很多次的一致性检查的标记
+    modCount++;
+    E oldValue = elementData(index);
+
+    /**
+     * 【CHENG】：流程是这样的
+     *   - 先判断删除参数是不是合法
+     *   - 把原数组从index+1（也就是需删除节点后的所有元素）复制到原数组的index位置
+     *   - 此时，需删除的元素已经被后面的覆盖了（相当于已经删除了）
+     *   - 但是，还有个问题；因为前面的复制，导致最后一个元素现在有两份；于是就理所当然的对最后一个元素置空
+     *   - 流程结束；把刚刚被删除的元素返回
+     */
+    int numMoved = size - index - 1;
+    if (numMoved > 0)
+        // 【CHENG】：最终发现并不是真的remove，还是通过native的数组拷贝来实现的
+        System.arraycopy(elementData, index+1, elementData, index,
+                         numMoved);
+    elementData[--size] = null; // clear to let GC do its work
+
+    return oldValue;
+}
+```
+
 ## clear
 ```java
 /**
@@ -200,8 +232,25 @@ public void clear() {
 
     size = 0;
 }
-
 ```
+
+# 改
+
+## set
+```java
+/**
+ * 【CHENG】：之前很少用到的一个方法，实现并不复杂，还是有用处的
+ */
+public E set(int index, E element) {
+    rangeCheck(index);
+
+    E oldValue = elementData(index);
+    elementData[index] = element;
+    return oldValue;
+}
+```
+
+# 查
 
 ## indexOf
 ```java
@@ -258,51 +307,7 @@ public E get(int index) {
 }
 ```
 
-## remove
-```java
-/**
- * 【CHENG】：移除一个元素
- */
-public E remove(int index) {
-    // 【CHENG】：跟get一样，所有操作的第一步是检查index是否合法
-    rangeCheck(index);
-
-    // 【CHENG】：还是那个后面说了很多次的一致性检查的标记
-    modCount++;
-    E oldValue = elementData(index);
-
-    /**
-     * 【CHENG】：流程是这样的
-     *   - 先判断删除参数是不是合法
-     *   - 把原数组从index+1（也就是需删除节点后的所有元素）复制到原数组的index位置
-     *   - 此时，需删除的元素已经被后面的覆盖了（相当于已经删除了）
-     *   - 但是，还有个问题；因为前面的复制，导致最后一个元素现在有两份；于是就理所当然的对最后一个元素置空
-     *   - 流程结束；把刚刚被删除的元素返回
-     */
-    int numMoved = size - index - 1;
-    if (numMoved > 0)
-        // 【CHENG】：最终发现并不是真的remove，还是通过native的数组拷贝来实现的
-        System.arraycopy(elementData, index+1, elementData, index,
-                         numMoved);
-    elementData[--size] = null; // clear to let GC do its work
-
-    return oldValue;
-}
-```
-
-## set
-```java
-/**
- * 【CHENG】：之前很少用到的一个方法，实现并不复杂，还是有用处的
- */
-public E set(int index, E element) {
-    rangeCheck(index);
-
-    E oldValue = elementData(index);
-    elementData[index] = element;
-    return oldValue;
-}
-```
+# 其他方法
 
 ## sort
 ```java
@@ -362,7 +367,9 @@ public <T> T[] toArray(T[] a) {
 }
 ```
 
-# 核心内部类Itr
+# 内部类
+
+## Itr
 ```java
 /**
  * An optimized version of AbstractList.Itr
@@ -448,7 +455,7 @@ private class Itr implements Iterator<E> {
 }
 ```
 
-# 核心内部类ListItr
+## ListItr
 ```java
 /**
  * An optimized version of AbstractList.ListItr
