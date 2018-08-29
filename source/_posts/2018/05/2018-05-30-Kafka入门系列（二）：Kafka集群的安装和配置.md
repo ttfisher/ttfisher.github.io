@@ -92,7 +92,7 @@ if [[ -z "$JAVA" ]]; then
     rm -rf /opt/tools/jdk1.7.0_79
     #解压安装jdk
     tar -zxvf ./jdk-7u79-linux-x64.tar.gz -C /opt/tools/
-    #配置环境变量	
+    #配置环境变量    
     ###  -------------- 删除原配置 --------------------  ###
     sed -i -e '/JAVA_HOME/d' -e '/JRE/d' /etc/profile
     ###  -------------- 添加新配置 --------------------  ###

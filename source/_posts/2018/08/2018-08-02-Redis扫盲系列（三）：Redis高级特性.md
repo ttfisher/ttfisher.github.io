@@ -1,5 +1,5 @@
 ---
-title: Redis扫盲系列（三）：进阶（未完成...)
+title: Redis扫盲系列（三）：Redis高级特性（未完成...)
 comments: true
 categories:
   - Popular Component - Redis

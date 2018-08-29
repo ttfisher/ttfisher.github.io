@@ -100,8 +100,8 @@ date: 2018-06-06 09:09:28
 &emsp;&emsp;spring boot内部整合了很多的第三方组件和框架，比如某一天我们的项目里面突然要用到kafka，那么我们在pom文件这么引入一下，然后就可以使用各种便捷的注解开始我们的开发工作了。
 ```xml
 <dependency>
-	<groupId>org.springframework.kafka</groupId>
-	<artifactId>spring-kafka</artifactId>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
 </dependency>
 ```
 
@@ -167,7 +167,7 @@ date: 2018-06-06 09:09:28
 - Spring Cloud Config：配置管理工具，支持使用Git存储配置内容，支持应用配置的外部化存储，支持客户端配置信息刷新、加解密配置内容等
 - Spring Cloud Bus：事件、消息总线，用于在集群（例如，配置变化事件）中传播状态变化，可与Spring Cloud Config联合实现热部署。
 - Spring Cloud Netflix：针对多种Netflix组件提供的开发工具包，其中包括Eureka、Hystrix、Zuul、Archaius等。
- - Netflix Eureka：一个基于rest服务的服务治理组件，包括服务注册中心、服务注册与服务发现机制的实现，实现了云端负载均衡	和中间层服务器的故障转移。
+ - Netflix Eureka：一个基于rest服务的服务治理组件，包括服务注册中心、服务注册与服务发现机制的实现，实现了云端负载均衡    和中间层服务器的故障转移。
  - Netflix Hystrix：容错管理工具，实现断路器模式，通过控制服务的节点,从而对延迟和故障提供更强大的容错能力。
  - Netflix Ribbon：客户端负载均衡的服务调用组件。
  - Netflix Feign：基于Ribbon和Hystrix的声明式服务调用组件。
