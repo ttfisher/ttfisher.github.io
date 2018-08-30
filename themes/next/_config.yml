@@ -319,7 +319,7 @@ disqus:
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
 gitment:
-  enable: false
+  enable: true
   githubID: ttfisher
   owner: ttfisher
   repo: ttfisher.github.io

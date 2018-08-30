@@ -4,7 +4,6 @@ comments: true
 categories:
   - Java one by one - Characteristic & Extension
 tags:
-  - Java语言特性
   - Java集合
 abbrlink: f29d3a59
 date: 2018-08-02 14:07:00

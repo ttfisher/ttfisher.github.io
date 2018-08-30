@@ -4,7 +4,7 @@ comments: true
 categories:
   - Popular Framework  - Spring
 tags:
-  - Spring Framework
+  - Spring
 abbrlink: 1ace9dad
 date: 2018-06-07 09:09:28
 ---
