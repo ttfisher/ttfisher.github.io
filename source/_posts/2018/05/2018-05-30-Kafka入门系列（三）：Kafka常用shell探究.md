@@ -1,7 +1,7 @@
 ---
 title: Kafka入门系列（三）：Kafka常用shell探究
 categories:
-  - Popular Component - Kafka
+  - Core Technical Series - Message & Cache
 tags:
   - Kafka
   - Big Data

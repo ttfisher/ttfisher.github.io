@@ -2,7 +2,7 @@
 title: Java必知框架Spring探究（二）：细说SpringMVC
 comments: true
 categories:
-  - Popular Framework  - Spring
+  - Core Technical Series - Spring Plus
 tags:
   - Spring
 abbrlink: 1ace9dad

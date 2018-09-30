@@ -2,7 +2,7 @@
 title: 说说集合系列（二）：Collection
 comments: true
 categories:
-  - Java one by one - Characteristic & Extension
+  - Core Technical Series - Java Plus
 tags:
   - Java集合
 abbrlink: f29d3a59

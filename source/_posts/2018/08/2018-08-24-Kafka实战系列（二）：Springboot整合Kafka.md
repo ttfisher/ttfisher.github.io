@@ -1,7 +1,7 @@
 ---
 title: Kafka实战系列（二）：Springboot整合Kafka
 categories:
-  - Popular Component - Kafka
+  - Core Technical Series - Message & Cache
 tags:
   - Kafka
   - Big Data

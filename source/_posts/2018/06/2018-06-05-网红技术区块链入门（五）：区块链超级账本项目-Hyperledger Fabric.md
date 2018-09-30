@@ -2,7 +2,7 @@
 title: 网红技术区块链入门（五）：区块链超级账本项目-Hyperledger Fabric
 comments: true
 categories:
-  - Popular Technology - Blockchain
+  - Broaden Horizon - Popular Technologies
 tags:
   - 区块链
 abbrlink: 22032ed1

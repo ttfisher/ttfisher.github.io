@@ -1,7 +1,7 @@
 ---
 title: Kafka实战系列（一）：Windows测试环境搭建
 categories:
-  - Popular Component - Kafka
+  - Core Technical Series - Message & Cache
 tags:
   - Kafka
   - Big Data

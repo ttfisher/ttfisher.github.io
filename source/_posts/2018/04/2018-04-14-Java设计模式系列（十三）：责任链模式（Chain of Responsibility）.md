@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（十三）：责任链模式（Chain of Responsibility）
 categories:
-  - Java one by one - Design Pattern
+  - Core Technical Series - Design Pattern
 tags:
   - 设计模式
 comments: true

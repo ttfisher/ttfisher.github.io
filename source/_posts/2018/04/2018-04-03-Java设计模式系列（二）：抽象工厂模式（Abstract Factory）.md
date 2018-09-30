@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（二）：抽象工厂模式（Abstract Factory）
 categories:
-  - Java one by one - Design Pattern
+  - Core Technical Series - Design Pattern
 tags:
   - 设计模式
 comments: true

@@ -2,7 +2,7 @@
 title: Kafka实战系列（三）：从Kafka的起源说起（未完成...)
 comments: true
 categories:
-  - Popular Component - Kafka
+  - Core Technical Series - Message & Cache
 tags:
   - Kafka
   - Big Data

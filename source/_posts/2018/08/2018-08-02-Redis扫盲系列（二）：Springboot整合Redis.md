@@ -2,7 +2,7 @@
 title: Redis扫盲系列（二）：Springboot整合Redis
 comments: true
 categories:
-  - Popular Component - Redis
+  - Core Technical Series - Message & Cache
 tags:
   - Redis
   - Big Data

@@ -2,7 +2,7 @@
 title: Redis扫盲系列（三）：Redis高级特性（未完成...)
 comments: true
 categories:
-  - Popular Component - Redis
+  - Core Technical Series - Message & Cache
 tags:
   - Redis
   - Big Data

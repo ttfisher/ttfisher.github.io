@@ -1,7 +1,7 @@
 ---
 title: ActiveMQ扫盲系列（二）：点对点DEMO
 categories:
-  - Popular Component - ActiveMQ
+  - Core Technical Series - Message & Cache
 tags:
   - ActiveMQ
 comments: true

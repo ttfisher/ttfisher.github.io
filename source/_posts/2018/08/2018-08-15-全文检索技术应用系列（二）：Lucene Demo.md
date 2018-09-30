@@ -2,7 +2,7 @@
 title: 全文检索技术应用系列（二）：Lucene Demo
 comments: true
 categories:
-  - Popular Framework  - Lucene++
+  - Core Technical Series - Full Text Retrieval
 tags:
   - 全文检索
 abbrlink: 603f4bd6

@@ -2,7 +2,7 @@
 title: Redis扫盲系列（一）：Redis基础入门
 comments: true
 categories:
-  - Popular Component - Redis
+  - Core Technical Series - Message & Cache
 tags:
   - Redis
   - Big Data

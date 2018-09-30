@@ -2,7 +2,7 @@
 title: Java必知框架MyBatis探究（二）：跟着Demo看源码（未完成...）
 comments: true
 categories:
-  - Popular Framework  - MyBatis
+  - Core Technical Series - JPA Plus
 tags:
   - MyBatis
 abbrlink: 2f64b75a

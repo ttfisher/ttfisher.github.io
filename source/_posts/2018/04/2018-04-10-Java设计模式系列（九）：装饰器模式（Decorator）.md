@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（九）：装饰器模式（Decorator）
 categories:
-  - Java one by one - Design Pattern
+  - Core Technical Series - Design Pattern
 tags:
   - 设计模式
 comments: true

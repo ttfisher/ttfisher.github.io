@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（十四）：命令模式（Command）
 categories:
-  - Java one by one - Design Pattern
+  - Core Technical Series - Design Pattern
 tags:
   - 设计模式
 comments: true

@@ -4,7 +4,7 @@ comments: true
 abbrlink: d67d13cd
 date: 2018-05-31 19:09:28
 categories:
-  - Popular Component - Kafka
+  - Core Technical Series - Message & Cache
 tags:
   - Kafka
   - Big Data
