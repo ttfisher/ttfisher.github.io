@@ -6,14 +6,17 @@ categories:
 tags:
   - Java集合
 abbrlink: f29d3a59
-date: 2018-08-02 14:07:00
+date: 2018-08-03 14:07:00
 ---
 【引言】接着上一篇，在纲领性的说明完成后，从本篇开始，按照不同的类型和特性，逐步的对不同的集合类型进行一一的分析和解读，从细节上把控所有的集合特性。
 <div align=center><img src="/img/2018/2018-08-02-10.jpg" width="500"/></div>
 <!-- more -->
 
 # Collection的定义
-&emsp;&emsp;通过下图可以很清晰的看到：（1）Collection是继承Iterable接口的；（2）Iterable提供了迭代器获取的方法；（3）Collection内提供了基本的增删查等常用操作；
+&emsp;&emsp;通过下图可以很清晰的看到：
+（1）Collection是继承Iterable接口的；
+（2）Iterable提供了迭代器获取的方法；
+（3）Collection内提供了基本的增删查等常用操作；
 <img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-02-11.jpg" width="60%">
 
 # Collection的分类
@@ -23,8 +26,8 @@ date: 2018-08-02 14:07:00
 <img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-02-09.jpg" width="75%">
 
 ## 特点
-- List：可以重复、有序
-- Set：不可重复、可有序可无序
+- List：线性结构，可以重复、有序
+- Set：线性结构，不可重复、可有序可无序
 - Queue：先入先出的队列结构
 
 # List
@@ -32,6 +35,7 @@ date: 2018-08-02 14:07:00
 ## ArrayList
 
 ### 接口/类定义
+&emsp;&emsp;作为一个常规Java开发人员最常用的List实现类，它的内部是以数组为基础的。
 ```java
 public class ArrayList<E> extends AbstractList<E>
         implements List<E>, RandomAccess, Cloneable, java.io.Serializable
@@ -195,6 +199,7 @@ public class P {
 ## LinkedList
 
 ### 接口/类定义
+&emsp;&emsp;仅次于ArrayList的使用频率，LinkedList的内部是以链表为基础的。
 ```java
 public class LinkedList<E>
     extends AbstractSequentialList<E>

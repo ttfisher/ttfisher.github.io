@@ -14,6 +14,7 @@ date: 2018-08-02 08:55:55
 <!-- more -->
 
 # Maven
+&emsp;&emsp;都到了Springboot年代了，Maven自然是必不可少的，通过如下XML引入springboot的spring-boot-starter-data-redis，就可以开始开发了，So easy。
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -72,6 +73,7 @@ date: 2018-08-02 08:55:55
 ```
 
 # application.properties
+&emsp;&emsp;Springboot的两种配置文件格式之一（properties），另外一种是yml格式（分层缩进式），配置好redis连接。
 ```
 # Redis数据库索引（默认为0）
 spring.redis.database=0
@@ -86,6 +88,7 @@ spring.redis.timeout=60
 ```
 
 # RedisOperator
+&emsp;&emsp;这个类模拟了最简单的两个Redis操作：写入和读取一个String的value，作为hello world级别的试验，这个程度足矣。
 ```java
 package com.example.demo.redis;
 
@@ -132,6 +135,7 @@ public class RedisOperator {
 ```
 
 # Springboot Main
+&emsp;&emsp;直接就上Main方法了，Springboot里面的Main方法和传统的Main方法还是有些区别的，一般创建工程时默认都会给你建好，这里比常规的Main多实现了一个CommandLineRunner，这个主要是用来满足注入和非静态调用结合到static的main里面来用才加入的。（因为静态的接口变量是没办法被Springboot直接Autowired注入的，这个具体的原因在Springboot里面再详细探讨；比如redisOperator如果被定义为static的然后直接在main里面写一些调用，是会出现NullPointerException的）
 ```java
 package com.example.demo;
 
@@ -182,6 +186,7 @@ public class Springboottools2Application implements CommandLineRunner {
 ```
 
 # Test Result
+&emsp;&emsp;既然是做hello world，那自然是要看到结果输出才算完事儿的，启动Main方法后看到下面熟悉的Springboot的日志logo然后就可以静静等待结果了，不出意外的话结果都可以正常打印到Console。
 ```java
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -200,7 +205,7 @@ public class Springboottools2Application implements CommandLineRunner {
 ```
 
 # Redis Client View
-&emsp;&emsp;通过客户端我们也可以看到，四条数据已经入库成功。
+&emsp;&emsp;通过Redis的客户端我们也可以很清楚的看到，四条数据已经入库成功，证明之前的代码成功将数据写入了Redis。
 <img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-29-05.jpg" width="70%">
 
 # More About

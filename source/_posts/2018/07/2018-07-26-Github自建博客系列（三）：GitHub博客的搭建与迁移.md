@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（三）：GitHub博客的搭建与迁移
 categories:
-  - Popular Weapon - Git & Git++
+  - Unprofessional Skills - Technical
 tags:
   - GitHub
 abbrlink: 30aba86c
@@ -104,6 +104,10 @@ hexo d （发布到GitHub）
 <img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-12.jpg" width="75%">
 <img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-13.jpg" width="75%">
 
+## 偷懒的用法
+&emsp;&emsp;可以安装一个Git小乌龟，通过小乌龟进行git clone的操作（对于不熟悉Git命令的同学来说，绝对是福音）。
+<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-05-01.jpg" width="45%">
+<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-05-02.jpg" width="45%">
 
 # 其他参考信息
 
@@ -279,3 +283,15 @@ deploy:
 
 ## push时报permission denied
 &emsp;&emsp;通常在push时会出现，比较暴力的方法，就是重新生成ssh key，配置到github管理端；目前还没有发现其他好的解决方法。
+
+## 新装TortoiseGit报错
+```
+---------------------------
+TortoiseGitPlink Fatal Error
+---------------------------
+Disconnected: No supported authentication methods available (server sent: publickey)
+---------------------------
+确定   
+---------------------------
+```
+&emsp;&emsp;原因是因为TortoiseGit和Git的冲突，打开小乌龟TortoiseGit -> Settings -> Network；然后将SSH client设置成 C:\Program Files\Git\usr\bin\ssh.exe；TortoiseGit就可以正常工作了！
