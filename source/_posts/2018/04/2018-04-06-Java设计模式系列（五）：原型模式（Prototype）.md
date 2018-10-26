@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（五）：原型模式（Prototype）
 categories:
-  - Core Technical Series - Design Pattern
+  - 【103】衣带渐宽终不悔之我看设计模式
 tags:
   - 设计模式
 comments: true

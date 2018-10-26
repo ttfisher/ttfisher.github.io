@@ -1,7 +1,7 @@
 ---
 title: Kafka实战系列（一）：Windows测试环境搭建
 categories:
-  - Core Technical Series - Message & Cache
+  - 【104】风住尘香花已尽之消息队列和缓存
 tags:
   - Kafka
   - Big Data

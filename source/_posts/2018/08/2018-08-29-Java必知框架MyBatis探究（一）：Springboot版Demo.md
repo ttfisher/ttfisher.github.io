@@ -2,7 +2,7 @@
 title: Java必知框架MyBatis探究（一）：Springboot版Demo（未完成...）
 comments: true
 categories:
-  - Core Technical Series - JPA Plus
+  - 【203】他山之石可以攻玉之MyBatis
 tags:
   - MyBatis
 abbrlink: '85554181'

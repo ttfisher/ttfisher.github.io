@@ -2,7 +2,7 @@
 title: 畅读源码系列之JDK（一）：String
 comments: true
 categories:
-  - Source Code Reading - JDK
+  - 【201】蓦然回首灯火阑珊处之JDK
 tags:
   - 畅读源码
 abbrlink: 7e8c5b5a
@@ -20,7 +20,7 @@ date: 2018-08-10 08:34:00
 ## String
 ```java
 /**
- * 【CHENG】：首先，从开篇的图和String类的源码可以看出几个相当明显的特性：
+ * 【Lin.C】：首先，从开篇的图和String类的源码可以看出几个相当明显的特性：
  *         - String是final的，这也就注定了它是不能被继承，final类中的所有成员方法都会被隐式地指定为final方法
  *         - 实现了Serializable：表示String是可序列化的
  *         - 实现了Comparable：表示String是可比较的
@@ -36,7 +36,7 @@ public final class String
 ## CharSequence
 ```java
 /**
- * 【CHENG】：可读可写序列
+ * 【Lin.C】：可读可写序列
  * @author Mike McCloskey
  * @since 1.4
  * @spec JSR-51
@@ -45,39 +45,39 @@ public final class String
 public interface CharSequence {
 
     /**
-     * 【CHENG】：字符序列的长度
+     * 【Lin.C】：字符序列的长度
      */
     int length();
 
     /**
-     * 【CHENG】：取得某个位置上的char
+     * 【Lin.C】：取得某个位置上的char
      */
     char charAt(int index);
 
     /**
-     * 【CHENG】：截取
+     * 【Lin.C】：截取
      */
     CharSequence subSequence(int start, int end);
 
     /**
-     * 【CHENG】：转成String
+     * 【Lin.C】：转成String
      */
     public String toString();
     
-    // 【CHENG】：还有一些default的方法（1.8新增的），这里就不列举了
+    // 【Lin.C】：还有一些default的方法（1.8新增的），这里就不列举了
 }
 ```
 
 # 成员变量
 ```java
     /**
-     * 【CHENG】：很明显，这个数组是用做基础的存储数据结构的；所以最终有可能后续的分析都需要结合数组的特性了
+     * 【Lin.C】：很明显，这个数组是用做基础的存储数据结构的；所以最终有可能后续的分析都需要结合数组的特性了
      */
     /** The value is used for character storage. */
     private final char value[];
     
     /**
-     * 【CHENG】：hash实际就是个散列，通常我们常见的用法就是在equals时必须要用到的hashcode方法
+     * 【Lin.C】：hash实际就是个散列，通常我们常见的用法就是在equals时必须要用到的hashcode方法
      */
     /** Cache the hash code for the string */
     private int hash; // Default to 0
@@ -86,7 +86,7 @@ public interface CharSequence {
 # 构造方法
 ```java
     /**
-     * 【CHENG】：这个空参构造方法本身很简单，但要结合下面的另一个构造方法看就更明了了
+     * 【Lin.C】：这个空参构造方法本身很简单，但要结合下面的另一个构造方法看就更明了了
      */
     public String() {
         // 可以理解为 new String("").value;
@@ -94,14 +94,14 @@ public interface CharSequence {
     }
     
     /**
-     * 【CHENG】：这里就有了初始化参数了，实际就是根据初始化参数给value赋值，同时给hash赋值
+     * 【Lin.C】：这里就有了初始化参数了，实际就是根据初始化参数给value赋值，同时给hash赋值
      */
     public String(String original) {
         this.value = original.value;
         this.hash = original.hash;
     }
     
-    // 【CHENG】：还有很多基于数组之类的构造方法，因为用的不多，这里就不一一列举了
+    // 【Lin.C】：还有很多基于数组之类的构造方法，因为用的不多，这里就不一一列举了
 ```
 
 # 常用方法
@@ -109,7 +109,7 @@ public interface CharSequence {
 ## charAt
 ```java
     /**
-     * 【CHENG】：前面了解了基本的几个属性，这个方法就很好理解了
+     * 【Lin.C】：前面了解了基本的几个属性，这个方法就很好理解了
      *        - 如果下标越界了，就抛个异常
      *        - 否则，就返回value数组对应index的那个char
      */
@@ -124,35 +124,35 @@ public interface CharSequence {
 ## compareTo
 ```java
     /**
-     * 【CHENG】：字符串比较方法
+     * 【Lin.C】：字符串比较方法
      *        - 如果下标越界了，就抛个异常
      *        - 否则，就返回value数组对应index的那个char
      */
      public int compareTo(String anotherString) {
         
-        // 【CHENG】：算出长度较短的一个String（只比较到这个长度）
+        // 【Lin.C】：算出长度较短的一个String（只比较到这个长度）
         int len1 = value.length;
         int len2 = anotherString.value.length;
         int lim = Math.min(len1, len2);
         
-        // 【CHENG】：取两个String的底层value数组
+        // 【Lin.C】：取两个String的底层value数组
         char v1[] = value;
         char v2[] = anotherString.value;
     
-        // 【CHENG】：逐位比较
+        // 【Lin.C】：逐位比较
         int k = 0;
         while (k < lim) {
             char c1 = v1[k];
             char c2 = v2[k];
             
-            // 【CHENG】：一旦出现不相等的位，则返回（原始串大则返回正数，原始串小则返回负数）
+            // 【Lin.C】：一旦出现不相等的位，则返回（原始串大则返回正数，原始串小则返回负数）
             if (c1 != c2) {
                 return c1 - c2;
             }
             k++;
         }
         
-        // 【CHENG】：若前面都相等，则返回长度差（原始串长则返回正数，原始串短则返回负数，一样长则返回0）
+        // 【Lin.C】：若前面都相等，则返回长度差（原始串长则返回正数，原始串短则返回负数，一样长则返回0）
         return len1 - len2;
     }
 ```
@@ -160,21 +160,21 @@ public interface CharSequence {
 ## concat
 ```java
     /**
-     * 【CHENG】：字符串连接方法（"cares".concat("s") returns "caress"）
+     * 【Lin.C】：字符串连接方法（"cares".concat("s") returns "caress"）
      */
     public String concat(String str) {
         
-        // 【CHENG】：很简单的逻辑，追加的字符串若长度为0，则返回原String
+        // 【Lin.C】：很简单的逻辑，追加的字符串若长度为0，则返回原String
         int otherLen = str.length();
         if (otherLen == 0) {
             return this;
         }
         int len = value.length;
         
-        // 【CHENG】：否则，扩容数组（大小为两个字符串的长度和），并将原数组的值复制写入新数组
+        // 【Lin.C】：否则，扩容数组（大小为两个字符串的长度和），并将原数组的值复制写入新数组
         char buf[] = Arrays.copyOf(value, len + otherLen);
         
-        // 【CHENG】：把str追加到buf的后面
+        // 【Lin.C】：把str追加到buf的后面
         str.getChars(buf, len);
         
         // 返回这个新的String（这个构造方法的实现：this.value = value; 后面那个true没有任何意义）
@@ -182,7 +182,7 @@ public interface CharSequence {
     }
     
     /**
-     * 【CHENG】：将数组复制扩容，并将原数组的值复制写入新数组
+     * 【Lin.C】：将数组复制扩容，并将原数组的值复制写入新数组
      */
     public static char[] copyOf(char[] original, int newLength) {
         char[] copy = new char[newLength];
@@ -191,14 +191,14 @@ public interface CharSequence {
     }
     
     /**
-     * 【CHENG】：将value追加到从第0位开始复制到dst数组的dstBegin位置
+     * 【Lin.C】：将value追加到从第0位开始复制到dst数组的dstBegin位置
      */
     void getChars(char dst[], int dstBegin) {
         System.arraycopy(value, 0, dst, dstBegin, value.length);
     }
     
     /**
-     * 【CHENG】：System提供的一个native方法；将一个数组的指定个数元素复制到另一个数组中
+     * 【Lin.C】：System提供的一个native方法；将一个数组的指定个数元素复制到另一个数组中
      *        - src、srcPos：被复制的数组和复制起始位置
      *        - dest、destPos：接收复制数组的目标数组和接收的起始位置
      *        - length：要复制的字符个数
@@ -242,14 +242,14 @@ public interface CharSequence {
 ## contains & indexOf
 ```java
     /**
-     * 【CHENG】：这个方法就很简单，判断字串在父串内的index是否大于0
+     * 【Lin.C】：这个方法就很简单，判断字串在父串内的index是否大于0
      */
     public boolean contains(CharSequence s) {
         return indexOf(s.toString()) > -1;
     }
     
     /**
-     * 【CHENG】：indexOf的参数拆分后调用下面一个比较复杂的indexOf方法实现定位
+     * 【Lin.C】：indexOf的参数拆分后调用下面一个比较复杂的indexOf方法实现定位
      */
     public int indexOf(String str, int fromIndex) {
         return indexOf(value, 0, value.length,
@@ -257,7 +257,7 @@ public interface CharSequence {
     }
     
     /**
-     * 【CHENG】：实际由好几个重载的indexOf方法，但最终都是调用到下面的这个方法，所以看这个就够了
+     * 【Lin.C】：实际由好几个重载的indexOf方法，但最终都是调用到下面的这个方法，所以看这个就够了
      * 
      * @param   source       the characters being searched.
      * @param   sourceOffset offset of the source string.
@@ -280,32 +280,32 @@ public interface CharSequence {
             return fromIndex;
         }
 
-        // 【CHENG】：先找到第一个target字符
+        // 【Lin.C】：先找到第一个target字符
         char first = target[targetOffset];
         
-        // 【CHENG】：最大查找位置（如"Chenglin".indexOf("en"); sourceOffset=0,sourceCount=8,targetCount=2,则该值为6）
-        // 【CHENG】：也就是说剩余长度不够targetCount的长度时，后面没必要再检查了
+        // 【Lin.C】：最大查找位置（如"Chenglin".indexOf("en"); sourceOffset=0,sourceCount=8,targetCount=2,则该值为6）
+        // 【Lin.C】：也就是说剩余长度不够targetCount的长度时，后面没必要再检查了
         int max = sourceOffset + (sourceCount - targetCount);
 
-        // 【CHENG】：当第一个字符命中了，但后续没有命中的情况下，需要通过这个循环控制多次去匹配（i++往后偏移一位）
+        // 【Lin.C】：当第一个字符命中了，但后续没有命中的情况下，需要通过这个循环控制多次去匹配（i++往后偏移一位）
         for (int i = sourceOffset + fromIndex; i <= max; i++) {
         
-            // 【CHENG】：先找第一个字符，如果第一个都找不到，那后面就不用玩了
+            // 【Lin.C】：先找第一个字符，如果第一个都找不到，那后面就不用玩了
             /* Look for first character. */
             if (source[i] != first) {
                 while (++i <= max && source[i] != first);
             }
 
-            // 【CHENG】：i<=max就表示第一个字符正常找到了
+            // 【Lin.C】：i<=max就表示第一个字符正常找到了
             /* Found first character, now look at the rest of v2 */
             if (i <= max) {
                 int j = i + 1;
                 int end = j + targetCount - 1;
                 
-                // 【CHENG】：然后将target从第2个字符开始，挨个和source的随后字符比较，一旦出现不相等的情况，for结束
+                // 【Lin.C】：然后将target从第2个字符开始，挨个和source的随后字符比较，一旦出现不相等的情况，for结束
                 for (int k = targetOffset + 1; j < end && source[j] == target[k]; j++, k++);
                 
-                // 【CHENG】：最后确认命中的index是不是满足target的长度条件，满足则返回命中的位置了
+                // 【Lin.C】：最后确认命中的index是不是满足target的长度条件，满足则返回命中的位置了
                 if (j == end) {
                     /* Found whole string. */
                     return i - sourceOffset;
@@ -316,12 +316,12 @@ public interface CharSequence {
     }
     
     /**
-     * 【CHENG】：基于单个字符的index查找
+     * 【Lin.C】：基于单个字符的index查找
      */
     public int indexOf(int ch, int fromIndex) {
         final int max = value.length;
         
-        // 【CHENG】：基本的参数校正和长度判断条件
+        // 【Lin.C】：基本的参数校正和长度判断条件
         if (fromIndex < 0) {
             fromIndex = 0;
         } else if (fromIndex >= max) {
@@ -329,14 +329,14 @@ public interface CharSequence {
             return -1;
         }
 
-        // 【CHENG】：必须在合法字符的要求范围内
+        // 【Lin.C】：必须在合法字符的要求范围内
         // The minimum value of a Unicode supplementary code point, constant(0x010000)
         if (ch < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
             // handle most cases here (ch is a BMP code point or a
             // negative value (invalid code point))
             final char[] value = this.value;
             
-            // 【CHENG】：逐个查找，找到一个命中的就返回对应的index
+            // 【Lin.C】：逐个查找，找到一个命中的就返回对应的index
             for (int i = fromIndex; i < max; i++) {
                 if (value[i] == ch) {
                     return i;
@@ -352,14 +352,14 @@ public interface CharSequence {
 ## startsWith & endsWith
 ```java
     /**
-     * 【CHENG】：endsWith本身是通过startsWith实现的，有点意思（实际就是控制偏移量为反向suffix的长度）
+     * 【Lin.C】：endsWith本身是通过startsWith实现的，有点意思（实际就是控制偏移量为反向suffix的长度）
      */
     public boolean endsWith(String suffix) {
         return startsWith(suffix, value.length - suffix.value.length);
     }
     
     /**
-     * 【CHENG】：判断是否是以某个String开头的（可以有偏移量）
+     * 【Lin.C】：判断是否是以某个String开头的（可以有偏移量）
      */
     public boolean startsWith(String prefix, int toffset) {
         char ta[] = value;
@@ -369,19 +369,19 @@ public interface CharSequence {
         int pc = prefix.value.length;
         // Note: toffset might be near -1>>>1.
         
-        // 【CHENG】：首先从长度上来避免进入循环判断，长度不够匹配肯定是false的
+        // 【Lin.C】：首先从长度上来避免进入循环判断，长度不够匹配肯定是false的
         if ((toffset < 0) || (toffset > value.length - pc)) {
             return false;
         }
         
-        // 【CHENG】：然后带着偏移量挨个字符比较，一旦发现有不相等的，立马返回false
+        // 【Lin.C】：然后带着偏移量挨个字符比较，一旦发现有不相等的，立马返回false
         while (--pc >= 0) {
             if (ta[to++] != pa[po++]) {
                 return false;
             }
         }
         
-        // 【CHENG】：走到这里表示prefix在原串里面完整命中了，就是true
+        // 【Lin.C】：走到这里表示prefix在原串里面完整命中了，就是true
         return true;
     }
 ```
@@ -389,7 +389,7 @@ public interface CharSequence {
 ## length
 ```java
     /**
-     * 【CHENG】：作为一个非常常用的方法，虽然实现简单，这里还是提一句吧
+     * 【Lin.C】：作为一个非常常用的方法，虽然实现简单，这里还是提一句吧
      */
     public int length() {
         return value.length;
@@ -399,30 +399,30 @@ public interface CharSequence {
 ## replace
 ```java     
     /**
-     * 【CHENG】：不涉及正则表达式，单纯的数组位置替换
+     * 【Lin.C】：不涉及正则表达式，单纯的数组位置替换
      */
     public String replace(char oldChar, char newChar) {
         ......
     }
     
     /**
-     * 【CHENG】：被替换的target不作为正则规则，只作为纯粹的字符串替换
+     * 【Lin.C】：被替换的target不作为正则规则，只作为纯粹的字符串替换
      */    
     public String replace(CharSequence target, CharSequence replacement) {
-        // 【CHENG】：指定Pattern.LITERAL标志后，输入字符串就会作为字面值字符序列来对待（不作为正则表达式编译）
+        // 【Lin.C】：指定Pattern.LITERAL标志后，输入字符串就会作为字面值字符序列来对待（不作为正则表达式编译）
         return Pattern.compile(target.toString(), Pattern.LITERAL).matcher(
                 this).replaceAll(Matcher.quoteReplacement(replacement.toString()));
     }
     
     /**
-     * 【CHENG】：被替换的regex作为正则规则，通过Pattern进行compile后再进行替换；全文替换
+     * 【Lin.C】：被替换的regex作为正则规则，通过Pattern进行compile后再进行替换；全文替换
      */    
     public String replaceAll(String regex, String replacement) {
         return Pattern.compile(regex).matcher(this).replaceAll(replacement);
     }
     
     /**
-     * 【CHENG】：被替换的regex作为正则规则，通过Pattern进行compile后再进行替换；只替换第一个
+     * 【Lin.C】：被替换的regex作为正则规则，通过Pattern进行compile后再进行替换；只替换第一个
      */    
     public String replaceFirst(String regex, String replacement) {
         return Pattern.compile(regex).matcher(this).replaceFirst(replacement);
@@ -450,7 +450,7 @@ public interface CharSequence {
 &emsp;&emsp;之所以使用 31， 是因为他是一个奇素数。如果乘数是偶数，并且乘法溢出的话，信息就会丢失，因为与2相乘等价于移位运算（低位补0）。使用素数的好处并不很明显，但是习惯上使用素数来计算散列结果。 31 有个很好的性能，即用移位和减法来代替乘法，可以得到更好的性能： 31 * i == (i << 5） - i， 现代的 VM 可以自动完成这种优化。
 ```java
     /**
-     * 【CHENG】：一个涉及到equals和散列的方法;使用 String 的 char 数组的数字每次乘以 31 再叠加最后返回
+     * 【Lin.C】：一个涉及到equals和散列的方法;使用 String 的 char 数组的数字每次乘以 31 再叠加最后返回
      *            因此，每个不同的字符串，返回的 hashCode 肯定不一样
      */
     public int hashCode() {
@@ -470,7 +470,7 @@ public interface CharSequence {
 ## substring
 ```java
     /**
-     * 【CHENG】：代码本身很简单，但是需要注意若产生切割会生成一个新的String
+     * 【Lin.C】：代码本身很简单，但是需要注意若产生切割会生成一个新的String
      */
     public String substring(int beginIndex, int endIndex) {
         if (beginIndex < 0) {
@@ -491,7 +491,7 @@ public interface CharSequence {
 ## trim
 ```java
     /**
-     * 【CHENG】：把首尾为空的char逐个剔除，然后substring生成一个新的String
+     * 【Lin.C】：把首尾为空的char逐个剔除，然后substring生成一个新的String
      */
     public String trim() {
         int len = value.length;

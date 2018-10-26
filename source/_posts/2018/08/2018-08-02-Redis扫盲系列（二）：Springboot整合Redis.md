@@ -2,7 +2,7 @@
 title: Redis扫盲系列（二）：Springboot整合Redis
 comments: true
 categories:
-  - Core Technical Series - Message & Cache
+  - 【104】风住尘香花已尽之消息队列和缓存
 tags:
   - Redis
   - Big Data
@@ -250,14 +250,14 @@ package org.springframework.data.redis.connection.jedis;
 public class JedisConnectionFactory implements InitializingBean, DisposableBean, RedisConnectionFactory {
     ......
     
-    // 【CHENG】：这个配置就是默认的localhost:6379
+    // 【Lin.C】：这个配置就是默认的localhost:6379
     private RedisStandaloneConfiguration standaloneConfig = new RedisStandaloneConfiguration("localhost", Protocol.DEFAULT_PORT);
     
     ......
 }
 
 /**
- * 【CHENG】：redis单机默认配置
+ * 【Lin.C】：redis单机默认配置
  */
 public class RedisStandaloneConfiguration {
 
@@ -276,14 +276,14 @@ public class RedisStandaloneConfiguration {
 &emsp;&emsp;在JedisConnectionFactory这个类里面还有两个关于集群的Configuration定义；结合下面的定义，基本也就知道配置文件里面要配置哪些项了，现在不比SpringMVC时代了，一配一大把属性，当简则简。
 ```java
 public class JedisConnectionFactory implements InitializingBean, DisposableBean, RedisConnectionFactory {    
-    // 【CHENG】：这两个配置应该是两种不同集群模式下的配置引用
+    // 【Lin.C】：这两个配置应该是两种不同集群模式下的配置引用
     private @Nullable RedisSentinelConfiguration sentinelConfig;
     private @Nullable RedisClusterConfiguration clusterConfig;
     ......
 }
 
 /**
- * 【CHENG】：常用的Master-Slave集群的配置
+ * 【Lin.C】：常用的Master-Slave集群的配置
  */
 public class RedisClusterConfiguration {
 
@@ -293,7 +293,7 @@ public class RedisClusterConfiguration {
 }
 
 /**
- * 【CHENG】：传说中的哨兵模式的配置（虽然没咋用过，但是好像挺重要的）
+ * 【Lin.C】：传说中的哨兵模式的配置（虽然没咋用过，但是好像挺重要的）
  */
 public class RedisSentinelConfiguration {
 

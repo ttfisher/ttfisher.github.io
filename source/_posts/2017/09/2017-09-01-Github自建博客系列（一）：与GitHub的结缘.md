@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（一）：与GitHub的结缘
 categories: 
-    - Unprofessional Skills - Technical
+    - 【501】有那么一个词儿叫相见恨晚
 tags: 
     - GitHub
 abbrlink: 61a5954

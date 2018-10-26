@@ -2,7 +2,7 @@
 title: 畅读源码系列之JDK（六）：Collections
 comments: true
 categories:
-  - Source Code Reading - JDK
+  - 【201】蓦然回首灯火阑珊处之JDK
 tags:
   - 畅读源码
 abbrlink: 1ebf7315
@@ -17,7 +17,7 @@ date: 2018-08-13 10:34:00
 ## Collections
 ```java
 /**
- * 【CHENG】：简单明了，连构造方法也很简单明了
+ * 【Lin.C】：简单明了，连构造方法也很简单明了
  */
 public class Collections {
     // Suppresses default constructor, ensuring non-instantiability.
@@ -31,7 +31,7 @@ public class Collections {
 ## sort
 ```java
     /**
-     * 【CHENG】：sort是个使用频率比较高的方法了，用来排序（但前提是你的list要实现Comparable接口）
+     * 【Lin.C】：sort是个使用频率比较高的方法了，用来排序（但前提是你的list要实现Comparable接口）
      */
     public static <T extends Comparable<? super T>> void sort(List<T> list) {
         list.sort(null);
@@ -50,7 +50,7 @@ public class Collections {
 ## add
 ```java
     /**
-     * 【CHENG】：为一个集合添加元素（试了下比挨个add好用的多了）
+     * 【Lin.C】：为一个集合添加元素（试了下比挨个add好用的多了）
      */
     public static <T> boolean addAll(Collection<? super T> c, T... elements) {
         boolean result = false;
@@ -79,7 +79,7 @@ public class Collections {
 ## binarySearch
 ```java
     /**
-     * 【CHENG】：二分法查找
+     * 【Lin.C】：二分法查找
      */
     public static <T> int binarySearch(List<? extends Comparable<? super T>> list, T key) {
         if (list instanceof RandomAccess || list.size()<BINARYSEARCH_THRESHOLD)
@@ -105,7 +105,7 @@ public class Collections {
 ## copy
 ```java
     /**
-     * 【CHENG】：复制一个list
+     * 【Lin.C】：复制一个list
      */
     public static <T> void copy(List<? super T> dest, List<? extends T> src) {
         int srcSize = src.size();
@@ -130,7 +130,7 @@ public class Collections {
 ## emptyList
 ```java
     /**
-     * 【CHENG】：置空一个list（EMPTY_LIST也是一个内部类）
+     * 【Lin.C】：置空一个list（EMPTY_LIST也是一个内部类）
      */
     public static final <T> List<T> emptyList() {
         return (List<T>) EMPTY_LIST;
@@ -140,7 +140,7 @@ public class Collections {
 ## reverse
 ```java
     /**
-     * 【CHENG】：反转集合，有时候还是有些用处的
+     * 【Lin.C】：反转集合，有时候还是有些用处的
      */
     public static void reverse(List<?> list) {
         int size = list.size();
@@ -164,15 +164,15 @@ public class Collections {
 
 ## synchronizedXXX
 ```java
-    //【CHENG】：synchronized一个系列有很多个方法，比如以SynchronizedCollection为例
+    //【Lin.C】：synchronized一个系列有很多个方法，比如以SynchronizedCollection为例
     public static <T> Collection<T> synchronizedCollection(Collection<T> c) {
         
-        //【CHENG】：实现原理基本类似（都是通过一个内部类转换的）
+        //【Lin.C】：实现原理基本类似（都是通过一个内部类转换的）
         return new SynchronizedCollection<>(c);
     }
     
-    //【CHENG】：实际就是在所有方法执行的时候加了个synchronized (mutex)锁而已
-    //【CHENG】：其他比如SynchronizedMap等也都是依样画葫芦来实现的
+    //【Lin.C】：实际就是在所有方法执行的时候加了个synchronized (mutex)锁而已
+    //【Lin.C】：其他比如SynchronizedMap等也都是依样画葫芦来实现的
     static class SynchronizedCollection<E> implements Collection<E>, Serializable {
         private static final long serialVersionUID = 3053995032091335093L;
 

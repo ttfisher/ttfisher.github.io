@@ -1,7 +1,7 @@
 ---
 title: 运维技能集锦系列（一）：Nginx Keepalived环境搭建
 categories:
-  - Unprofessional Skills - Technical
+  - 【303】从运维的层面培养新的技能槽
 tags:
   - Nginx
   - Keepalived

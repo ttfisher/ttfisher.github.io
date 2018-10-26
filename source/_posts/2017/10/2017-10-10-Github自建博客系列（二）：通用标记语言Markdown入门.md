@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（二）：通用标记语言Markdown入门
 categories: 
-    - Unprofessional Skills - Technical
+    - 【501】有那么一个词儿叫相见恨晚
 tags: 
     - GitHub
 abbrlink: c6d4da27

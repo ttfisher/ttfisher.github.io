@@ -1,12 +1,12 @@
 ---
 title: Kafka实战系列（二）：Springboot整合Kafka
 categories:
-  - Core Technical Series - Message & Cache
+  - 【104】风住尘香花已尽之消息队列和缓存
 tags:
   - Kafka
   - Big Data
 comments: true
-abbrlink: '67479509'
+abbrlink: 67479509
 date: 2018-08-24 11:22:39
 ---
 【引言】做Java的基本也都注意到了，Springboot最近迅速走红，当然它的走红也是个必然，所以今天也借着Springboot的东风来试试Kafka的集成；当然这个Demo也只是简单的演示一下怎么用，具体到怎么用好可不是一两个Demo可以解决的事情了。

@@ -5,8 +5,8 @@
 # Site
 title: Modern Shine
 subtitle: 莫等闲，白了少年头...
-description:
-author: Tiny Tiny Fisher
+description: 
+author: Lin.C
 language: zh-Hans
 timezone:
 
@@ -48,7 +48,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
 
 # Category & Tag

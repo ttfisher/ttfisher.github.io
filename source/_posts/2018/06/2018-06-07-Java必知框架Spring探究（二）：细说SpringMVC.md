@@ -2,10 +2,10 @@
 title: Java必知框架Spring探究（二）：细说SpringMVC
 comments: true
 categories:
-  - Core Technical Series - Spring Plus
+  - 【106】逃得了前世躲不过今生之Spring
 tags:
   - Spring
-abbrlink: 1ace9dad
+abbrlink: 955a0fb8
 date: 2018-06-07 09:09:28
 ---
 【引言】谈到web开发，可能大多数Java人的第一印象就是SpringMVC，它是我们最熟悉的一个框架，但系统的来说能把SpringMVC说透的人不多，所以我这里也尝试一下来自己理一理SpringMVC这个既熟悉又陌生的框架。

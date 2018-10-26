@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（七）：桥接模式（Bridge）
 categories:
-  - Core Technical Series - Design Pattern
+  - 【103】衣带渐宽终不悔之我看设计模式
 tags:
   - 设计模式
 comments: true

@@ -2,7 +2,7 @@
 title: Redis扫盲系列（三）：Redis高级特性（未完成...)
 comments: true
 categories:
-  - Core Technical Series - Message & Cache
+  - 【104】风住尘香花已尽之消息队列和缓存
 tags:
   - Redis
   - Big Data

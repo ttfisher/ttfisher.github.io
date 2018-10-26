@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（五）：OpenRestry With Redis
 categories:
-  - Unprofessional Skills - Technical
+  - 【302】如何从服务的前端优化负载
 tags:
   - OpenResty
 abbrlink: 95a8ee39

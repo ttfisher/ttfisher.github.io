@@ -2,7 +2,7 @@
 title: 畅读源码系列之JDK（三）：LinkedList
 comments: true
 categories:
-  - Source Code Reading - JDK
+  - 【201】蓦然回首灯火阑珊处之JDK
 tags:
   - 畅读源码
 abbrlink: 22d500e4
@@ -15,7 +15,7 @@ date: 2018-08-12 16:11:00
 # 类的定义
 ```java
 /**
- * 【CHENG】：- 继承关系：LinkedList->AbstractSequentialList->AbstractList->AbstractCollection->Collection
+ * 【Lin.C】：- 继承关系：LinkedList->AbstractSequentialList->AbstractList->AbstractCollection->Collection
  *            - 其他一些可clone、可序列化的特性不提也罢
  *            - 与ArrayList相比较的话，这里多了个Deque（属于Queue的一个子接口）
  * @since   1.2
@@ -30,12 +30,12 @@ public class LinkedList<E>
 # 成员变量
 ```java
     /**
-     * 【CHENG】：集合的大小（默认是0）
+     * 【Lin.C】：集合的大小（默认是0）
      */
     transient int size = 0;
 
     /**
-     * 【CHENG】：很明显的链表头（关于Node的结构，猜也能猜到至少包含两个前后指向的指针+一个数据属性）
+     * 【Lin.C】：很明显的链表头（关于Node的结构，猜也能猜到至少包含两个前后指向的指针+一个数据属性）
      * Pointer to first node.
      * Invariant: (first == null && last == null) ||
      *            (first.prev == null && first.item != null)
@@ -43,7 +43,7 @@ public class LinkedList<E>
     transient Node<E> first;
 
     /**
-     * 【CHENG】：很明显的链表尾
+     * 【Lin.C】：很明显的链表尾
      * Pointer to last node.
      * Invariant: (first == null && last == null) ||
      *            (last.next == null && last.item != null)
@@ -54,14 +54,14 @@ public class LinkedList<E>
 # 构造方法
 ```java
     /**
-     * 【CHENG】：平时我们最常用的一种构造方法，不指定大小
+     * 【Lin.C】：平时我们最常用的一种构造方法，不指定大小
      * Constructs an empty list.
      */
     public LinkedList() {
     }
 
     /**
-     * 【CHENG】：当然也可以基于其他集合来创建（这里直接就使用了addAll来添加元素完成的）
+     * 【Lin.C】：当然也可以基于其他集合来创建（这里直接就使用了addAll来添加元素完成的）
      */
     public LinkedList(Collection<? extends E> c) {
         this();
@@ -74,7 +74,7 @@ public class LinkedList<E>
 ## add
 ```java
     /**
-     * 【CHENG】：将对象e插入队列尾部，成功返回true，失败（没有空间）返回false（来自于Collection接口）
+     * 【Lin.C】：将对象e插入队列尾部，成功返回true，失败（没有空间）返回false（来自于Collection接口）
      */
     public boolean add(E e) {
         linkLast(e);
@@ -82,30 +82,30 @@ public class LinkedList<E>
     }
     
     /**
-     * 【CHENG】：新生成一个Node，然后如果集合目前为空，则赋值给第一个；如果已经有链表了，追加到尾部
+     * 【Lin.C】：新生成一个Node，然后如果集合目前为空，则赋值给第一个；如果已经有链表了，追加到尾部
      */
     void linkLast(E e) {
         final Node<E> l = last;
         
-        // 【CHENG】：生成新节点
+        // 【Lin.C】：生成新节点
         final Node<E> newNode = new Node<>(l, e, null);
         last = newNode;
         
-        // 【CHENG】：最后一个元素是不是为空？（为空实际就意味着该链表是空的）
+        // 【Lin.C】：最后一个元素是不是为空？（为空实际就意味着该链表是空的）
         if (l == null)
             first = newNode;
         else
             l.next = newNode;
         
-        // 【CHENG】：记一下大小变化
+        // 【Lin.C】：记一下大小变化
         size++;
         
-        // 【CHENG】：无处不在的modCount
+        // 【Lin.C】：无处不在的modCount
         modCount++;
     }
     
     /**
-     * 【CHENG】：还有个linkBefore方法，是往链表某个元素的前面插入一个新元素的，流程和前面差不多
+     * 【Lin.C】：还有个linkBefore方法，是往链表某个元素的前面插入一个新元素的，流程和前面差不多
      */
     void linkBefore(E e, Node<E> succ) {
         // assert succ != null;
@@ -121,7 +121,7 @@ public class LinkedList<E>
     }
     
     /**
-     * 【CHENG】：至此很容易联想到还有个linkFirst方法是干什么的了
+     * 【Lin.C】：至此很容易联想到还有个linkFirst方法是干什么的了
      */
     private void linkFirst(E e) {
         final Node<E> f = first;
@@ -139,7 +139,7 @@ public class LinkedList<E>
 ## offer
 ```java
     /**
-     * 【CHENG】：将对象e插入队列尾部，成功返回true，失败（没有空间）返回false（来自于Queue接口）
+     * 【Lin.C】：将对象e插入队列尾部，成功返回true，失败（没有空间）返回false（来自于Queue接口）
      */
     public boolean offer(E e) {
         return add(e);
@@ -151,7 +151,7 @@ public class LinkedList<E>
 ## remove
 ```java
     /**
-     * 【CHENG】：获取并移除队列头部元素，如果队列为空，抛出异常（来自于Queue接口）
+     * 【Lin.C】：获取并移除队列头部元素，如果队列为空，抛出异常（来自于Queue接口）
      * 【注】：和poll的区别在于空队列时的返回方式不同
      */
     public E remove() {
@@ -169,7 +169,7 @@ public class LinkedList<E>
 ## remove
 ```java
     /**
-     * 【CHENG】：来自于AbstractSequentialList的移除方法，移除某一个index的元素
+     * 【Lin.C】：来自于AbstractSequentialList的移除方法，移除某一个index的元素
      */
     public E remove(int index) {
         checkElementIndex(index);
@@ -206,14 +206,14 @@ public class LinkedList<E>
 ## clear
 ```java
     /**
-     * 【CHENG】：流程本身很简单，就是逐个Node清除（=null）；这里很多地方都有这种=null来help gc的操作，可以借鉴
+     * 【Lin.C】：流程本身很简单，就是逐个Node清除（=null）；这里很多地方都有这种=null来help gc的操作，可以借鉴
      */
     public void clear() {
         // Clearing all of the links between nodes is "unnecessary", but:
         // - helps a generational GC if the discarded nodes inhabit
         //   more than one generation
         // - is sure to free memory even if there is a reachable Iterator
-        // 【CHENG】：这里用了个临时变量来从头至尾置空，为什么不从尾至头呢？
+        // 【Lin.C】：这里用了个临时变量来从头至尾置空，为什么不从尾至头呢？
         for (Node<E> x = first; x != null; ) {
             Node<E> next = x.next;
             x.item = null;
@@ -232,7 +232,7 @@ public class LinkedList<E>
 ## set
 ```java
     /**
-     * 【CHENG】：将某个位置的元素值修改掉
+     * 【Lin.C】：将某个位置的元素值修改掉
      */
     public E set(int index, E element) {
         checkElementIndex(index);
@@ -248,7 +248,7 @@ public class LinkedList<E>
 ## peek
 ```java
     /**
-     * 【CHENG】：获取但不移除队列头部元素，如果队列为空，返回null（也是来自于Queue接口）
+     * 【Lin.C】：获取但不移除队列头部元素，如果队列为空，返回null（也是来自于Queue接口）
      
      */
     public E peek() {
@@ -260,7 +260,7 @@ public class LinkedList<E>
 ## poll
 ```java
     /**
-     * 【CHENG】：获取并移除队列头部元素，如果队列为空，返回null（来自于Queue接口）
+     * 【Lin.C】：获取并移除队列头部元素，如果队列为空，返回null（来自于Queue接口）
      */
     public E poll() {
         final Node<E> f = first;
@@ -290,11 +290,11 @@ public class LinkedList<E>
 ## indexOf
 ```java
     /**
-     * 【CHENG】：查询索引值的方法，比如contains就会用到这个方法
+     * 【Lin.C】：查询索引值的方法，比如contains就会用到这个方法
      */
     public int indexOf(Object o) {
         int index = 0;
-        // 【CHENG】：这里又一次出现null和非null用==和equals的区别
+        // 【Lin.C】：这里又一次出现null和非null用==和equals的区别
         if (o == null) {
             for (Node<E> x = first; x != null; x = x.next) {
                 if (x.item == null)
@@ -317,7 +317,7 @@ public class LinkedList<E>
 ## Node
 ```java
     /**
-     * 【CHENG】：结构其实很简单（真的和根据基本属性推断的结果一样提供了3个元素）
+     * 【Lin.C】：结构其实很简单（真的和根据基本属性推断的结果一样提供了3个元素）
      */
     private static class Node<E> {
         E item;

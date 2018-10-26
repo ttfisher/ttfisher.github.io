@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（三）：GitHub博客的搭建与迁移
 categories:
-  - Unprofessional Skills - Technical
+  - 【501】有那么一个词儿叫相见恨晚
 tags:
   - GitHub
 abbrlink: 30aba86c

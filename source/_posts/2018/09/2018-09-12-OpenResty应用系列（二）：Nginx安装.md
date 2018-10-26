@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（二）：Nginx安装
 categories:
-  - Unprofessional Skills - Technical
+  - 【302】如何从服务的前端优化负载
 tags:
   - OpenResty
 abbrlink: b2489ab
@@ -47,7 +47,7 @@ D:\work_install\nginx-1.10.2 的目录
 【注】：可参考《运维技能集锦系列（一）：Nginx Keepalived环境搭建》
 
 # CentOS安装实战记录
-```shell
+```
 # 下载相关组件
 [root@localhost src]# wget http://nginx.org/download/nginx-1.10.2.tar.gz
 [root@localhost src]# wget http://www.openssl.org/source/openssl-fips-2.0.10.tar.gz

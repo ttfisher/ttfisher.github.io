@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（四）：OpenResty环境搭建
 categories:
-  - Unprofessional Skills - Technical
+  - 【302】如何从服务的前端优化负载
 tags:
   - OpenResty
 abbrlink: 1cf451ee

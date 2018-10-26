@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（十六）：迭代器模式（Iterator）
 categories:
-  - Core Technical Series - Design Pattern
+  - 【103】衣带渐宽终不悔之我看设计模式
 tags:
   - 设计模式
 comments: true

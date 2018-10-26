@@ -2,7 +2,7 @@
 title: 说说集合系列（二）：Collection
 comments: true
 categories:
-  - Core Technical Series - Java Plus
+  - 【101】Java到底是西餐厅还是咖啡馆
 tags:
   - Java集合
 abbrlink: f29d3a59

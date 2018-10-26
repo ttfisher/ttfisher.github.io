@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（六）：反爬虫策略小试牛刀
 categories:
-  - Unprofessional Skills - Technical
+  - 【302】如何从服务的前端优化负载
 tags:
   - OpenResty
 abbrlink: 5e12f98d
@@ -42,7 +42,7 @@ C:\Users\Administrator\Desktop\反爬策略\实用版>
 ```
 
 # anti_spider.conf
-```shell
+```
 ##########################################################################
 # Description ： Nginx自带的反爬功能，虽然比较弱，总比没有好
 # Author ： chenglin
@@ -72,7 +72,7 @@ if ($request_method !~ ^(GET|POST)$) {
 ```
 
 # nginx.conf
-```shell
+```
 ##########################################################################
 # Description ： Nginx配置
 # Author ： chenglin

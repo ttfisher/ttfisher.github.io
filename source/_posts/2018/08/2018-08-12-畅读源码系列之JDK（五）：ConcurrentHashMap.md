@@ -2,7 +2,7 @@
 title: 畅读源码系列之JDK（五）：ConcurrentHashMap（未完成...)
 comments: true
 categories:
-  - Source Code Reading - JDK
+  - 【201】蓦然回首灯火阑珊处之JDK
 tags:
   - 畅读源码
 abbrlink: 98444c68
@@ -15,7 +15,7 @@ date: 2018-08-12 17:22:00
 # 类的定义
 ```java
 /**
- * 【CHENG】： - 继承关系1：ConcurrentHashMap->AbstractMap->Map
+ * 【Lin.C】： - 继承关系1：ConcurrentHashMap->AbstractMap->Map
  *             - 继承关系2：ConcurrentHashMap->ConcurrentMap->Map
  * @since 1.5
  * @author Doug Lea
@@ -30,39 +30,39 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ```java
     /* ---------------- Constants -------------- */
 
-    // 【CHENG】：最大容量
+    // 【Lin.C】：最大容量
     private static final int MAXIMUM_CAPACITY = 1 << 30;
 
-    // 【CHENG】：默认容量
+    // 【Lin.C】：默认容量
     private static final int DEFAULT_CAPACITY = 16;
 
-    // 【CHENG】：数组最大大小
+    // 【Lin.C】：数组最大大小
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
-    // 【CHENG】：Unused but defined for compatibility with previous versions of this class.
+    // 【Lin.C】：Unused but defined for compatibility with previous versions of this class.
     private static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 
-    // 【CHENG】：负载因子
+    // 【Lin.C】：负载因子
     private static final float LOAD_FACTOR = 0.75f;
 
-    // 【CHENG】：链表转树的临界值
+    // 【Lin.C】：链表转树的临界值
     static final int TREEIFY_THRESHOLD = 8;
 
-    // 【CHENG】：树转链表的临界值
+    // 【Lin.C】：树转链表的临界值
     static final int UNTREEIFY_THRESHOLD = 6;
 
-    // 【CHENG】：当桶中的bin被树化时最小的hash表容量；至少是TREEIFY_THRESHOLD的4倍。
+    // 【Lin.C】：当桶中的bin被树化时最小的hash表容量；至少是TREEIFY_THRESHOLD的4倍。
     static final int MIN_TREEIFY_CAPACITY = 64;
 
-    // 【CHENG】：数据写入或移动时需要使用的常量
+    // 【Lin.C】：数据写入或移动时需要使用的常量
     static final int MOVED     = -1; // hash for forwarding nodes
     static final int TREEBIN   = -2; // hash for roots of trees
     static final int RESERVED  = -3; // hash for transient reservations
     
-    // 【CHENG】：在 spread() 方法中用来对 hashcode 进行高位hash减少可能发生的碰撞。
+    // 【Lin.C】：在 spread() 方法中用来对 hashcode 进行高位hash减少可能发生的碰撞。
     static final int HASH_BITS = 0x7fffffff; // usable bits of normal node hash
     
-    // 【CHENG】：还有很多常量，跟此次解读关系不大的就不标注了
+    // 【Lin.C】：还有很多常量，跟此次解读关系不大的就不标注了
     ......
 ```
 
@@ -72,13 +72,13 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * The array of bins. Lazily initialized upon first insertion.
      * Size is always a power of two. Accessed directly by iterators.
      */
-    // 【CHENG】：第一层存储（数组），第一次insert时才会初始化，必须是power of two
+    // 【Lin.C】：第一层存储（数组），第一次insert时才会初始化，必须是power of two
     transient volatile Node<K,V>[] table;
 
     /**
      * The next table to use; non-null only while resizing.
      */
-    // 【CHENG】：应该是在扩容是使用的
+    // 【Lin.C】：应该是在扩容是使用的
     private transient volatile Node<K,V>[] nextTable;
 
     /**
@@ -90,7 +90,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * next element count value upon which to resize the table.
      */
     /**
-     *【CHENG】：控制初始化和扩容的一个控制标记位；（既代表 HashMap 的 threshold；又代表进行扩容时的线程数）
+     *【Lin.C】：控制初始化和扩容的一个控制标记位；（既代表 HashMap 的 threshold；又代表进行扩容时的线程数）
      *           负数代表正在进行初始化或扩容操作 
      *               ① -1代表正在初始化 
      *               ② -N 表示有N-1个线程正在进行扩容操作 
@@ -101,23 +101,23 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * The next table index (plus one) to split while resizing.
      */
-    // 【CHENG】：下一个transfer任务的起始下标index 加上1 之后的值
+    // 【Lin.C】：下一个transfer任务的起始下标index 加上1 之后的值
     private transient volatile int transferIndex;
 
-    // 【CHENG】：以下三个变量需要结合java.util.concurrent.atomic.LongAdder理解
-    // 【CHENG】：计数器基本值，主要在碰到多线程竞争时使用，需要通过CAS进行更新
+    // 【Lin.C】：以下三个变量需要结合java.util.concurrent.atomic.LongAdder理解
+    // 【Lin.C】：计数器基本值，主要在碰到多线程竞争时使用，需要通过CAS进行更新
     private transient volatile long baseCount;
     
     /**
      * Spinlock (locked via CAS) used when resizing and/or creating CounterCells.
      */
-    // 【CHENG】：CAS自旋锁标志位，用于初始化，或者counterCells扩容时
+    // 【Lin.C】：CAS自旋锁标志位，用于初始化，或者counterCells扩容时
     private transient volatile int cellsBusy;
 
     /**
      * Table of counter cells. When non-null, size is a power of 2.
      */
-    // 【CHENG】：用于高并发的计数单元，如果初始化了这些计数单元，那么跟table数组一样，长度必须是2^n的形式
+    // 【Lin.C】：用于高并发的计数单元，如果初始化了这些计数单元，那么跟table数组一样，长度必须是2^n的形式
     private transient volatile CounterCell[] counterCells;
     
     @sun.misc.Contended static final class CounterCell {
@@ -126,7 +126,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     }
 
     // views
-    // 【CHENG】：一些不需要持久化的（类似于数据库视图）
+    // 【Lin.C】：一些不需要持久化的（类似于数据库视图）
     private transient KeySetView<K,V> keySet;
     private transient ValuesView<K,V> values;
     private transient EntrySetView<K,V> entrySet;
@@ -136,32 +136,32 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## ConcurrentHashMap()
 ```java
-    // 【CHENG】：默认构造方法，没啥好说的，就是个空方法
+    // 【Lin.C】：默认构造方法，没啥好说的，就是个空方法
     public ConcurrentHashMap() {
     }
 ```
 
 ## ConcurrentHashMap(int initialCapacity)
 ```java
-    // 【CHENG】：根据指定大小初始化
+    // 【Lin.C】：根据指定大小初始化
     public ConcurrentHashMap(int initialCapacity) {
         if (initialCapacity < 0)
             throw new IllegalArgumentException();
         int cap = ((initialCapacity >= (MAXIMUM_CAPACITY >>> 1)) ?
                    MAXIMUM_CAPACITY :
-                   // 【CHENG】：又见到这个tableSizeFor（找比参数值大的第一个power of 2的值）
+                   // 【Lin.C】：又见到这个tableSizeFor（找比参数值大的第一个power of 2的值）
                    tableSizeFor(initialCapacity + (initialCapacity >>> 1) + 1));
         
-        // 【CHENG】：把初始容量记下来（>0）
+        // 【Lin.C】：把初始容量记下来（>0）
         this.sizeCtl = cap;
     }
 ```
 
 ## ConcurrentHashMap(Map<? extends K, ? extends V> m)
 ```java
-    // 【CHENG】：通过别的Map构造的话，就是putAll的过程
+    // 【Lin.C】：通过别的Map构造的话，就是putAll的过程
     public ConcurrentHashMap(Map<? extends K, ? extends V> m) {
-        // 【CHENG】：这时候就取默认容量
+        // 【Lin.C】：这时候就取默认容量
         this.sizeCtl = DEFAULT_CAPACITY;
         putAll(m);
     }
@@ -169,7 +169,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## ConcurrentHashMap(int initialCapacity, float loadFactor)
 ```java
-    // 【CHENG】：调的构造方法5
+    // 【Lin.C】：调的构造方法5
     public ConcurrentHashMap(int initialCapacity, float loadFactor) {
         this(initialCapacity, loadFactor, 1);
     }
@@ -177,7 +177,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## ConcurrentHashMap(...3params)
 ```java
-    // 【CHENG】：带初始化大小，带负载因子，带预估的并发线程数
+    // 【Lin.C】：带初始化大小，带负载因子，带预估的并发线程数
     public ConcurrentHashMap(int initialCapacity,
                              float loadFactor, int concurrencyLevel) {
         if (!(loadFactor > 0.0f) || initialCapacity < 0 || concurrencyLevel <= 0)
@@ -199,37 +199,37 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * Initializes table, using the size recorded in sizeCtl.
      */
-    // 【CHENG】：根据sizeCtl来初始化table
+    // 【Lin.C】：根据sizeCtl来初始化table
     private final Node<K,V>[] initTable() {
         Node<K,V>[] tab; int sc;
         while ((tab = table) == null || tab.length == 0) {
         
-            // 【CHENG】：sizeCtl<0 表示有线程正在进行初始化操作，把线程挂起；因为初始化只能有一个线程操作
+            // 【Lin.C】：sizeCtl<0 表示有线程正在进行初始化操作，把线程挂起；因为初始化只能有一个线程操作
             if ((sc = sizeCtl) < 0)
                 Thread.yield(); // lost initialization race; just spin
             
-            // 【CHENG】：SIZECTL表示sizeCtl变量在内存中的偏移量（U.objectFieldOffset(k.getDeclaredField("sizeCtl"));）
-            // 【CHENG】：还是CAS，若SIZECTL==sc（当前的sizeCtl），就让SIZECTL=-1，返回true（表示本线程正在进行初始化）；否则就不操作返回false
+            // 【Lin.C】：SIZECTL表示sizeCtl变量在内存中的偏移量（U.objectFieldOffset(k.getDeclaredField("sizeCtl"));）
+            // 【Lin.C】：还是CAS，若SIZECTL==sc（当前的sizeCtl），就让SIZECTL=-1，返回true（表示本线程正在进行初始化）；否则就不操作返回false
             else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) {
                 try {
-                    // 【CHENG】：再判断一次table是不是为空（类似于单例模式的双重判断）
+                    // 【Lin.C】：再判断一次table是不是为空（类似于单例模式的双重判断）
                     if ((tab = table) == null || tab.length == 0) {
                         
-                        // 【CHENG】：sc>0就代表threshold；否则取默认容量
+                        // 【Lin.C】：sc>0就代表threshold；否则取默认容量
                         int n = (sc > 0) ? sc : DEFAULT_CAPACITY;
                         
-                        // 【CHENG】：直接初始化一个Node数组（大小已确定）
+                        // 【Lin.C】：直接初始化一个Node数组（大小已确定）
                         @SuppressWarnings("unchecked")
                         Node<K,V>[] nt = (Node<K,V>[])new Node<?,?>[n];
                         
-                        // 【CHENG】：赋值给table咯
+                        // 【Lin.C】：赋值给table咯
                         table = tab = nt;
                         
-                        // 【CHENG】： sc = n - n/4 = 0.75n（也就是下一个扩容阈值）
+                        // 【Lin.C】： sc = n - n/4 = 0.75n（也就是下一个扩容阈值）
                         sc = n - (n >>> 2);
                     }
                 } finally {
-                    // 【CHENG】：更新sizeCtl
+                    // 【Lin.C】：更新sizeCtl
                     sizeCtl = sc;
                 }
                 break;
@@ -244,7 +244,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ## put
 ```java
     /**
-     * 【CHENG】：和HashMap雷同
+     * 【Lin.C】：和HashMap雷同
      */
     public V put(K key, V value) {
         return putVal(key, value, false);
@@ -252,92 +252,92 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     
     final V putVal(K key, V value, boolean onlyIfAbsent) {
         
-        // 【CHENG】：基本的参数校验，一言不合就空指针异常了
+        // 【Lin.C】：基本的参数校验，一言不合就空指针异常了
         if (key == null || value == null) throw new NullPointerException();
         
-        // 【CHENG】：计算本key的hash的方法，具体怎么算的，暂时还没研究
+        // 【Lin.C】：计算本key的hash的方法，具体怎么算的，暂时还没研究
         int hash = spread(key.hashCode());
         
-        // 【CHENG】：计算该链表节点的数量
+        // 【Lin.C】：计算该链表节点的数量
         int binCount = 0;
         
-        // 【CHENG】：遍历table数组（死循环的，肯定是内部判断完成break了）
+        // 【Lin.C】：遍历table数组（死循环的，肯定是内部判断完成break了）
         for (Node<K,V>[] tab = table;;) {
             Node<K,V> f; int n, i, fh;
             
-            // 【CHENG】：发现table是空的，那就初始化一下（第一次 put 操作的时候）
+            // 【Lin.C】：发现table是空的，那就初始化一下（第一次 put 操作的时候）
             if (tab == null || (n = tab.length) == 0)
                 tab = initTable();
             
-            // 【CHENG】：如果table已经初始化了，看看本hash所在的位置是不是为空，为空的话进入此分支
+            // 【Lin.C】：如果table已经初始化了，看看本hash所在的位置是不是为空，为空的话进入此分支
             else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {
                 
-                // 【CHENG】：这里表示如果tab[i]==null，那么就让tab[i]=new Node<K,V>(hash, key, value, null)；否则tab[i]还是继续=null
+                // 【Lin.C】：这里表示如果tab[i]==null，那么就让tab[i]=new Node<K,V>(hash, key, value, null)；否则tab[i]还是继续=null
                 if (casTabAt(tab, i, null, new Node<K,V>(hash, key, value, null)))
                     
-                    // 【CHENG】：既然Node都塞进table里面了，自然就结束这个for循环了；
+                    // 【Lin.C】：既然Node都塞进table里面了，自然就结束这个for循环了；
                     break;                   // no lock when adding to empty bin
             }
             
-            // 【CHENG】：如果 hash 冲突了（也就是对应的table这个index下已经有Node了）
-            // 【CHENG】：这时 hash 值还为 -1，说明是 ForwardingNode 对象（这是一个占位符对象，保存了扩容后的容器），表示正在扩容
+            // 【Lin.C】：如果 hash 冲突了（也就是对应的table这个index下已经有Node了）
+            // 【Lin.C】：这时 hash 值还为 -1，说明是 ForwardingNode 对象（这是一个占位符对象，保存了扩容后的容器），表示正在扩容
             else if ((fh = f.hash) == MOVED)
             
-                // 【CHENG】：这时实际是正在扩容，那么就帮助其扩容，以加快速度（整合表）
+                // 【Lin.C】：这时实际是正在扩容，那么就帮助其扩容，以加快速度（整合表）
                 tab = helpTransfer(tab, f);
             
-            // 【CHENG】：如果 hash 冲突了但是hash不等于-1（就是正常塞数据的流程了）
+            // 【Lin.C】：如果 hash 冲突了但是hash不等于-1（就是正常塞数据的流程了）
             else {
                 V oldVal = null;
                 
-                // 【CHENG】：锁的是其中一个bucket（也就是锁住了table[i]这个链表/树的头结点），而不是整个table
+                // 【Lin.C】：锁的是其中一个bucket（也就是锁住了table[i]这个链表/树的头结点），而不是整个table
                 synchronized (f) {
                     
-                    // 【CHENG】：本hash所落的位置正好在当前锁的这个bucket上
+                    // 【Lin.C】：本hash所落的位置正好在当前锁的这个bucket上
                     if (tabAt(tab, i) == f) {
                     
-                        // 【CHENG】：fh > 0 说明这个节点是一个链表的节点 不是树的节点（为什么？）
+                        // 【Lin.C】：fh > 0 说明这个节点是一个链表的节点 不是树的节点（为什么？）
                         if (fh >= 0) {                            
                             
                             binCount = 1;
                             
-                            // 【CHENG】：遍历链表的所有节点并计数
+                            // 【Lin.C】：遍历链表的所有节点并计数
                             for (Node<K,V> e = f;; ++binCount) {
                                 K ek;
                                 
-                                // 【CHENG】：命中了相同的key
+                                // 【Lin.C】：命中了相同的key
                                 if (e.hash == hash &&
                                     ((ek = e.key) == key ||
                                      (ek != null && key.equals(ek)))) {
                                      
-                                    // 【CHENG】：需要根据onlyIfAbsent确定是否替换value
+                                    // 【Lin.C】：需要根据onlyIfAbsent确定是否替换value
                                     oldVal = e.val;
                                     if (!onlyIfAbsent)
                                         e.val = value;
                                     
-                                    // 【CHENG】：既然都命中了，循环就结束了
+                                    // 【Lin.C】：既然都命中了，循环就结束了
                                     break;
                                 }
                                 
-                                // 【CHENG】：跟hashmap类似，找到最后一个节点（next为null），就把这个新Node追加到它的next
+                                // 【Lin.C】：跟hashmap类似，找到最后一个节点（next为null），就把这个新Node追加到它的next
                                 Node<K,V> pred = e;
                                 if ((e = e.next) == null) {
                                     pred.next = new Node<K,V>(hash, key, value, null);
                                     break;
                                 }
                                 
-                                // 【CHENG】：突发奇想，如果一直没有找到(e = e.next) == null呢？（只有一种可能就是Node自循环了）
+                                // 【Lin.C】：突发奇想，如果一直没有找到(e = e.next) == null呢？（只有一种可能就是Node自循环了）
                             }
                         }
                         
-                        // 【CHENG】：这个分支就走到树的逻辑了
+                        // 【Lin.C】：这个分支就走到树的逻辑了
                         else if (f instanceof TreeBin) {
                             Node<K,V> p;
                             
-                            // 【CHENG】：树的话直接设置为2，不会引发扩容
+                            // 【Lin.C】：树的话直接设置为2，不会引发扩容
                             binCount = 2;
                             
-                            // 【CHENG】：putTreeVal如果存在相同key的节点，就返回这个节点了；如果不存在，返回为空就不会走到内部去了
+                            // 【Lin.C】：putTreeVal如果存在相同key的节点，就返回这个节点了；如果不存在，返回为空就不会走到内部去了
                             if ((p = ((TreeBin<K,V>)f).putTreeVal(hash, key, value)) != null) {
                                 oldVal = p.val;
                                 if (!onlyIfAbsent)
@@ -349,21 +349,21 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
                 
                 if (binCount != 0) {
                 
-                    // 【CHENG】：如果链表节点数达到了转树的限制了就转了
+                    // 【Lin.C】：如果链表节点数达到了转树的限制了就转了
                     if (binCount >= TREEIFY_THRESHOLD)
                         treeifyBin(tab, i);
                     
-                    // 【CHENG】：有老的值就返回老的值
+                    // 【Lin.C】：有老的值就返回老的值
                     if (oldVal != null)
                         return oldVal;
                     
-                    // 【CHENG】：原来不存在值，就跳出处理逻辑了
+                    // 【Lin.C】：原来不存在值，就跳出处理逻辑了
                     break;
                 }
             }
         }
         
-        // 【CHENG】：将当前ConcurrentHashMap的元素数量+1，table的扩容是在这里发生的（方法内部逻辑还比较复杂，后述）
+        // 【Lin.C】：将当前ConcurrentHashMap的元素数量+1，table的扩容是在这里发生的（方法内部逻辑还比较复杂，后述）
         addCount(1L, binCount);
         return null;
     }
@@ -381,7 +381,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     }
     
     // 【Reference 03】：值交换（CAS操作）
-    // 【CHENG】：tab[i]和c比较，如果相等就tab[i]=v，否则tab[i]=c;
+    // 【Lin.C】：tab[i]和c比较，如果相等就tab[i]=v，否则tab[i]=c;
     static final <K,V> boolean casTabAt(Node<K,V>[] tab, int i,
                                         Node<K,V> c, Node<K,V> v) {
         return U.compareAndSwapObject(tab, ((long)i << ASHIFT) + ABASE, c, v);
@@ -393,7 +393,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ## remove
 ```java
     /**
-     * 【CHENG】：和HashMap雷同
+     * 【Lin.C】：和HashMap雷同
      */
 ```
 
@@ -407,48 +407,48 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * Helps transfer if a resize is in progress.
      */
-    // 【CHENG】：正在扩容时过来协助一下
+    // 【Lin.C】：正在扩容时过来协助一下
     final Node<K,V>[] helpTransfer(Node<K,V>[] tab, Node<K,V> f) {
         Node<K,V>[] nextTab; int sc;
         
-        // 【CHENG】：必须要保证当前节点是ForwardingNode，而且它的nextTable也不是空的，才可以加入协助
+        // 【Lin.C】：必须要保证当前节点是ForwardingNode，而且它的nextTable也不是空的，才可以加入协助
         if (tab != null && (f instanceof ForwardingNode) &&
             (nextTab = ((ForwardingNode<K,V>)f).nextTable) != null) {
             
-            // 【CHENG】：根据 length 得到一个标识符号（这里的计算方式和sizeCtl还是有一定渊源的）
+            // 【Lin.C】：根据 length 得到一个标识符号（这里的计算方式和sizeCtl还是有一定渊源的）
             int rs = resizeStamp(tab.length);
             
-            // 【CHENG】：如果nextTab（新table）暂时还没有被并发修改；且tab（当前的table）也没有被并发修改；且sizeCtl  < 0（有线程在扩容）
+            // 【Lin.C】：如果nextTab（新table）暂时还没有被并发修改；且tab（当前的table）也没有被并发修改；且sizeCtl  < 0（有线程在扩容）
             while (nextTab == nextTable && table == tab &&
                    (sc = sizeCtl) < 0) {
                 
-                // 【CHENG】：以下任一场景都不会继续协助扩容；强势break
-                // 【CHENG】：sc >>> 16（如果这个值和前面的rs不等，表示扩容标识变化了）
-                // 【CHENG】：sizeCtl == rs + 1 （扩容结束了，不再有线程进行扩容；因为一旦有线程结束扩容，就会将 sc 减一[参考：addCount ]）
-                // 【CHENG】：sizeCtl == rs + 65535（线程数太大了）
-                // 【CHENG】：transferIndex <= 0（表示转移下标正在调整，也就是扩容结束了）
+                // 【Lin.C】：以下任一场景都不会继续协助扩容；强势break
+                // 【Lin.C】：sc >>> 16（如果这个值和前面的rs不等，表示扩容标识变化了）
+                // 【Lin.C】：sizeCtl == rs + 1 （扩容结束了，不再有线程进行扩容；因为一旦有线程结束扩容，就会将 sc 减一[参考：addCount ]）
+                // 【Lin.C】：sizeCtl == rs + 65535（线程数太大了）
+                // 【Lin.C】：transferIndex <= 0（表示转移下标正在调整，也就是扩容结束了）
                 if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||
                     sc == rs + MAX_RESIZERS || transferIndex <= 0)
                     
-                    // 【CHENG】：直接Over
+                    // 【Lin.C】：直接Over
                     break;
                 
-                // 【CHENG】：如果以上条件都没满足, 将sizeCtl + 1（表示增加了一个扩容线程）
+                // 【Lin.C】：如果以上条件都没满足, 将sizeCtl + 1（表示增加了一个扩容线程）
                 if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1)) {
                     
-                    // 【CHENG】：扩容方法的真容
+                    // 【Lin.C】：扩容方法的真容
                     transfer(tab, nextTab);
                     
-                    // 【CHENG】：扩完结束
+                    // 【Lin.C】：扩完结束
                     break;
                 }
             }
             
-            // 【CHENG】：都扩了，肯定要把新的table返回了
+            // 【Lin.C】：都扩了，肯定要把新的table返回了
             return nextTab;
         }
         
-        // 【CHENG】：协助失败，那就返回当前的table吧
+        // 【Lin.C】：协助失败，那就返回当前的table吧
         return table;
     }
 ```
@@ -459,75 +459,75 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * Moves and/or copies the nodes in each bin to new table. See
      * above for explanation.
      */
-    // 【CHENG】：方法行数有点多，看起来有点怵
+    // 【Lin.C】：方法行数有点多，看起来有点怵
     private final void transfer(Node<K,V>[] tab, Node<K,V>[] nextTab) {
         
-        // 【CHENG】：一些变量定义
+        // 【Lin.C】：一些变量定义
         int n = tab.length, stride;
         
-        // 【CHENG】：将length除以8然后除以CPU核心数；如果结果小于16，那么就用16。
-        // 【CHENG】：n >>> 3 实例 0010 0000 -> 0000 0100 （32->4）
-        // 【CHENG】：所以在tab.length比较小的情况下，不会有多线程介入
-        // 【CHENG】：这么计算是为了让每个 CPU 处理的bucket一样多
+        // 【Lin.C】：将length除以8然后除以CPU核心数；如果结果小于16，那么就用16。
+        // 【Lin.C】：n >>> 3 实例 0010 0000 -> 0000 0100 （32->4）
+        // 【Lin.C】：所以在tab.length比较小的情况下，不会有多线程介入
+        // 【Lin.C】：这么计算是为了让每个 CPU 处理的bucket一样多
         if ((stride = (NCPU > 1) ? (n >>> 3) / NCPU : n) < MIN_TRANSFER_STRIDE)
             stride = MIN_TRANSFER_STRIDE; // subdivide range
         
-        // 【CHENG】：还没有初始化的新table
+        // 【Lin.C】：还没有初始化的新table
         if (nextTab == null) {            // initiating
             try {
                 
-                // 【CHENG】：创建一个新的数组，并赋给nextTab了
+                // 【Lin.C】：创建一个新的数组，并赋给nextTab了
                 @SuppressWarnings("unchecked")
                 Node<K,V>[] nt = (Node<K,V>[])new Node<?,?>[n << 1];
                 nextTab = nt;
             } catch (Throwable ex) {      // try to cope with OOME
                 
-                // 【CHENG】：如果出现异常的话，直接把数组容量置位最大然后结束扩容了
+                // 【Lin.C】：如果出现异常的话，直接把数组容量置位最大然后结束扩容了
                 sizeCtl = Integer.MAX_VALUE;
                 return;
             }
             
-            // 【CHENG】：给成员变量赋值
+            // 【Lin.C】：给成员变量赋值
             nextTable = nextTab;
             
-            // 【CHENG】：转移下标赋值（老table的length）
+            // 【Lin.C】：转移下标赋值（老table的length）
             transferIndex = n;
         }
         
-        // 【CHENG】：取新table的length
+        // 【Lin.C】：取新table的length
         int nextn = nextTab.length;
         
-        // 【CHENG】：构造一个ForwardingNode（这个构造方法里面就会设置hash=MOVED，也就和前面put那边呼应了）
-        // 【CHENG】：这个变量主要用途是占位，当别的线程发现这个槽位中是 ForwardingNode，就会跳过这个节点了
+        // 【Lin.C】：构造一个ForwardingNode（这个构造方法里面就会设置hash=MOVED，也就和前面put那边呼应了）
+        // 【Lin.C】：这个变量主要用途是占位，当别的线程发现这个槽位中是 ForwardingNode，就会跳过这个节点了
         ForwardingNode<K,V> fwd = new ForwardingNode<K,V>(nextTab);
         
-        // 【CHENG】：首次推进为 true，如果等于 true，说明需要再次推进一个下标（i--），反之，如果是 false，那么就不能推进下标，需要将当前的下标处理完毕才能继续推进
+        // 【Lin.C】：首次推进为 true，如果等于 true，说明需要再次推进一个下标（i--），反之，如果是 false，那么就不能推进下标，需要将当前的下标处理完毕才能继续推进
         boolean advance = true;
         
-        // 【CHENG】：扩容完成状态
+        // 【Lin.C】：扩容完成状态
         boolean finishing = false; // to ensure sweep before committing nextTab
         
-        // 【CHENG】：又是死循环,i 表示下标，bound 表示当前线程可以处理的当前桶区间最小下标
+        // 【Lin.C】：又是死循环,i 表示下标，bound 表示当前线程可以处理的当前桶区间最小下标
         for (int i = 0, bound = 0;;) {
             Node<K,V> f; int fh;
             
-            // 【CHENG】：如果当前线程可以继续往后处理
+            // 【Lin.C】：如果当前线程可以继续往后处理
             while (advance) {
                 int nextIndex, nextBound;
                 
-                // 【CHENG】：--i >= bound表示已经没有待移动的Node了
-                // 【CHENG】：finishing在整个while循环里面都没有任何操作，这里永远是false吧？
+                // 【Lin.C】：--i >= bound表示已经没有待移动的Node了
+                // 【Lin.C】：finishing在整个while循环里面都没有任何操作，这里永远是false吧？
                 if (--i >= bound || finishing)
-                    // 【CHENG】：下一次判断就会结束循环了
+                    // 【Lin.C】：下一次判断就会结束循环了
                     advance = false;
                 
-                // 【CHENG】：
+                // 【Lin.C】：
                 else if ((nextIndex = transferIndex) <= 0) {
                     i = -1;
                     advance = false;
                 }
                 
-                // 【CHENG】：
+                // 【Lin.C】：
                 else if (U.compareAndSwapInt
                          (this, TRANSFERINDEX, nextIndex,
                           nextBound = (nextIndex > stride ?
@@ -635,7 +635,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ## addCount
 ```java
     /**
-     * 【CHENG】：和HashMap雷同
+     * 【Lin.C】：和HashMap雷同
      */
     private final void addCount(long x, int check) {
         CounterCell[] as; long b, s;
@@ -680,7 +680,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ## put
 ```java
     /**
-     * 【CHENG】：和HashMap雷同
+     * 【Lin.C】：和HashMap雷同
      */
 ```
 
@@ -688,7 +688,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## spread
 ```java
-    // 【CHENG】：hash扰动函数，跟1.8的HashMap的基本一样，& HASH_BITS用于把hash值转化为正数，负数hash是有特别的作用的
+    // 【Lin.C】：hash扰动函数，跟1.8的HashMap的基本一样，& HASH_BITS用于把hash值转化为正数，负数hash是有特别的作用的
     static final int spread(int h) {
         return (h ^ (h >>> 16)) & HASH_BITS;
     }
@@ -696,7 +696,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## tableSizeFor
 ```java
-    // 【CHENG】：用于求2^n，用来作为table数组的容量，同1.8的HashMap
+    // 【Lin.C】：用于求2^n，用来作为table数组的容量，同1.8的HashMap
     private static final int tableSizeFor(int c) {
         int n = c - 1;
         n |= n >>> 1;
@@ -710,7 +710,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## comparableClassFor
 ```java
-    // 【CHENG】：1.8的HashMap中讲解红黑树相关的时候说过，用于获取Comparable接口中的泛型类
+    // 【Lin.C】：1.8的HashMap中讲解红黑树相关的时候说过，用于获取Comparable接口中的泛型类
     static Class<?> comparableClassFor(Object x) {
         if (x instanceof Comparable) {
             Class<?> c; Type[] ts, as; Type t; ParameterizedType p;
@@ -732,7 +732,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## compareComparables
 ```java
-    // 【CHENG】：同1.8的HashMap，当类型相同且实现Comparable时，调用compareTo比较大小
+    // 【Lin.C】：同1.8的HashMap，当类型相同且实现Comparable时，调用compareTo比较大小
     @SuppressWarnings({"rawtypes","unchecked"}) // for cast to Comparable
     static int compareComparables(Class<?> kc, Object k, Object x) {
         return (x == null || x.getClass() != kc ? 0 :  ((Comparable)k).compareTo(x)); 
@@ -742,20 +742,20 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## from Unsafe
 ```java
-    // 【CHENG】：下面几个用于读写table数组，使用Unsafe提供的更强的功能（数组元素的volatile读写，CAS 更新）代替普通的读写，调用者预先进行参数控制
+    // 【Lin.C】：下面几个用于读写table数组，使用Unsafe提供的更强的功能（数组元素的volatile读写，CAS 更新）代替普通的读写，调用者预先进行参数控制
      
-    // 【CHENG】：volatile读取table[i]
+    // 【Lin.C】：volatile读取table[i]
     @SuppressWarnings("unchecked")
     static final <K,V> Node<K,V> tabAt(Node<K,V>[] tab, int i) {
         return (Node<K,V>)U.getObjectVolatile(tab, ((long)i << ASHIFT) + ABASE);
     }
      
-    // 【CHENG】：CAS更新table[i]，也就是Node链表的头节点，或者TreeBin节点（它持有红黑树的根节点）
+    // 【Lin.C】：CAS更新table[i]，也就是Node链表的头节点，或者TreeBin节点（它持有红黑树的根节点）
     static final <K,V> boolean casTabAt(Node<K,V>[] tab, int i, Node<K,V> c, Node<K,V> v) {
         return U.compareAndSwapObject(tab, ((long)i << ASHIFT) + ABASE, c, v);
     }
      
-    // 【CHENG】：volatile写入table[i]
+    // 【Lin.C】：volatile写入table[i]
     static final <K,V> void setTabAt(Node<K,V>[] tab, int i, Node<K,V> v) {
         U.putObjectVolatile(tab, ((long)i << ASHIFT) + ABASE, v);
     }
@@ -763,7 +763,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## treeifyBin
 ```java
-    // 【CHENG】：满足变换为红黑树的两个条件时（链表长度这个条件调用者保证，这里只验证Map容量这个条件），将链表变为红黑树，否则只是进行一次扩容操作
+    // 【Lin.C】：满足变换为红黑树的两个条件时（链表长度这个条件调用者保证，这里只验证Map容量这个条件），将链表变为红黑树，否则只是进行一次扩容操作
     private final void treeifyBin(Node<K,V>[] tab, int index) {
         Node<K,V> b; int n, sc;
         if (tab != null) {
@@ -791,7 +791,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 ## untreeify
 ```java
-    // 【CHENG】：规模不足时把红黑树转化为链表，此方法由调用者进行synchronized加锁，所以这里不加锁
+    // 【Lin.C】：规模不足时把红黑树转化为链表，此方法由调用者进行synchronized加锁，所以这里不加锁
     static <K,V> Node<K,V> untreeify(Node<K,V> b) {
         Node<K,V> hd = null, tl = null;
         for (Node<K,V> q = b; q != null; q = q.next) {
@@ -811,7 +811,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 ## Node
 ```java
     /**
-     * 【CHENG】：Key-value entry.和HashMap的结构还是基本一样的（但是有个重点是加了volatile关键字）
+     * 【Lin.C】：Key-value entry.和HashMap的结构还是基本一样的（但是有个重点是加了volatile关键字）
      */
     static class Node<K,V> implements Map.Entry<K,V> {
         final int hash;

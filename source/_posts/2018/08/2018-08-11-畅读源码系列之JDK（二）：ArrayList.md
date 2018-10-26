@@ -2,20 +2,20 @@
 title: 畅读源码系列之JDK（二）：ArrayList
 comments: true
 categories:
-  - Source Code Reading - JDK
+  - 【201】蓦然回首灯火阑珊处之JDK
 tags:
   - 畅读源码
 abbrlink: 773b69e2
 date: 2018-08-11 10:11:00
 ---
-【引言】针对集合实际上我们有一个专题有了一个基础的说明，但是还不够深入，所以，借着这个源码畅读系列的整理的机会，在这里好好的读读几个重点集合类的源码，第一个最长接触的集合类就是ArrayList了，所以就从它开始了！
+【引言】针对集合实际上我们有一个专题有了一个基础的说明，但是还不够深入，所以，借着这个源码畅读系列的整理的机会，在这里好好的读读几个重点集合类的源码，第一个最常接触的集合类就是ArrayList了，所以就从它开始了！
 <div align=center><img src="/img/2018/2018-08-11-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 类的定义
 ```java
 /**
- * 【CHENG】：从ArrayList本身的定义出发，可以简单分析出它的基本特性
+ * 【Lin.C】：从ArrayList本身的定义出发，可以简单分析出它的基本特性
  *         - 溯源的话，还是回到Collection；继承关系：ArrayList->AbstractList->AbstractCollection->Collection
  *         - 其他一些可clone、可序列化的特性不提也罢
  *         - RandomAccess，和后两个类似的都是标记接口，表示该实现类支持快速随机访问（另立专题讨论）
@@ -30,18 +30,18 @@ public class ArrayList<E> extends AbstractList<E>
 # 成员变量
 ```java
     /**
-     * 【CHENG】：字面意思就可以理解：默认容量
+     * 【Lin.C】：字面意思就可以理解：默认容量
      */
     private static final int DEFAULT_CAPACITY = 10;
     
     /**
-     * 【CHENG】：默认的空实例
+     * 【Lin.C】：默认的空实例
      */
     private static final Object[] EMPTY_ELEMENTDATA = {};
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
     
     /**
-     * 【CHENG】：实际存储的数组（因为ArrayList底层就是数组结构）
+     * 【Lin.C】：实际存储的数组（因为ArrayList底层就是数组结构）
      */
     transient Object[] elementData; // non-private to simplify nested class access
 ```
@@ -51,7 +51,7 @@ public class ArrayList<E> extends AbstractList<E>
 ## ArrayList()
 ```java
     /**
-     * 【CHENG】：平时我们最常用的一种构造方法，不指定大小；默认初始化一个空数组，第一次add就会引发扩容
+     * 【Lin.C】：平时我们最常用的一种构造方法，不指定大小；默认初始化一个空数组，第一次add就会引发扩容
      */
     public ArrayList() {
         this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
@@ -61,10 +61,10 @@ public class ArrayList<E> extends AbstractList<E>
 ## ArrayList(int initialCapacity)
 ```java
     /**
-     * 【CHENG】：这个是指定容量的构造方法；通常对于可预知数量的对象存储使用这种方式初始化
+     * 【Lin.C】：这个是指定容量的构造方法；通常对于可预知数量的对象存储使用这种方式初始化
      */
     public ArrayList(int initialCapacity) {
-        // 【CHENG】：initialCapacity只能大于等于0，一旦小于0就会抛出异常了
+        // 【Lin.C】：initialCapacity只能大于等于0，一旦小于0就会抛出异常了
         if (initialCapacity > 0) {
             this.elementData = new Object[initialCapacity];
         } else if (initialCapacity == 0) {
@@ -79,15 +79,15 @@ public class ArrayList<E> extends AbstractList<E>
 ## ArrayList(Collection<? extends E> c)
 ```java
     /**
-     * 【CHENG】：基于别的集合来构造
+     * 【Lin.C】：基于别的集合来构造
      */
     public ArrayList(Collection<? extends E> c) {
         elementData = c.toArray();
         if ((size = elementData.length) != 0) {
-            // 【CHENG】：必须是对象数组
+            // 【Lin.C】：必须是对象数组
             // c.toArray might (incorrectly) not return Object[] (see 6260652)
             if (elementData.getClass() != Object[].class)
-                // 【CHENG】：然后通过底层的数组拷贝技术（实际对应：System.arraycopy）完成数组的复制
+                // 【Lin.C】：然后通过底层的数组拷贝技术（实际对应：System.arraycopy）完成数组的复制
                 elementData = Arrays.copyOf(elementData, size, Object[].class);
         } else {
             // replace with empty array.
@@ -101,41 +101,41 @@ public class ArrayList<E> extends AbstractList<E>
 ## add
 ```java
     /**
-     * 【CHENG】：流程很简单
+     * 【Lin.C】：流程很简单
      */
     public boolean add(E e) {
-        // 【CHENG】：先确认是否需要扩容（见下一个方法说明）
+        // 【Lin.C】：先确认是否需要扩容（见下一个方法说明）
         ensureCapacityInternal(size + 1);  // Increments modCount!!
         
-        // 【CHENG】：然后把新的数据追加到数组末尾
+        // 【Lin.C】：然后把新的数据追加到数组末尾
         elementData[size++] = e;
         
-        // 【CHENG】：然后直接返回true了
+        // 【Lin.C】：然后直接返回true了
         return true;
     }
     
     /**
-     * 【CHENG】：这个也是个衔接的方法
+     * 【Lin.C】：这个也是个衔接的方法
      */
     private void ensureCapacityInternal(int minCapacity) {
     
-        // 【CHENG】：首先看看初始化数组是不是空的，如果是空的，则初始化一下最小容量
+        // 【Lin.C】：首先看看初始化数组是不是空的，如果是空的，则初始化一下最小容量
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
-            // 【CHENG】：最小容量的取值就在默认容量（10）和传进来的参数容量中取大
+            // 【Lin.C】：最小容量的取值就在默认容量（10）和传进来的参数容量中取大
             minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
         }
 
-        // 【CHENG】：见下一个方法说明
+        // 【Lin.C】：见下一个方法说明
         ensureExplicitCapacity(minCapacity);
     }
 
     /**
-     * 【CHENG】：这个也是个衔接的方法
+     * 【Lin.C】：这个也是个衔接的方法
      */
     private void ensureExplicitCapacity(int minCapacity) {
         
         /**
-         * 【CHENG】：- 定义于AbstractList（protected transient int modCount = 0;）
+         * 【Lin.C】：- 定义于AbstractList（protected transient int modCount = 0;）
          *           - modCount记录list结构被修改的次数（The number of times this list has been structurally modified.）
          *           - 具体的分析见补充知识第一节
          */
@@ -147,30 +147,30 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
-     * 【CHENG】：扩容的实际处理
+     * 【Lin.C】：扩容的实际处理
      */
     private void grow(int minCapacity) {
         // overflow-conscious code
         int oldCapacity = elementData.length;
         
-        // 【CHENG】：1.5倍的扩容
+        // 【Lin.C】：1.5倍的扩容
         int newCapacity = oldCapacity + (oldCapacity >> 1);
         
-        // 【CHENG】：扩容完需要确认是否达到最小大小要求（比如：不指定的时候默认就是10，也就是说初始化数组最小从10开始）
+        // 【Lin.C】：扩容完需要确认是否达到最小大小要求（比如：不指定的时候默认就是10，也就是说初始化数组最小从10开始）
         if (newCapacity - minCapacity < 0)
             newCapacity = minCapacity;
         
-        // 【CHENG】：这个就是数组超过最大限制了（MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8）
+        // 【Lin.C】：这个就是数组超过最大限制了（MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8）
         if (newCapacity - MAX_ARRAY_SIZE > 0)
             newCapacity = hugeCapacity(minCapacity);
             
-        // 【CHENG】：最后就是底层数据的拷贝了
+        // 【Lin.C】：最后就是底层数据的拷贝了
         // minCapacity is usually close to size, so this is a win:
         elementData = Arrays.copyOf(elementData, newCapacity);
     }
     
     /**
-     * 【CHENG】：Arrays.copyOf的实现参考（先声明一个泛型数组，然后调用native方法实现拷贝）
+     * 【Lin.C】：Arrays.copyOf的实现参考（先声明一个泛型数组，然后调用native方法实现拷贝）
      */
     public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
         @SuppressWarnings("unchecked")
@@ -188,18 +188,18 @@ public class ArrayList<E> extends AbstractList<E>
 ## remove
 ```java
 /**
- * 【CHENG】：移除一个元素
+ * 【Lin.C】：移除一个元素
  */
 public E remove(int index) {
-    // 【CHENG】：跟get一样，所有操作的第一步是检查index是否合法
+    // 【Lin.C】：跟get一样，所有操作的第一步是检查index是否合法
     rangeCheck(index);
 
-    // 【CHENG】：还是那个后面说了很多次的一致性检查的标记
+    // 【Lin.C】：还是那个后面说了很多次的一致性检查的标记
     modCount++;
     E oldValue = elementData(index);
 
     /**
-     * 【CHENG】：流程是这样的
+     * 【Lin.C】：流程是这样的
      *   - 先判断删除参数是不是合法
      *   - 把原数组从index+1（也就是需删除节点后的所有元素）复制到原数组的index位置
      *   - 此时，需删除的元素已经被后面的覆盖了（相当于已经删除了）
@@ -208,7 +208,7 @@ public E remove(int index) {
      */
     int numMoved = size - index - 1;
     if (numMoved > 0)
-        // 【CHENG】：最终发现并不是真的remove，还是通过native的数组拷贝来实现的
+        // 【Lin.C】：最终发现并不是真的remove，还是通过native的数组拷贝来实现的
         System.arraycopy(elementData, index+1, elementData, index,
                          numMoved);
     elementData[--size] = null; // clear to let GC do its work
@@ -220,7 +220,7 @@ public E remove(int index) {
 ## clear
 ```java
 /**
- * 【CHENG】：- 一个很明显的特征（modCount++）
+ * 【Lin.C】：- 一个很明显的特征（modCount++）
  *            - clear就是清空的过程，清空本身不是把数组完成置空，而是逐个把里面的元素置空（可能是出于性能考虑）
  */
 public void clear() {
@@ -239,7 +239,7 @@ public void clear() {
 ## set
 ```java
 /**
- * 【CHENG】：之前很少用到的一个方法，实现并不复杂，还是有用处的
+ * 【Lin.C】：之前很少用到的一个方法，实现并不复杂，还是有用处的
  */
 public E set(int index, E element) {
     rangeCheck(index);
@@ -255,18 +255,18 @@ public E set(int index, E element) {
 ## indexOf
 ```java
 /**
- * 【CHENG】：- 实际上contains方法也是通过调用这个方法来实现的（indexOf(o) >= 0;）
+ * 【Lin.C】：- 实际上contains方法也是通过调用这个方法来实现的（indexOf(o) >= 0;）
  *            - 需要注意的点：indexOf在对null和对普通对象判断时是不一样的逻辑（主要是==和equals的区别）
  */
 public int indexOf(Object o) {
     if (o == null) {
         for (int i = 0; i < size; i++)
-            // 【CHENG】：null本身不分配内存，所以不存在堆内存的地址，没办法用equals
+            // 【Lin.C】：null本身不分配内存，所以不存在堆内存的地址，没办法用equals
             if (elementData[i]==null)
                 return i;
     } else {
         for (int i = 0; i < size; i++)
-            // 【CHENG】：普通对象会在堆内存产生内存分配，所以可以直接比较地址
+            // 【Lin.C】：普通对象会在堆内存产生内存分配，所以可以直接比较地址
             if (o.equals(elementData[i]))
                 return i;
     }
@@ -277,7 +277,7 @@ public int indexOf(Object o) {
 ## forEach
 ```java
 /**
- * 【CHENG】：循环遍历的方法，用到了Consumer这个接口的特性，这里就不详细分析了
+ * 【Lin.C】：循环遍历的方法，用到了Consumer这个接口的特性，这里就不详细分析了
  */
 @Override
 public void forEach(Consumer<? super E> action) {
@@ -298,7 +298,7 @@ public void forEach(Consumer<? super E> action) {
 ## get
 ```java
 /**
- * 【CHENG】：get本身简单到不能再简单了，主要是要留意这么简单的方法还拆成两个子方法，所以时刻保持方法简洁是必须滴
+ * 【Lin.C】：get本身简单到不能再简单了，主要是要留意这么简单的方法还拆成两个子方法，所以时刻保持方法简洁是必须滴
  */
 public E get(int index) {
     rangeCheck(index);
@@ -312,7 +312,7 @@ public E get(int index) {
 ## sort
 ```java
 /**
- * 【CHENG】：排序也是经常用到的一个方法
+ * 【Lin.C】：排序也是经常用到的一个方法
  */
 public void sort(Comparator<? super E> c) {
     final int expectedModCount = modCount;
@@ -324,20 +324,20 @@ public void sort(Comparator<? super E> c) {
 }
 
 /**
- * 【CHENG】：最终是走到数组本身的排序方法中去了（后面研究算法的时候再细聊吧）
+ * 【Lin.C】：最终是走到数组本身的排序方法中去了（后面研究算法的时候再细聊吧）
  */
 public static <T> void sort(T[] a, int fromIndex, int toIndex,
                             Comparator<? super T> c) {
     if (c == null) {
-        // 【CHENG】：和else里面的逻辑类似
+        // 【Lin.C】：和else里面的逻辑类似
         sort(a, fromIndex, toIndex);
     } else {
         rangeCheck(a.length, fromIndex, toIndex);
         if (LegacyMergeSort.userRequested)
-            // 【CHENG】：据注释To be removed in a future release.
+            // 【Lin.C】：据注释To be removed in a future release.
             legacyMergeSort(a, fromIndex, toIndex, c);
         else
-            // 【CHENG】：TimSort 是一个归并排序做了大量优化的版本；后期应该主要应用这个版本
+            // 【Lin.C】：TimSort 是一个归并排序做了大量优化的版本；后期应该主要应用这个版本
             TimSort.sort(a, fromIndex, toIndex, c, null, 0, 0);
     }
 }
@@ -354,7 +354,7 @@ public static void sort(Object[] a, int fromIndex, int toIndex) {
 ## toArray
 ```java
 /**
- * 【CHENG】：数组拷贝+泛型实现的，内部逻辑并不复杂，不啰嗦了
+ * 【Lin.C】：数组拷贝+泛型实现的，内部逻辑并不复杂，不啰嗦了
  */
 public <T> T[] toArray(T[] a) {
     if (a.length < size)
@@ -373,7 +373,7 @@ public <T> T[] toArray(T[] a) {
 ```java
 /**
  * An optimized version of AbstractList.Itr
- * 【CHENG】：多线程操作时应该会引发线程不安全性的问题
+ * 【Lin.C】：多线程操作时应该会引发线程不安全性的问题
  */
 private class Itr implements Iterator<E> {
     int cursor;       // index of next element to return
@@ -386,7 +386,7 @@ private class Itr implements Iterator<E> {
 
     @SuppressWarnings("unchecked")
     public E next() {
-        // 【CHENG】：检查状态一致性的操作（可能会抛异常）
+        // 【Lin.C】：检查状态一致性的操作（可能会抛异常）
         checkForComodification();
         int i = cursor;
         if (i >= size)
@@ -399,11 +399,11 @@ private class Itr implements Iterator<E> {
     }
 
     public void remove() {
-        // 【CHENG】：lastRet默认等于0，比如删除第一个元素，那么会先next，这样lastRet就等于0了
+        // 【Lin.C】：lastRet默认等于0，比如删除第一个元素，那么会先next，这样lastRet就等于0了
         if (lastRet < 0)
             throw new IllegalStateException();
         
-        // 【CHENG】：然后就是先检查两个modCount
+        // 【Lin.C】：然后就是先检查两个modCount
         checkForComodification();
 
         try {
@@ -411,7 +411,7 @@ private class Itr implements Iterator<E> {
             cursor = lastRet;
             lastRet = -1;
             
-            // 【CHENG】：操作完成后，把modCount两个值进行复位
+            // 【Lin.C】：操作完成后，把modCount两个值进行复位
             expectedModCount = modCount;
         } catch (IndexOutOfBoundsException ex) {
             throw new ConcurrentModificationException();
@@ -419,7 +419,7 @@ private class Itr implements Iterator<E> {
     }
 
     /**
-     * 【CHENG】：- 这个升级版的forEach性能比Iterator本身的性能是有所提升的
+     * 【Lin.C】：- 这个升级版的forEach性能比Iterator本身的性能是有所提升的
      *            - 这里用到了一个Consumer接口，这是一个函数式接口，后面新文章再单独对这个概念进行分析吧
      *            - 注意：forEach本身不是list接口提供的，而是Iterable提供的
      */
@@ -446,7 +446,7 @@ private class Itr implements Iterator<E> {
     }
 
     /**
-     * 【CHENG】：一个神奇的一致性检查方法，在itr内部每个对集合结构改变的操作都会有这个检查
+     * 【Lin.C】：一个神奇的一致性检查方法，在itr内部每个对集合结构改变的操作都会有这个检查
      */
     final void checkForComodification() {
         if (modCount != expectedModCount)
@@ -459,7 +459,7 @@ private class Itr implements Iterator<E> {
 ```java
 /**
  * An optimized version of AbstractList.ListItr
- * 【CHENG】：这个类和前面的Itr基本是类似的存在，主要还是用来遍历List的，实际它也是继承Itr的，可以说是扩展版的Itr
+ * 【Lin.C】：这个类和前面的Itr基本是类似的存在，主要还是用来遍历List的，实际它也是继承Itr的，可以说是扩展版的Itr
  */
 private class ListItr extends Itr implements ListIterator<E> {
     ListItr(int index) {
@@ -528,7 +528,7 @@ private class ListItr extends Itr implements ListIterator<E> {
 &emsp;&emsp;我们知道，该字段被Iterator以及ListIterator的实现类所使用，如果该值被意外更改，Iterator或者ListIterator 将抛出ConcurrentModificationException异常；那么我们就结合ArrayList内的代码实现看看是怎么用的，想必就清楚了这个值是干什么的了。
 ```java
     /**
-     * 【CHENG】：重点是第一行，也就是通常通过迭代器操作时，第一行都会走这个checkForComodification
+     * 【Lin.C】：重点是第一行，也就是通常通过迭代器操作时，第一行都会走这个checkForComodification
      */
     public E next() {
         checkForComodification();
@@ -536,7 +536,7 @@ private class ListItr extends Itr implements ListIterator<E> {
     }
     
     /**
-     * 【CHENG】：这里的实现也很简要，就是判断当前的modCount和我期望的是不是一致，不一致就抛异常（够暴力）
+     * 【Lin.C】：这里的实现也很简要，就是判断当前的modCount和我期望的是不是一致，不一致就抛异常（够暴力）
      */
     final void checkForComodification() {
         if (modCount != expectedModCount)
@@ -548,24 +548,24 @@ private class ListItr extends Itr implements ListIterator<E> {
 &emsp;&emsp;从上面的一节，我们已经发现当迭代集合时，某些不当的操作会引发ConcurrentModificationException，那具体哪几种操作会引发这个异常呢？
 ```java
 /**
- * 【CHENG】：出异常的第一种情况；通过iterator遍历时，不通过迭代器本身删除集合元素
+ * 【Lin.C】：出异常的第一种情况；通过iterator遍历时，不通过迭代器本身删除集合元素
  */
 private static void operate1(List<String> list) {
     Iterator<String> iterator = list.iterator();
     while (iterator.hasNext()) {
         String temp = iterator.next();
         if (iterator.next().equals("C")) {
-            // 【CHENG】：这个操作可以正确移除集合元素
+            // 【Lin.C】：这个操作可以正确移除集合元素
             //iterator.remove();
             
-            // 【CHENG】：这个操作会抛出ConcurrentModificationException
+            // 【Lin.C】：这个操作会抛出ConcurrentModificationException
             list.remove(temp);
         }
     }
 }
 
 /**
- * 【CHENG】：出异常的第二种情况，在循环中直接remove元素
+ * 【Lin.C】：出异常的第二种情况，在循环中直接remove元素
  */
 private static void operate2(List<String> list) {
     List<String> list = new ArrayList<>();
@@ -581,11 +581,11 @@ private static void operate2(List<String> list) {
 }
 
 /**
- * 【CHENG】：出异常的第三种情况，多线程操作同一个集合时
+ * 【Lin.C】：出异常的第三种情况，多线程操作同一个集合时
  */
 private static void operate3(final List<String> list) {
 
-    // 【CHENG】：第一个线程，遍历集合，每次休眠10ms
+    // 【Lin.C】：第一个线程，遍历集合，每次休眠10ms
     new Thread(new Runnable() {
         @Override
         public void run() {
@@ -601,11 +601,11 @@ private static void operate3(final List<String> list) {
         }
     }).start();
     
-    // 【CHENG】：第二个线程，遍历同一个集合，然后做一个条件remove
+    // 【Lin.C】：第二个线程，遍历同一个集合，然后做一个条件remove
     new Thread(new Runnable() {
         @Override
         public void run() {
-            // 【CHENG】：注意，这种遍历方式，本身是不会出现异常的
+            // 【Lin.C】：注意，这种遍历方式，本身是不会出现异常的
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).equals("A")) {
                     list.remove(i);
@@ -616,7 +616,7 @@ private static void operate3(final List<String> list) {
 }
 
 /**
- * 【CHENG】：不出异常的第一种情况，简单的for循环遍历（适用于增删集合元素）
+ * 【Lin.C】：不出异常的第一种情况，简单的for循环遍历（适用于增删集合元素）
  */
 private static void operate4(List<String> list) {
     List<String> list = new ArrayList<>();
@@ -631,7 +631,7 @@ private static void operate4(List<String> list) {
 }
 
 /**
- * 【CHENG】：不出异常的第二种情况，迭代器操作
+ * 【Lin.C】：不出异常的第二种情况，迭代器操作
  */
 private static void operate5(List<String> list) {
     Iterator<String> iterator = list.iterator();
@@ -659,7 +659,7 @@ public static void main(String[] args) {
     int i = 1;
     for (String v : list) {
         if (i++ == 1) {
-            // 【CHENG】：这个操作是会返回true的
+            // 【Lin.C】：这个操作是会返回true的
             System.out.println(list.remove(v));
         }
     }

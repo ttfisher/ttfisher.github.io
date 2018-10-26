@@ -1,13 +1,13 @@
 ---
 title: Kafka入门系列（四）：Kafka配置文件详解
-comments: true
-abbrlink: d67d13cd
-date: 2018-05-31 19:09:28
 categories:
-  - Core Technical Series - Message & Cache
+  - 【104】风住尘香花已尽之消息队列和缓存
 tags:
   - Kafka
   - Big Data
+comments: true
+abbrlink: d67d13cd
+date: 2018-05-31 19:09:28
 ---
 【引言】本篇为Kafka入门系列的第四讲，从配置中深入一点去理解Kafka！
 <div align=center><img src="/img/2018/2018-05-31-01.jpg" width="500"/></div>

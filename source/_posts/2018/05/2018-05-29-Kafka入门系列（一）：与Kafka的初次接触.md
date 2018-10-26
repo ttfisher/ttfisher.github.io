@@ -2,7 +2,7 @@
 title: Kafka入门系列（一）：与Kafka的初次接触
 comments: true
 categories:
-  - Core Technical Series - Message & Cache
+  - 【104】风住尘香花已尽之消息队列和缓存
 tags:
   - Kafka
   - Big Data
