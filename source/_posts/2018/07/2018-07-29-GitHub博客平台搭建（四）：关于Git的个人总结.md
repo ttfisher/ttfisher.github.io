@@ -1,5 +1,5 @@
 ---
-title: Github自建博客系列（四）：关于Git的个人总结（未完成...)
+title: GitHub博客平台搭建（四）：关于Git的个人总结（未完成...)
 categories:
   - 多元化技能储备之Git&GitHub
 tags:

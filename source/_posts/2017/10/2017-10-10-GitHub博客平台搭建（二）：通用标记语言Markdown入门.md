@@ -1,5 +1,5 @@
 ---
-title: Github自建博客系列（二）：通用标记语言Markdown入门
+title: Github博客平台搭建（二）：通用标记语言Markdown入门
 categories: 
     - 多元化技能储备之Git&GitHub
 tags: 

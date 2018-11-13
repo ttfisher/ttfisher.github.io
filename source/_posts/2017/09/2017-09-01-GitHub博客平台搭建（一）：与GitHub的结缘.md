@@ -1,5 +1,5 @@
 ---
-title: GitHub自建博客系列（一）：与GitHub的结缘
+title: GitHub博客平台搭建（一）：与GitHub的结缘
 categories: 
     - 多元化技能储备之Git&GitHub
 tags: 

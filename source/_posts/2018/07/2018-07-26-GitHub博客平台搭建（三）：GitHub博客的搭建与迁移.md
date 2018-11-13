@@ -1,5 +1,5 @@
 ---
-title: Github自建博客系列（三）：GitHub博客的搭建与迁移
+title: GitHub博客平台搭建（三）：GitHub博客的搭建与迁移
 categories:
   - 多元化技能储备之Git&GitHub
 tags:
