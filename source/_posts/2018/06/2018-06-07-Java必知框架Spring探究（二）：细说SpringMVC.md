@@ -2,7 +2,7 @@
 title: Java必知框架Spring探究（二）：细说SpringMVC
 comments: true
 categories:
-  - 【106】逃得了前世躲不过今生之Spring
+  - 经典SSM架构之Spring&SpringMVC
 tags:
   - Spring
 abbrlink: 955a0fb8

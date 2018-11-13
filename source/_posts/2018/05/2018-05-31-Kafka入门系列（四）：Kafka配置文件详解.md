@@ -1,7 +1,7 @@
 ---
 title: Kafka入门系列（四）：Kafka配置文件详解
 categories:
-  - 【104】风住尘香花已尽之消息队列和缓存
+  - 消息和缓存系列之Kafka
 tags:
   - Kafka
   - Big Data

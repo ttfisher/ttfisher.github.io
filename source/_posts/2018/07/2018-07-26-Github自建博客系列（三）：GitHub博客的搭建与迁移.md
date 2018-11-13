@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（三）：GitHub博客的搭建与迁移
 categories:
-  - 【501】有那么一个词儿叫相见恨晚
+  - 多元化技能储备之Git&GitHub
 tags:
   - GitHub
 abbrlink: 30aba86c

@@ -2,7 +2,7 @@
 title: Redis扫盲系列（二）：Springboot整合Redis
 comments: true
 categories:
-  - 【104】风住尘香花已尽之消息队列和缓存
+  - 消息和缓存系列之Redis
 tags:
   - Redis
   - Big Data
@@ -187,7 +187,7 @@ public class Springboottools2Application implements CommandLineRunner {
 
 # Test Result
 &emsp;&emsp;既然是做hello world，那自然是要看到结果输出才算完事儿的，启动Main方法后看到下面熟悉的Springboot的日志logo然后就可以静静等待结果了，不出意外的话结果都可以正常打印到Console。
-```java
+```log
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \

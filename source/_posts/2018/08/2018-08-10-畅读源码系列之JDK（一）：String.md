@@ -2,7 +2,7 @@
 title: 畅读源码系列之JDK（一）：String
 comments: true
 categories:
-  - 【201】蓦然回首灯火阑珊处之JDK
+  - 技术结构升级之JDK源码汇
 tags:
   - 畅读源码
 abbrlink: 7e8c5b5a

@@ -1,7 +1,7 @@
 ---
 title: Linux三剑客（一）：grep
 categories:
-  - 【301】不懂Linux的码农不是好运维
+  - 多元化技能储备之Linux&Shell
 tags:
   - Linux
   - shell

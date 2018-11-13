@@ -2,7 +2,7 @@
 title: 全文检索技术应用系列（二）：Lucene Demo
 comments: true
 categories:
-  - 【105】众里寻他千百度之全文检索引擎
+  - 技术结构升级之全文检索
 tags:
   - 全文检索
 abbrlink: 603f4bd6

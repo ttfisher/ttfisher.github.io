@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（三）：Nginx配置
 categories:
-  - 【302】如何从服务的前端优化负载
+  - 分布式服务辅助之OpenResty
 tags:
   - OpenResty
 abbrlink: a67a2626

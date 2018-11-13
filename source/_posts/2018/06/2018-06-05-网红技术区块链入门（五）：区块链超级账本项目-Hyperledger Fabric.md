@@ -2,7 +2,7 @@
 title: 网红技术区块链入门（五）：区块链超级账本项目-Hyperledger Fabric
 comments: true
 categories:
-  - 【401】睁眼看世界之新技术的崛起
+  - 多元化技能储备之新技术猎奇
 tags:
   - 区块链
 abbrlink: 22032ed1

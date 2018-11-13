@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（一）：基础概念认知
 categories:
-  - 【302】如何从服务的前端优化负载
+  - 分布式服务辅助之OpenResty
 tags:
   - OpenResty
 abbrlink: 4fbd6846

@@ -1,7 +1,7 @@
 ---
 title: Github自建博客系列（四）：关于Git的个人总结（未完成...)
 categories:
-  - 【501】有那么一个词儿叫相见恨晚
+  - 多元化技能储备之Git&GitHub
 tags:
   - GitHub
 abbrlink: f743d1c

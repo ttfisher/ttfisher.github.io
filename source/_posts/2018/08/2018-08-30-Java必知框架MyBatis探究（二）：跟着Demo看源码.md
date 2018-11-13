@@ -2,7 +2,7 @@
 title: Java必知框架MyBatis探究（二）：跟着Demo看源码（未完成...）
 comments: true
 categories:
-  - 【203】他山之石可以攻玉之MyBatis
+  - 经典SSM架构之MyBatis
 tags:
   - MyBatis
 abbrlink: 2f64b75a

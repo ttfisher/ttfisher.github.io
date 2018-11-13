@@ -1,7 +1,7 @@
 ---
-title: 运维技能集锦系列（一）：Nginx Keepalived环境搭建
+title: 非专题系列（一）：Nginx Keepalived环境搭建
 categories:
-  - 【303】从运维的层面培养新的技能槽
+  - 分布式服务辅助之OpenResty
 tags:
   - Nginx
   - Keepalived

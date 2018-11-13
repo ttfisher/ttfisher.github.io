@@ -1,7 +1,7 @@
 ---
-title: Github自建博客系列（一）：与GitHub的结缘
+title: GitHub自建博客系列（一）：与GitHub的结缘
 categories: 
-    - 【501】有那么一个词儿叫相见恨晚
+    - 多元化技能储备之Git&GitHub
 tags: 
     - GitHub
 abbrlink: 61a5954

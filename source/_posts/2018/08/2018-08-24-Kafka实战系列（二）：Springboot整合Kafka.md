@@ -1,7 +1,7 @@
 ---
 title: Kafka实战系列（二）：Springboot整合Kafka
 categories:
-  - 【104】风住尘香花已尽之消息队列和缓存
+  - 消息和缓存系列之Kafka
 tags:
   - Kafka
   - Big Data

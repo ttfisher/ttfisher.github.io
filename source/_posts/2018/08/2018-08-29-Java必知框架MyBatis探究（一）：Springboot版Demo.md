@@ -2,10 +2,10 @@
 title: Java必知框架MyBatis探究（一）：Springboot版Demo（未完成...）
 comments: true
 categories:
-  - 【203】他山之石可以攻玉之MyBatis
+  - 经典SSM架构之MyBatis
 tags:
   - MyBatis
-abbrlink: '85554181'
+abbrlink: 85554181
 date: 2018-08-29 08:29:28
 ---
 【引言】记得前段时间参加阿里的电话面试，被面试官问到MyBatis的一级缓存和二级缓存的知识，结果自然是No Answer；所以便考虑着抽些时间来看看MyBatis的源码吧，一来让自己更熟悉一些别人是怎么做这种组件实现的，二来到了现在这个阶段，该往深处看看了！

@@ -1,7 +1,7 @@
 ---
 title: ActiveMQ扫盲系列（三）：发布订阅DEMO
 categories:
-  - 【104】风住尘香花已尽之消息队列和缓存
+  - 消息和缓存系列之ActiveMQ
 tags:
   - ActiveMQ
 comments: true

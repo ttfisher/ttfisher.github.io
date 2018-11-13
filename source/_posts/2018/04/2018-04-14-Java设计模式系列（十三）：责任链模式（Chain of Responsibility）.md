@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（十三）：责任链模式（Chain of Responsibility）
 categories:
-  - 【103】衣带渐宽终不悔之我看设计模式
+  - 技术结构升级之设计模式
 tags:
   - 设计模式
 comments: true

@@ -1,7 +1,7 @@
 ---
 title: OpenResty应用系列（六）：反爬虫策略小试牛刀
 categories:
-  - 【302】如何从服务的前端优化负载
+  - 分布式服务辅助之OpenResty
 tags:
   - OpenResty
 abbrlink: 5e12f98d

@@ -2,7 +2,7 @@
 title: 畅读源码系列之JDK（三）：LinkedList
 comments: true
 categories:
-  - 【201】蓦然回首灯火阑珊处之JDK
+  - 技术结构升级之JDK源码汇
 tags:
   - 畅读源码
 abbrlink: 22d500e4

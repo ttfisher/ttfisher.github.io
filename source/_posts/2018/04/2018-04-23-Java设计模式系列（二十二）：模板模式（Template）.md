@@ -1,7 +1,7 @@
 ---
 title: Java设计模式系列（二十二）：模板模式（Template）
 categories:
-  - 【103】衣带渐宽终不悔之我看设计模式
+  - 技术结构升级之设计模式
 tags:
   - 设计模式
 comments: true
