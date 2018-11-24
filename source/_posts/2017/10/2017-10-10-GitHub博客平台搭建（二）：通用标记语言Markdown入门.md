@@ -1,14 +1,14 @@
 ---
 title: Github博客平台搭建（二）：通用标记语言Markdown入门
 categories: 
-    - 多元化技能储备之Git&GitHub
+  - 多元化技能储备之Git&GitHub
 tags: 
-    - GitHub
+  - GitHub
 abbrlink: c6d4da27
 date: 2017-10-10 09:11:00
 ---
 【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。
-<div align=center><img src="/img/2018/2018-05-24-02.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000007.jpg" width="500"/></div>
 <!-- more -->
 
 # 基础语法篇
@@ -113,7 +113,7 @@ date: 2017-10-10 09:11:00
 
 ## 插入图像
 &emsp;&emsp;一般使用 使用\!\[描述\](图片链接地址) 插入图像，当然也可以用HTML语言的div来实现（考虑到能想得起玩儿Markdown的同学应该都有些编程基础，所以这里就不赘述了），Please enjoy this moment!
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-05-17-01.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="/img/public/000005.jpg" width="75%">
 
 ## 分隔线
 &emsp;&emsp;一般在一行中用三个以上的 \*、\-、\_ 来建立一个分隔线，行内不能有除空格以外的其他内容

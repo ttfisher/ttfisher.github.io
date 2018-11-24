@@ -9,7 +9,7 @@ abbrlink: 955a0fb8
 date: 2018-06-07 09:09:28
 ---
 【引言】谈到web开发，可能大多数Java人的第一印象就是SpringMVC，它是我们最熟悉的一个框架，但系统的来说能把SpringMVC说透的人不多，所以我这里也尝试一下来自己理一理SpringMVC这个既熟悉又陌生的框架。
-<div align=center><img src="/img/2018/2018-08-27-02.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000021.jpg" width="500"/></div>
 <!-- more -->
 
 # 闲话开篇

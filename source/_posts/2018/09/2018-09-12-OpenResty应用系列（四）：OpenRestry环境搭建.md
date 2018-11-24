@@ -8,7 +8,7 @@ abbrlink: 1cf451ee
 date: 2018-09-12 17:26:00
 ---
 【引言】前面几章主要是在讨论nginx，这一章开始终于要实实在在的接触到OpenResty了，跟很多常规的工具一样，我们必然首先要从安装说起。
-<div align=center><img src="/img/2018/2018-09-13-04.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000004.jpg" width="500"/></div>
 <!-- more -->
 
 # windows安装

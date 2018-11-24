@@ -8,7 +8,7 @@ abbrlink: 5e12f98d
 date: 2018-09-13 09:26:00
 ---
 【引言】其实前一节引入Lua操作Redis的应用意图是很明显的，也是为了本节做一个铺垫，有了Redis，我们可以很方便的记录很多信息，而且Redis的自动过期特性对我们做反爬监控也是如虎添翼，所以本章我们基于前面的积累来探讨一下反爬的策略，当然还很粗浅，只是实现了一些非常基础的反爬策略。
-<div align=center><img src="/img/2018/2018-09-13-06.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000025.jpg" width="500"/></div>
 <!-- more -->
 
 # 基本思路

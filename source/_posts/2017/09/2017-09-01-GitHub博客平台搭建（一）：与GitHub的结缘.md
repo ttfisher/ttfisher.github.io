@@ -1,14 +1,14 @@
 ---
 title: GitHub博客平台搭建（一）：与GitHub的结缘
 categories: 
-    - 多元化技能储备之Git&GitHub
+  - 多元化技能储备之Git&GitHub
 tags: 
-    - GitHub
+  - GitHub
 abbrlink: 61a5954
 date: 2017-09-01 06:00:00
 ---
 【引言】很喜欢知乎上的一段描述：github是共产主义在软件开发领域的具体实现样本之一，即以生产资料社会公有制为基础（代码开源），以社会化合作（离散化的个人、组织等社会颗粒）为主要生产方式，主要采用合作社组织形式（项目组）的技术支撑平台。
-<div align=center><img src="/img/2018/2018-05-24-01.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000006.jpg" width="500"/></div>
 <!-- more -->
 
 # 起源

@@ -8,7 +8,7 @@ abbrlink: 30aba86c
 date: 2018-07-26 06:00:00
 ---
 【引言】自从年前在GitHub上开了博，偶尔写写文章，不免会遇到换电脑或者重装系统的问题，这时候就得重新配置一遍环境了，当初摸索着搭建起来这么个博客，总得好好维护起来，所以呢，这里也做个搭建和迁移的操作记录，免得以后遗忘吧！[补充]：写完这篇总结后回头复看的时候，深觉有必要补充一篇关于Git的帮助文档，那就索性将Git定为下一篇博客的主题吧！
-<div align=center><img src="/img/2018/2018-07-26-01.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000013.jpg" width="500"/></div>
 <!-- more -->
 
 # 基础软件准备
@@ -196,7 +196,7 @@ deploy:
   repository: https://github.com/ttfisher/ttfisher.github.io.git
   branch: master
 
-# 在线检索功能（需要自己去algolia注册配置）
+# 在线检索功能（需要自己去algolia注册配置） -- Refer： https://www.npmjs.com/package/hexo-algoliasearch
 algolia:
   applicationID: 'XXXX'
   apiKey: 'XXXX'

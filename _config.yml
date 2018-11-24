@@ -48,7 +48,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: true
+  auto_detect: false
   tab_replace:
 
 # Category & Tag
@@ -107,3 +107,12 @@ algolia:
   adminApiKey: 'c85cb354d360dd77094797c9d154e192'
   indexName: 'ttfisher'
   chunkSize: 5000
+  fields:
+    - content:strip:truncate,0,200
+    - excerpt:strip
+    - gallery
+    - permalink
+    - photos
+    - slug
+    - tags
+    - title

@@ -8,7 +8,7 @@ abbrlink: a67a2626
 date: 2018-09-12 09:26:00
 ---
 【引言】前一节讲到了Nginx的安装，实际使用时我们更关注的是配置，通过Nginx怎么实现反向代理？怎么实现负载均衡？里面还是有很多细节的，所以这一节就重点来说说配置的事情。
-<div align=center><img src="/img/2018/2018-05-31-01.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000012.jpg" width="500"/></div>
 <!-- more -->
 
 # nginx.conf
@@ -309,6 +309,13 @@ http {
     keepalive_timeout  65;
 
     #gzip  on;
+    gzip on;
+    gzip_min_length 1k;
+    gzip_buffers 4 16k;
+    gzip_comp_level 2;
+    gzip_types text/plain application/x-javascript application/javascript  text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    gzip_vary off;
+    gzip_disable "MSIE [1-6]\.";
 
     # lua库的地址（比如：redis）
     lua_package_path "/root/anti_spider/lib/?.lua;;";

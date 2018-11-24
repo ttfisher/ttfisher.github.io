@@ -10,5 +10,5 @@ abbrlink: eb4d6bb7
 date: 2018-10-18 11:48:43
 ---
 【引言】
-<div align=center><img src="/img/2018/2018-10-20-03.jpg" width="500"/></div>
+<div align=center><img src="/img/public/000003.jpg" width="500"/></div>
 <!-- more -->

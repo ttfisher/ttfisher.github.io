@@ -1,12 +1,12 @@
 ---
-title: MySQL菜鸟实录（二）：常用系统的MySQL安装
+title: MySQL菜鸟实录（一）：常用系统的MySQL安装
 categories:
-  - 技术结构升级之MySQL
+  - 数据库技能储备之MySQL实战
 tags:
   - MySQL
 comments: true
 abbrlink: 28009222
-date: 2018-11-14 09:40:43
+date: 2018-11-23 09:40:43
 ---
 【引言】
 <div align=center><img src="/img/2018/2018-11-13-02.jpg" width="500"/></div>

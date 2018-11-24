@@ -10,7 +10,7 @@ abbrlink: 17f0c072
 date: 2018-08-23 16:20:51
 ---
 【引言】所有工具的熟悉的第一步都是从安装环境开始的，所以kafka也不例外，虽然前面在Linux服务器上已经搭建过集群了，但自己玩的话，还是在本机搭个小环境比较方便。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-24-01.jpg" width="500">
+<img style="clear: both;display: block;margin:auto;" src="/img/public/000020.jpg" width="500">
 <!-- more -->
 
 # 安装前准备
