@@ -376,3 +376,91 @@ redis 127.0.0.1:7000> exec
 
 ## 补充说明
 **&emsp;&emsp;From redis docs on transactions: It's important to note that even when a command fails, all the other commands in the queue are processed – Redis will not stop the processing of commands.**
+
+
+# Redis的安装
+
+## 安装步骤
+&emsp;&emsp;这个章节实际是验证OpenResty和Redis结合做反爬虫时发现没有
+&emsp;&emsp;Redis因为没有多余的外部依赖，直接编译安装即可（但5.0以上新版本的貌似有些差异，暂不考虑），在这里我们用了4.0.2的发行版进行的编译安装，一般自测就直接使用redis-server启动了。
+```
+[root@localhost ~]# wget http://download.redis.io/releases/redis-4.0.2.tar.gz
+......
+[root@localhost ~]# tar -zxvf redis-4.0.2.tar.gz 
+......
+[root@localhost ~]# cd redis-4.0.2
+[root@localhost redis-4.0.2]# make
+cd src && make all
+make[1]: Entering directory `/root/redis-4.0.2/src'
+......
+make[1]: Leaving directory `/root/redis-4.0.2/src'
+[root@localhost redis-4.0.2]# make install
+cd src && make install
+make[1]: Entering directory `/root/redis-4.0.2/src'
+......
+    INSTALL install
+make[1]: Leaving directory `/root/redis-4.0.2/src'
+[root@localhost redis-4.0.2]# redis-server 
+5367:C 18 Dec 21:15:26.420 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+5367:C 18 Dec 21:15:26.420 # Redis version=4.0.2, bits=64, commit=00000000, modified=0, pid=5367, just started
+5367:C 18 Dec 21:15:26.420 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+5367:M 18 Dec 21:15:26.421 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 4.0.2 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                   
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+ |    `-._   `._    /     _.-'    |     PID: 5367
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           http://redis.io        
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+5367:M 18 Dec 21:15:26.421 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+5367:M 18 Dec 21:15:26.421 # Server initialized
+5367:M 18 Dec 21:15:26.422 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. ...
+5367:M 18 Dec 21:15:26.422 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. ...
+5367:M 18 Dec 21:15:26.422 * Ready to accept connections
+^C5367:signal-handler (1545186523) Received SIGINT scheduling shutdown...
+5367:M 18 Dec 21:28:43.443 # User requested shutdown...
+5367:M 18 Dec 21:28:43.443 * Saving the final RDB snapshot before exiting.
+5367:M 18 Dec 21:28:43.445 * DB saved on disk
+5367:M 18 Dec 21:28:43.445 # Redis is now ready to exit, bye bye...
+[root@localhost redis-4.0.2]# ^C
+[root@localhost redis-4.0.2]# 
+```
+## 后台运行
+&emsp;&emsp;若期望服务进程在后台运行，可通过redis.conf文件的daemonize配置项来解决，然后通过指定启动配置文件的方式来启动redis-server，这样就可以实现了：
+```
+[root@smart0002 redis-4.0.2]# redis-server /etc/redis.conf 
+5430:C 19 Dec 11:05:18.557 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+5430:C 19 Dec 11:05:18.558 # Redis version=4.0.2, bits=64, commit=00000000, modified=0, pid=5430, just started
+5430:C 19 Dec 11:05:18.558 # Configuration loaded
+[root@smart0002 redis-4.0.2]# ps -ef|grep redis
+root      5431     1  0 11:05 ?        00:00:00 redis-server 127.0.0.1:6379 
+root      5446 29178  0 11:05 pts/6    00:00:00 grep redis
+[root@smart0002 redis-4.0.2]# 
+```
+
+## 简单验证
+&emsp;&emsp;在上面安装部署完成后，可通过自带的redis-cli连接进入缓存库（有点类似于mysql的命令操作模式），进入缓存库后可通过一系列的命令达到自己想要的目的（以下仅是很简单的示范）：
+```
+[root@localhost ~]# redis-cli -h localhost -p 6379
+localhost:6379> dbsize
+(integer) 4
+localhost:6379> keys *
+1) "timing_start_192.168.1.137"
+2) "access_total_12/18/18"
+3) "access_count_192.168.1.137"
+4) "ban_time_192.168.1.137"
+localhost:6379> get timing_start_192.168.1.137
+"1545186401"
+localhost:6379> 
+```

@@ -112,7 +112,7 @@ server节点...
 # 可以在一个http块内配置多个server
 server {
     listen       443 ssl;
-    server_name  gcdd.koncendy.com;
+    server_name  demo.smart.com;
     location /   {
         ......
 ```
@@ -352,8 +352,13 @@ http {
         location / {
             # access_by_lua_file /root/anti_spider/anti_spider_internal.lua;
             
-            # proxy_pass   http://gcddV2/gcdd-api/
+            # proxy_pass   http://demoV2/demo-api/
             proxy_pass http://localhost:8080/;
+
+            # websocket相关的支持配置
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
         }
     }
 }

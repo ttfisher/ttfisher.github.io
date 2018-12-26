@@ -78,7 +78,7 @@ http {
     }
 }
 ```
-&emsp;&emsp;然后就开始启动nginx服务了（因为本机安装了普通版本的nginx，所以前面会有一个停服务的过程。
+&emsp;&emsp;然后就开始启动nginx服务了（因为本机安装了普通版本的nginx，所以前面会有一个停服务的过程）。
 ```
 [root@localhost conf]# pwd
 /usr/local/openresty/nginx/conf

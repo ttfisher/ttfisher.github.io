@@ -139,7 +139,7 @@ http {
         location / {
             # access_by_lua_file /root/anti_spider/anti_spider_internal.lua;
             
-            # proxy_pass   http://gcddV2/gcdd-api/
+            # proxy_pass   http://demoV2/demo-api/
             proxy_pass http://localhost:8080/;
         }
     }
@@ -381,12 +381,12 @@ end
 -- local action = ngx.var.request_method
 -- if action == "POST" then
 --     ngx.location.capture(
---         "/ksd/" .. ngx.var.request_uri,
+--         "/smart/" .. ngx.var.request_uri,
 --         { method = ngx.HTTP_POST, body = ngx.req.read_body() }
 --     )
 -- else
 --     ngx.location.capture(
---         "/ksd/" .. ngx.var.request_uri,
+--         "/smart/" .. ngx.var.request_uri,
 --         { method = ngx.HTTP_GET}
 --     )
 -- end

@@ -58,30 +58,7 @@ date: 2017-10-10 09:11:00
 * 怎么给方法设置默认返回值呢？`public int length() default 255;`
 
 ## 代码块
-&emsp;&emsp;一般使用 四个缩进空格 表示大段的代码块
-    
-    public static String extractVideos(String sourceUrl, String filePath, CrawlRegular regular) {
-        
-        try{
-            // 读取文件
-            Document doc = Jsoup.parse(StreamIOUtil.read(filePath));
-
-            // 取全文Elements
-            Elements els = doc.children();
-            if (null == els) {
-                return null;
-            }
-                
-            // 根据xPath取得匹配区域，只要存在，则证明该页面是视频页面
-            Elements xPathEles = els.select(regular.getxPath());
-            if (null != xPathEles && xPathEles.size() > 0) {
-                return sourceUrl;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+&emsp;&emsp;一般使用 四个缩进空格 表示大段的代码块；但为了美观和显示效果清晰，我一般更倾向于使用带高亮和行数的模式（也就是下面一节说到的），其实代码不仅仅是完成功能，也是一种产品，所以我个人的追求是在格式上力求看着舒服！
 
 ## 代码块高亮和行数显示
 &emsp;&emsp;一般使用 \`\`\`代码开发语言 开头，以 \`\`\` 结尾包围的代码块即可进行高亮和行数显示

@@ -1,7 +1,7 @@
 ---
-title: 非专题系列（一）：Nginx Keepalived环境搭建
+title: 运维技能杂记（一）：Nginx Keepalived环境搭建
 categories:
-  - 分布式服务辅助之OpenResty
+  - 架构师野蛮生长之系统运维
 tags:
   - Nginx
   - Keepalived
