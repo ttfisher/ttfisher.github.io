@@ -9,7 +9,7 @@ abbrlink: 8de4cc5d
 date: 2018-11-06 09:48:43
 ---
 【引言】基本上来说，作为Java程序员，很少有人会去关心太多关于算法的东西，但作为Zookeeper的核心算法，而且在其他框架中也被多次使用的Paxos，想必还是值得一探究竟的。
-<div align=center><img src="/img/2018/2018-11-12-02.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-11-12-02.jpg" width="500"/></div>
 <!-- more -->
 
 # 概念

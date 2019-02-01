@@ -9,7 +9,7 @@ abbrlink: 773b69e2
 date: 2018-08-11 10:11:00
 ---
 【引言】针对集合实际上我们有一个专题有了一个基础的说明，但是还不够深入，所以，借着这个源码畅读系列的整理的机会，在这里好好的读读几个重点集合类的源码，第一个最常接触的集合类就是ArrayList了，所以就从它开始了！
-<div align=center><img src="/img/2018/2018-08-11-01.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-11-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 类的定义
@@ -692,4 +692,4 @@ public static void main(String[] args) {
 # 扩展：Vector
 &emsp;&emsp;前面我们就发现了，ArrayList本身是线程不安全的，所以有了Vector；Vector就是线程安全版本的数组容器。Vector的实现很简单，就是把所有的方法统统加上synchronized，通过下面的方法对比图也很明显可以看得出来这个特征。
 &emsp;&emsp;也可以不使用Vector，用Collections.synchronizedList把一个普通ArrayList包装成一个线程安全版本的数组容器也可以，原理同Vector是一样的，就是给所有的方法套上一层synchronized。（关于Collections后面会再单独列一篇文章解读）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-11-02.jpg" width="90%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-11-02.jpg" width="90%">

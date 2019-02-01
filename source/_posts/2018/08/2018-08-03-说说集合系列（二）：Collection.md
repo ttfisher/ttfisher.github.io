@@ -9,7 +9,7 @@ abbrlink: f29d3a59
 date: 2018-08-03 14:07:00
 ---
 【引言】接着上一篇，在纲领性的说明完成后，从本篇开始，按照不同的类型和特性，逐步的对不同的集合类型进行一一的分析和解读，从细节上把控所有的集合特性。
-<div align=center><img src="/img/2018/2018-08-02-10.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-02-10.jpg" width="500"/></div>
 <!-- more -->
 
 # Collection的定义
@@ -17,13 +17,13 @@ date: 2018-08-03 14:07:00
 （1）Collection是继承Iterable接口的；
 （2）Iterable提供了迭代器获取的方法；
 （3）Collection内提供了基本的增删查等常用操作；
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-02-11.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-02-11.jpg" width="60%">
 
 # Collection的分类
 
 ## 分类
 &emsp;&emsp;Collection是继承了Iterable接口的一个集合顶级接口，在它之下又有3个分支，其中我们较常用的是List和Set，而对于Queue平时使用的不多，也知之甚少，正好可以借着这次整理的机会熟悉一下。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-02-09.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-02-09.jpg" width="75%">
 
 ## 特点
 - List：线性结构，可以重复、有序
@@ -76,7 +76,7 @@ public class ArrayList<E> extends AbstractList<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-01.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-01.jpg" width="75%">
 
 ### 数据结构扩容
 &emsp;&emsp;ArrayList的扩容是在容量已经无法支撑服务的情况下才会触发的
@@ -243,7 +243,7 @@ public class LinkedList<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-02.jpg" width="75%">
 
 ### 数据结构扩容
 **&emsp;&emsp;因为LinkedList本身是以链表作为存储结构的，理论上在不超过内存限制和链表本身限制的情况下，是没有容量大小的说法的，所以也谈不上扩容**
@@ -322,7 +322,7 @@ public class Vector<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-03.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-03.jpg" width="75%">
 
 ### 数据结构扩容
 ```java
@@ -371,7 +371,7 @@ public class Stack<E> extends Vector<E> {
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-04.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-04.jpg" width="75%">
 
 ### 数据结构扩容
 ```java
@@ -466,7 +466,7 @@ public class CopyOnWriteArrayList<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-05.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-05.jpg" width="75%">
 
 ### 数据结构扩容
 &emsp;&emsp;实际上CopyOnWriteArrayList每完成一次数据的写入或删除，都涉及到数组大小的调整，而不是像ArrayList那样达到固定大小才做扩容，可以理解为CopyOnWriteArrayList每次只扩容一个元素
@@ -593,7 +593,7 @@ public class HashSet<E>
 
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-06.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-06.jpg" width="75%">
 
 ### 数据结构扩容
 &emsp;&emsp;实际上也不涉及独立的扩容操作，底层只是往HashMap里面put一个新值而已（具体HashMap怎么扩容的，就在下一篇文章见分晓吧！）
@@ -690,7 +690,7 @@ public class TreeSet<E> extends AbstractSet<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-07.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-07.jpg" width="75%">
 
 ### 数据结构扩容
 ```java
@@ -762,7 +762,7 @@ public class HashSet<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-08.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-08.jpg" width="75%">
 
 ### 数据结构扩容
 ```java
@@ -889,7 +889,7 @@ public class CopyOnWriteArraySet<E> extends AbstractSet<E>
     Value is :nanjing
 ```
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-09.jpg" width="50%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-09.jpg" width="50%">
 
 ### 数据结构扩容
 ```java
@@ -952,7 +952,7 @@ public abstract class AbstractQueue<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-10.jpg" width="40%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-10.jpg" width="40%">
 
 ### 数据结构扩容
 ```java
@@ -1067,7 +1067,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-11.jpg" width="45%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-11.jpg" width="45%">
 
 ### 数据结构扩容
 ```java
@@ -1214,7 +1214,7 @@ public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         at com.xunsiya.P.main(P.java:30)
 ```
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-12.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-12.jpg" width="60%">
 
 ### 数据结构扩容
 ```java
@@ -1327,7 +1327,7 @@ private void allocateElements(int numElements) {
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-03-13.jpg" width="50%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-03-13.jpg" width="50%">
 
 ### 数据结构扩容
 ```java

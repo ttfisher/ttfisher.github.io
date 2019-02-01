@@ -8,7 +8,7 @@ abbrlink: a67a2626
 date: 2018-09-12 09:26:00
 ---
 【引言】前一节讲到了Nginx的安装，实际使用时我们更关注的是配置，通过Nginx怎么实现反向代理？怎么实现负载均衡？里面还是有很多细节的，所以这一节就重点来说说配置的事情。
-<div align=center><img src="/img/public/000012.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000012.jpg" width="500"/></div>
 <!-- more -->
 
 # nginx.conf
@@ -119,7 +119,7 @@ server {
 
 ### server怎么理解？
 &emsp;&emsp;虚拟主机，就是把一台物理服务器划分成多个“虚拟”的服务器，每一个虚拟主机都可以有独立的域名和独立的目录。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-04.jpg" width="65%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-04.jpg" width="65%">
 
 ### server的3种配置方式
 
@@ -167,7 +167,7 @@ server{
 
 ### 基本用法
 &emsp;&emsp;location映射解析规则：location [ = | ~ | ~* | ^~ ] uri { ... }；具体可参考下图：
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-05.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-05.jpg" width="75%">
 
 ### 补充说明
 - 首先匹配  = 
@@ -204,7 +204,7 @@ server{
 &emsp;&emsp;当在location区块中使用 if 指令的时候会有一些问题, 在某些情况下它并不按照你的预期运行而是做一些完全不同的事情. 而在另一些情况下他甚至会出现段错误. 一般来说避免使用 if 指令是个好主意.
 
 # Nginx静态文件服务
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-10.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-10.jpg" width="60%">
 &emsp;&emsp;我们只需要两个命令就可以启用基础缓存： proxy_cache_path 和 proxy_cache 。proxy_cache_path用来设置缓存的路径和配置，proxy_cache用来启用缓存（location配置： proxy_cache my_cache;）。如下示例：
 ```
 proxy_cache_path/path/to/cache levels=1:2 keys_zone=my_cache:10m max_size=10g inactive=60m use_temp_path=off;
@@ -223,7 +223,7 @@ proxy_cache_path/path/to/cache levels=1:2 keys_zone=my_cache:10m max_size=10g in
 &emsp;&emsp;记录客户端访问Nginx的每一个请求，格式可以自定义；，语法: log_format name string; 其中name表示格式名称，string表示定义的格式字符串。log_format配置必须放在http内，否则会出现警告
 access_log指令用来指定访问日志文件的存放路径（包含日志文件名）、格式和缓存大小，语法：access_log path [format_name [buffer=size | off]]; 其中path表示访问日志存放路径，format_name表示访问日志格式名称，buffer表示缓存大小，off表示关闭访问日志。
 定义日志使用的字段及其作用：
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-11.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-11.jpg" width="75%">
 
 ## error_log
 &emsp;&emsp;error_log主要记录客户端访问Nginx出错时的日志，格式不支持自定义。
@@ -247,7 +247,7 @@ access_log指令用来指定访问日志文件的存放路径（包含日志文�
  - fail_timeout，在经历了max_fails次失败后，暂停服务的时间。max_fails可以和fail_timeout一起使用。
 
 ## 配置示例
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-12.jpg" width="65%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-12.jpg" width="65%">
 
 # Nginx常用命令汇总
 ```
@@ -274,7 +274,7 @@ nginx -s reload # 重新加载配置
 - 日志打印时可以打印一些相关的信息，便于我们进行请求统计和问题排查
 - 使用拦截策略配置时可以使用，比如在nginx端进行一些反爬策略的运作
 - 使用Lua做一些处理时可以使用，比如对请求进行复制进行真实请求的测试引流
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-13.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-13.jpg" width="60%">
 
 # nginx.conf示例
 &emsp;&emsp;以下是在测试反爬策略时配置的简单的nginx调度转发，并未涉及很多配置项，仅供参考。

@@ -9,7 +9,7 @@ abbrlink: 1ebf7315
 date: 2018-08-13 10:34:00
 ---
 【引言】Collections和Collection说实话不注意的话有时候真的会混淆，其实二者差别还是很大的，Collections作为一个集合辅助工具而存在的，其实里面提供了很多适合我们的工具，说到工具其实apache的很多工具包也很有用的，减少了我们很多重复工作，真的有必要探究探究！
-<div align=center><img src="/img/2018/2018-08-13-01.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-13-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 类的定义

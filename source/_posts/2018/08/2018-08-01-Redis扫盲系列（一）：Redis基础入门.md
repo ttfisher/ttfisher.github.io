@@ -10,7 +10,7 @@ abbrlink: 23d37792
 date: 2018-08-01 14:55:55
 ---
 【引言】作为一个开发人员，稍微有一些开发经验的话，多多少少也会听说过redis的大名，你可以把它当做缓存，也可以把它作为消息队列，它可以做很多事情，而且它的性能还很强大，所以，这里开一个专题来聊聊关于Redis的点点滴滴吧！
-<div align=center><img src="/img/2018/2018-08-01-08.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-01-08.jpg" width="500"/></div>
 <!-- more -->
 
 # Redis入门
@@ -297,8 +297,8 @@ redis 127.0.0.1:6379> ZRANGE runoobkey 0 10 WITHSCORES
 
 ## 基本模型
 &emsp;&emsp;下面两张图，第一张代表了订阅端对频道的订阅情况（即：3个客户端订阅了channel1这个频道的消息）；第二张图则表示当发送端发送消息时，消息通过该频道会推送到所有已订阅该频道的客户端（注：这里的模式和kafka稍有差异，kafka是客户端主动去pull消息的，而redis的客户端接收消息是由channel发起的push操作，本质不一样）。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-02-02.jpg" width="40%">
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-02-01.jpg" width="40%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-02-02.jpg" width="40%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-02-01.jpg" width="40%">
 
 ## 命令说明
 ```

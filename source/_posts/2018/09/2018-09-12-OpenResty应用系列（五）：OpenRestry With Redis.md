@@ -8,12 +8,12 @@ abbrlink: 95a8ee39
 date: 2018-09-12 19:26:00
 ---
 【引言】既然是在OpenResty里面使用，Lua基本上是更多的参与到一些请求管理方面的工作，比如分发，比如请求复制，比如还能做一些反爬，说到反爬，实际可以结合Redis这个帮手来做，所以这一章我们先不纠结Lua本身的语法，先来看一个Redis操作的Demo，从实践中去理解Lua的基本语法。
-<div align=center><img src="/img/2018/2018-09-13-05.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-13-05.jpg" width="500"/></div>
 <!-- more -->
 
 # Redis库引入
 &emsp;&emsp;实际上，Lua和很多语言也有类似之处，比如它在较高版本后也支持模块和包，而对于Redis的操作，在Python里面我们有第三方的库可以引用，在SpringBoot里面也有相对应的Template，到了Lua里，实际也是有这么一个库的，这里是参考地址： https://github.com/openresty/lua-resty-redis 
-&emsp;&emsp;这个Redis库下载到本地，解压完会有个lua-resty-redis-master目录，实际对我们比较有用的就是其中的lib，其他的暂时可以不关注。（<a target="new" href="/attaches/2018-09-13-redis.lua">点击下载redis.lua脚本</a>）；若通过此处下载的话，下载到本地后请将文件名修改为redis.lua。
+&emsp;&emsp;这个Redis库下载到本地，解压完会有个lua-resty-redis-master目录，实际对我们比较有用的就是其中的lib，其他的暂时可以不关注。（redis.lua的下载地址： https://github.com/openresty/lua-resty-redis/tree/master/lib/resty ）
 &emsp;&emsp;随后我们将lib上传到已经安装好OpenResty环境的服务器的某个路径下（特别要注意的是，要对所有需要执行的脚本进行赋权操作，一般755权限就够用了）：
 ```
 [root@localhost openresty]# chmod 755 -R *

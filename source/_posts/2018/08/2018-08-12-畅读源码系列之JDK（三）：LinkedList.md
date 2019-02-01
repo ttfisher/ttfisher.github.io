@@ -9,7 +9,7 @@ abbrlink: 22d500e4
 date: 2018-08-12 16:11:00
 ---
 【引言】前一篇说完了ArrayList，这一篇就来说说和ArrayList形影不离，形同姊妹的另外一种结构：LinkedList！
-<div align=center><img src="/img/2018/2018-08-12-01.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-12-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 类的定义

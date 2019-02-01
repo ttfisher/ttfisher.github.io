@@ -9,7 +9,7 @@ abbrlink: 98444c68
 date: 2018-08-12 17:22:00
 ---
 【引言】ConcurrentHashMap，从名字上来看呢，是Concurrent和HashMap的结合体，实际就是线程安全的HashMap了，但是它如何实现这个线程安全呢？和Hashtable又有何区别呢？这里面就有的说道说道了。
-<div align=center><img src="/img/2018/2018-08-12-04.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-12-04.jpg" width="500"/></div>
 <!-- more -->
 
 # 类的定义
@@ -1519,4 +1519,4 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
 # 关于sizeCtl 
 &emsp;&emsp;在扩容操作中有个关键的变量sizeCtl，实际上该变量高 16 位保存 length 生成的标识符，低 16 位保存并发扩容的线程数
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-22-07.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-22-07.jpg" width="60%">

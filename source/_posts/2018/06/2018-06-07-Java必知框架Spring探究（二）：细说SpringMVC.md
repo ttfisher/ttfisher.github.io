@@ -9,7 +9,7 @@ abbrlink: 955a0fb8
 date: 2018-06-07 09:09:28
 ---
 【引言】谈到web开发，可能大多数Java人的第一印象就是SpringMVC，它是我们最熟悉的一个框架，但系统的来说能把SpringMVC说透的人不多，所以我这里也尝试一下来自己理一理SpringMVC这个既熟悉又陌生的框架。
-<div align=center><img src="/img/public/000021.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000021.jpg" width="500"/></div>
 <!-- more -->
 
 # 闲话开篇
@@ -27,7 +27,7 @@ date: 2018-06-07 09:09:28
 
 # SpringMVC的运行流程
 
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-27-03.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-27-03.jpg" width="75%">
 
 ## 概览
 &emsp;&emsp;上图是说SpringMVC流程的一张经典图例，基本上整个流程该图都涵盖了：
@@ -57,7 +57,7 @@ date: 2018-06-07 09:09:28
 &emsp;&emsp;DispatcherServlet的本质也是一个Servlet，所以要理解DispatcherServlet，首先要知道Servlet是什么。
 &emsp;&emsp;Java Servlet 是运行在 Web 服务器或应用服务器上的程序，它是作为来自 Web 浏览器或其他 HTTP 客户端的请求和 HTTP 服务器上的数据库或应用程序之间的中间层。使用 Servlet，您可以收集来自网页表单的用户输入，呈现来自数据库或者其他源的记录，还可以动态创建网页。Java Servlet 通常情况下与使用 CGI（Common Gateway Interface，公共网关接口）实现的程序可以达到异曲同工的效果。但是相比于 CGI，Servlet 在性能上，通用性上，资源安全性上，独立性上都是占有优势的。
 &emsp;&emsp;借用Tomcat Server的结构简图，可以简单理解Servlet是什么了：
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-27-04.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-27-04.jpg" width="75%">
 
 ### 基本配置
 &emsp;&emsp;在传统的SpringMVC模式的开发过程中，web.xml是一个比较核心的东西，所以理所当然的DispatcherServlet也是在这里配置的。

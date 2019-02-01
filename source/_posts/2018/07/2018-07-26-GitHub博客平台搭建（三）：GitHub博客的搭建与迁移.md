@@ -8,7 +8,7 @@ abbrlink: 30aba86c
 date: 2018-07-26 06:00:00
 ---
 【引言】自从年前在GitHub上开了博，偶尔写写文章，不免会遇到换电脑或者重装系统的问题，这时候就得重新配置一遍环境了，当初摸索着搭建起来这么个博客，总得好好维护起来，所以呢，这里也做个搭建和迁移的操作记录，免得以后遗忘吧！[补充]：写完这篇总结后回头复看的时候，深觉有必要补充一篇关于Git的帮助文档，那就索性将Git定为下一篇博客的主题吧！
-<div align=center><img src="/img/public/000013.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000013.jpg" width="500"/></div>
 <!-- more -->
 
 # 基础软件准备
@@ -22,11 +22,11 @@ $ git config --global user.name "your user name"
 // 填写你的github注册邮箱
 $ git config --global user.email "your email address" 
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-08.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-08.jpg" width="75%">
 
 ## Nodejs & npm
 &emsp;&emsp;下载地址：https://nodejs.org/zh-cn/download/ ；下载完成后在本机安装（具体下载什么版本就看电脑操作系统和位数了）；一路Next，安装完成后验证一下是否安装成功（因为安装时安装程序默认就会向path追加写入nodejs的路径，所以也不用手工配置path了）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-04.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-04.jpg" width="75%">
 
 # 账号环境准备
 ## 注册GitHub账号
@@ -34,8 +34,8 @@ $ git config --global user.email "your email address"
 
 ## 创建博客仓库
 &emsp;&emsp;在GitHub仓库管理页面建一个名为username.github.io的仓库，这里的username就是github登录用户名；比如说，我的github用户名是ttfisher，那么就新建一个名为ttfisher.github.io的仓库，最终生成的博客站点的访问地址就是 http://ttfisher.github.io ；注册完后就有下面图示的绿色区域效果（注：①账号的邮箱验证必须完成；② 务必按照这个命名规则来创建，这方面就不建议自由发挥了； ③ 仓库创建成功不一定会立即生效，如果发现没生效建议稍等片刻）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-01.jpg" width="75%">
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-01.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-02.jpg" width="75%">
 
 # SSH Key的配置
 &emsp;&emsp;这里的配置，主要还是为了做代码提交免去用户名密码验证的过程，当然也为了安全考虑，所以还是很有必要配置的。
@@ -45,26 +45,26 @@ $ git config --global user.email "your email address"
 ```
 ssh-keygen -t rsa -C "Github的注册邮箱地址"
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-06.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-06.jpg" width="75%">
 
 ## 上传密钥
 &emsp;&emsp;密钥配置的位置：用户个人设置里面的SSH and GPG keys菜单；打开之后在右上角有一个添加SSH key的按钮（下面第二个图），点击之后就会出现一个带有Title和Key的配置输入页面，将id_rsa.pub里面的内容原封不动的粘贴到Key区域里面，Title随意取名（便于自己识别），然后点击绿色的Add按钮即可完成密钥的上传（下图的VM-223就是新增的密钥）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-07.jpg" width="75%">
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-05.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-07.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-05.jpg" width="75%">
 
 ## 验证密钥
 ```
 // 直接输入如下命令确认公钥配置是否成功；遇到Are you sure you want to continue connecting (yes/no)?输入yes继续
 $ ssh -T git@github.com 
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-08.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-08.jpg" width="75%">
 
 # Hexo的安装和配置
 
 ## 安装和初验
 &emsp;&emsp;Hexo是一个相对来说封装的很好的简单又强大的，支持Github Pages的博客编写和发布工具，最主要的是它是支持Markdown的，而且网上也有很多分享的主题，这对于一个对卖相要求很高的处女座来说，绝对是福音啊！关于Hexo的知识，我这里就不赘述了，有兴趣的找度娘分分钟给你普及了。
 &emsp;&emsp;关于不同主题的使用，后面有一节简短的说明，实际操作也很简单，就是下载包--配置_config.yml文件，然后基本就可以了，具体细节的微调就得自己去摸索了。这里有必要说明一下，在每个主题目录里面，也都有一个_config.yml文件，主要用来控制主题的（比如说：显示菜单啊，显示风格啊，图标啊等等；但这个的作用域比外面hexo那个同名配置文件的要小，不能搞混了）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-09.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-09.jpg" width="75%">
 
 ## 环境初始化（新用户）
 &emsp;&emsp;对于没有历史存档的新用户，需要先通过如下命令即可完成Hexo环境的初始化，初始化完成后hexo就会将它运行所需要的基础文件都下载到对应的目录（如下图），初始化全部结束后，就可以开始最基础的博客环境配置了。（受限于网络或其他原因，初始化的过程稍稍有一些耗时）
@@ -79,7 +79,7 @@ Administrator@NRFS2V4EOT1XDKX MINGW64 /c/GitBlog
 $ hexo init
 ......
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-10.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-10.jpg" width="75%">
 
 ## 环境恢复（老用户）
 &emsp;&emsp;针对已经在GitHub有存档的历史博客环境的，就没有必要安装上面的初始化步骤再一步步配置了，直接从GitHub恢复一套副本到本地就可以开展接下来的工作了
@@ -94,20 +94,20 @@ hexo init  （hexo初始化只是针对新用户的，这里也可以省略了�
 npm install
 hexo-deployer-git
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-11.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-11.jpg" width="75%">
 + 可以先在本地启动测试一下，然后发布到GitHub；至此即完成了博客的恢复操作，可以愉快的开始继续接下来的博客之旅了
 ```
 hexo g （生成静态页面）
 hexo s （启动本地预览服务）  -- 一般启动完成后通过 http://localhost:4000/ 即可访问
 hexo d （发布到GitHub）
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-12.jpg" width="75%">
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-13.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-12.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-13.jpg" width="75%">
 
 ## 偷懒的用法
 &emsp;&emsp;可以安装一个Git小乌龟，通过小乌龟进行git clone的操作（对于不熟悉Git命令的同学来说，绝对是福音）。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-05-01.jpg" width="45%">
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-05-02.jpg" width="45%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-05-01.jpg" width="45%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-05-02.jpg" width="45%">
 
 # 其他参考信息
 
@@ -279,7 +279,7 @@ deploy:
 
 ## push报ssh.exe找不到
 &emsp;&emsp;通过如下Git小乌龟配置可以查找一下GIT_SSH这个环境变量的值，发现和报错的位置是一致的，但是系统里面可能ssh.exe并不是在这个位置；这样就会导致push源文件的时候报ssh.exe not found；此时只需要修改一下注册表项即可解决（HKEY_CURRENT_USER->Software->TortoiseGit）
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-17-01.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-17-01.jpg" width="60%">
 
 ## push时报permission denied
 &emsp;&emsp;通常在push时会出现，比较暴力的方法，就是重新生成ssh key，配置到github管理端；目前还没有发现其他好的解决方法。
@@ -295,3 +295,18 @@ Disconnected: No supported authentication methods available (server sent: public
 ---------------------------
 ```
 &emsp;&emsp;原因是因为TortoiseGit和Git的冲突，打开小乌龟TortoiseGit -> Settings -> Network；然后将SSH client设置成 C:\Program Files\Git\usr\bin\ssh.exe；TortoiseGit就可以正常工作了！
+
+## 国内GitHub访问经常很慢的问题
+&emsp;&emsp;某次想看看博客资料，差点就因为受不了网络加载的小圈圈一直转着却刷不出页面，都差点转投码云阵营了，后来无意间看到一个分享的方式，一试还挺好用（做人，真的要专一，困难总会有解决的办法的）：
+- 打开 http://tool.chinaz.com/dns （这是一个查询域名映射关系的工具）
+- 查询 github.global.ssl.fastly.net 和 assets-cdn.github.com 两个地址；多查几次，选择一个稳定，延迟较低的 ip 
+- 将刚刚查到的IP地址配置到本地的C:\Windows\System32\drivers\etc\hosts文件中，重新打开浏览器，瞬间腾飞
+```
+# localhost name resolution is handled within DNS itself.
+#	127.0.0.1       localhost
+#	::1             localhost
+
+# github
+151.101.72.133 assets-cdn.github.com
+151.101.109.194 github.global.ssl.fastly.net
+```

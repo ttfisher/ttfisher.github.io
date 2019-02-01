@@ -9,7 +9,7 @@ abbrlink: 1bebc134
 date: 2018-12-26 19:09:28
 ---
 【引言】
-<div align=center><img src="/img/2018/2018-12-27-01.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-12-27-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 闲话开篇

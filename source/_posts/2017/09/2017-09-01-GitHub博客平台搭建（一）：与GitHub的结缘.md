@@ -7,8 +7,8 @@ tags:
 abbrlink: 61a5954
 date: 2017-09-01 06:00:00
 ---
-【引言】很喜欢知乎上的一段描述：github是共产主义在软件开发领域的具体实现样本之一，即以生产资料社会公有制为基础（代码开源），以社会化合作（离散化的个人、组织等社会颗粒）为主要生产方式，主要采用合作社组织形式（项目组）的技术支撑平台。
-<div align=center><img src="/img/public/000006.jpg" width="500"/></div>
+【引言】很喜欢知乎上的一段描述：GitHub是共产主义在软件开发领域的具体实现样本之一，即以生产资料社会公有制为基础（代码开源），以社会化合作（离散化的个人、组织等社会颗粒）为主要生产方式，主要采用合作社组织形式（项目组）的技术支撑平台。
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000006.jpg" width="500"/></div>
 <!-- more -->
 
 # 起源
@@ -106,11 +106,3 @@ Please don't take my sunshine away
 | Distributed Design | 数据一致性（分布式事务、分布式锁） | 待定 | 暂无 |
 | Distributed Design | 负载均衡、消息队列 | 待定 | 暂无 |
 | Distributed Design | 微服务框架（SpringCloud、ZK、Dubbo...） | 待定 | 暂无 |
-
-# Attachements
-
-| 附件文档 | 一句话介绍 |
-| :------: | :--: |
-| <a target="new" href="/attaches/2018-07-31-Proactor.pdf">Proactor</a> | NIO的某种设计模式 |
-| <a target="new" href="/attaches/2018-08-20-设计模式之禅.pdf">设计模式之禅</a> | Java常见设计模式通俗版 |
-| <a target="new" href="/attaches/2018-09-12-rds_backup_extract.sh">rds_backup_extract.sh</a> | 数据库热备解压脚本 |

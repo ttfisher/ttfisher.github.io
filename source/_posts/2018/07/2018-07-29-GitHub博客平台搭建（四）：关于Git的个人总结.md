@@ -8,7 +8,7 @@ abbrlink: f743d1c
 date: 2018-07-29 17:17:00
 ---
 【引言】为什么要写这么一篇总结呢？一来是为了圆了前面那一篇的说辞；二来是因为零零散散的接触Git也有些时日了，谈起Git竟不知道从何谈起，说不出个一二三来，所以，抽点时间整理一下，也纯当给自己的学习做个总结吧！（部分资源参考自网络）
-<div align=center><img src="/img/2018/2018-07-29-01.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-29-01.jpg" width="500"/></div>
 <!-- more -->
 
 # Git是什么？
@@ -32,5 +32,5 @@ $ git config --global user.name "your user name"
 // 填写你的github注册邮箱
 $ git config --global user.email "your email address" 
 ```
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-07-27-08.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-07-27-08.jpg" width="75%">
 

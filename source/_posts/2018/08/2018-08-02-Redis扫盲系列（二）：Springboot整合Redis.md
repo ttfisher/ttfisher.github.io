@@ -10,7 +10,7 @@ abbrlink: 65efd8ff
 date: 2018-08-02 08:55:55
 ---
 【引言】前一篇重点分析了Redis的基础概念和数据类型，以及一些常用的操作命令和特性，主要还是停留在基本的了解和操作层面，毕竟我们是做Java的，所以我们的一个核心的诉求就是通过Java怎么把Redis用起来并且还能用的很顺手，所以这一章重点来捋一捋Java中如何使用Redis。
-<div align=center><img src="/img/2018/2018-08-02-03.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-02-03.jpg" width="500"/></div>
 <!-- more -->
 
 # Maven
@@ -206,7 +206,7 @@ public class Springboottools2Application implements CommandLineRunner {
 
 # Redis Client View
 &emsp;&emsp;通过Redis的客户端我们也可以很清楚的看到，四条数据已经入库成功，证明之前的代码成功将数据写入了Redis。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-29-05.jpg" width="70%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-29-05.jpg" width="70%">
 
 # More About
 

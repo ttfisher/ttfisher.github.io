@@ -8,7 +8,7 @@ abbrlink: 1cf451ee
 date: 2018-09-12 17:26:00
 ---
 【引言】前面几章主要是在讨论nginx，这一章开始终于要实实在在的接触到OpenResty了，跟很多常规的工具一样，我们必然首先要从安装说起。
-<div align=center><img src="/img/public/000004.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000004.jpg" width="500"/></div>
 <!-- more -->
 
 # windows安装
@@ -97,7 +97,7 @@ root      3179  2398  0 17:23 pts/3    00:00:00 grep nginx
 [root@localhost conf]# 
 ```
 &emsp;&emsp;通过 http://localhost/ 访问，页面返回信息如下即表示安装验证成功；顺便补充说明一下，nginx启动时-p指定了启动的工作目录，-c指定了启动使用的配置文件，其实实际使用自定义配置和脚本时是可以单独拉一个目录出来做的。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-09-12-14.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-14.jpg" width="60%">
 
 # LuaJIT
 &emsp;&emsp;因为OpenResty的一大特点就是用到了Lua，而我们做Lua的开发肯定必不可少的需要做一些调试操作，所以在本机安装一个Lua环境也是必要的。
@@ -106,4 +106,4 @@ root      3179  2398  0 17:23 pts/3    00:00:00 grep nginx
 - LuaJIT就是一个为了再榨出一点速度的尝试，它利用JIT编译技术把Lua代码编译成本地机器码后交由CPU直接执行。
 - LuaJIT 是采用 C 语言写的 Lua 的解释器。LuaJIT 被设计成全兼容标准 Lua 5.1, 因此 LuaJIT 代码的语法和标准 Lua 的语法没多大区别。
 - LuaJIT 和 Lua 的区别就是LuaJIT 的运行速度比标准 Lua 快数十倍；可以当做Lua 的高效率版本。
-- LuaJIT 编译安装比较复杂，所以这里附上一个编译好的版本，亲测可用（ <a target="new" href="/attaches/2018-09-13-LuaJIT.zip">点击下载编译好的windows版本LuaJIT.zip</a> ）
+- LuaJIT 编译安装比较复杂，所以这里附上一个编译好的版本，亲测可用（ <a target="new" href="http://pm4hdun71.bkt.clouddn.com/attaches/2018-09-13-LuaJIT.zip">点击下载编译好的windows版本LuaJIT.zip</a> ）

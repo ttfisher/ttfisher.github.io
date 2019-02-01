@@ -9,7 +9,7 @@ abbrlink: d59227c
 date: 2018-08-22 08:48:43
 ---
 【引言】本章着重讲一讲ActiveMQ在发布订阅模式下如何实现消息传递的，本章只写了传统方式实现，Springboot的方式前面已经试验过了，就不再尝试了；所谓的发布订阅通俗理解的话，就是Producer发送的一条消息能被所有监听这个Topic的Consumer接收，人手一份（个人理解，不见得准确）。
-<div align=center><img src="/img/2018/2018-08-21-05.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-21-05.jpg" width="500"/></div>
 <!-- more -->
 
 # Producer
@@ -158,4 +158,4 @@ This is sub receiving msg : This is pub sending msg : msg-4
 
 # 消息流程总结
 &emsp;&emsp;下图是从网上看到的一张流程总结，先致谢一下！图画的很清晰，一目了然；整个流程围绕创建连接-创建会话-发送/接收消息-释放连接的模式展开，非常类似于jdbc操作的流程。
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-08-21-07.jpg" width="50%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-21-07.jpg" width="50%">

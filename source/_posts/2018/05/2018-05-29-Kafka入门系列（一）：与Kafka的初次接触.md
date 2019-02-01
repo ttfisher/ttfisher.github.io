@@ -10,7 +10,7 @@ abbrlink: 7abadfc4
 date: 2018-05-29 19:09:28
 ---
 【引言】本篇为Kafka入门系列的第一讲，主要讲解Kafka的基本概念和基础结构，让初学者有个初步的认识。
-<div align=center><img src="/img/2018/2018-05-29-01.jpg" width="500"/></div>
+<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-05-29-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 背景概念
@@ -24,7 +24,7 @@ date: 2018-05-29 19:09:28
 &emsp;&emsp;JMS即Java消息服务（Java Message Service）应用程序接口，是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。Java消息服务是一个与具体平台无关的API，它类似于JDBC(Java Database Connectivity)，绝大多数MOM提供商都对JMS提供支持。
 
 ## MQ消息模型
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-06-10-07.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-10-07.jpg" width="75%">
 
 ## MQ的分类
 
@@ -59,7 +59,7 @@ First a few concepts:
 + Kafka对高并发量的请求有很好的支持性，可轻松支持数千个客户端的同时读写
 
 ## Core APIs
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-06-01-05.jpg" width="50%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-01-05.jpg" width="50%">
 + The Producer API allows an application to publish a stream of records to one or more Kafka topics.（生产者API）
 + The Consumer API allows an application to subscribe to one or more topics and process the stream of records produced to them.（消费者API）
 + The Streams API allows an application to act as a stream processor, consuming an input stream from one or more topics and producing an output stream to one or more output topics, effectively transforming the input streams to output streams.（数据流处理API）
@@ -68,13 +68,13 @@ First a few concepts:
 # Kafka架构分析
 
 ## 数据流向总览
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-06-01-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-01-02.jpg" width="75%">
 + Producers：消息的生产者
 + Brokers：kafka集群（消息的传输和存储者）
 + Consumers：消息的消费者
 
 ## 数据流向细节
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-06-01-01.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-01-01.jpg" width="75%">
 + Topic：消息的主题
 + Consumer Group：消费者分组
 + Partition：消息的存储分片
@@ -96,7 +96,7 @@ First a few concepts:
 + 集群：相同的业务，部署在多个服务器上，相当于多单机模式组合（从物理结构上可区分）
 + 分布式：一个业务分拆多个子业务（不一定是部署在多台服务器上）；相对于集群来说集群描述的是物理形态，分布式描述的是一种工作方式
 + 简单总结：分布式是“并联”工作的，集群是“串联”工作的
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-06-01-03.jpg" width="50%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-01-03.jpg" width="50%">
 
 ## Topic
 &emsp;&emsp;topic的字面意思就是话题；在kafka的世界里面，可以理解为producer和consumer之间聊天的日常，两个人聊天就肯定会涉及到一个相同的话题，这个话题就是所谓的topic，也就是说只有关于这个topic的消息，才能在围绕这个topic的producer和consumer之间传递（其他消息consumer根本不用关心）；实际情况可能比这个比喻更为复杂（因为实际上一个话题可以被若干的consumer消费，一个producer也可以在不同话题之间切换）
@@ -114,4 +114,4 @@ First a few concepts:
 ## Zookeeper
 &emsp;&emsp;ZooKeeper本身是一种分布式协调服务，用于管理大型主机。在分布式环境中协调和管理服务是一个复杂的过程。ZooKeeper通过其简单的架构和API解决了这个问题。ZooKeeper允许开发人员专注于核心应用程序逻辑，而不必担心应用程序的分布式特性。作为去中心化的集群模式；需要要消费者知道现在那些生产者（对于消费者而言，kafka就是生产者）是可用的，这也就是Zookeeper的存在价值，它是用来做分布式集群管理的。
 &emsp;&emsp;实际应用中，Kafka将元数据信息保存在Zookeeper中，但是发送给Topic本身的数据是不会发到Zookeeper上的，否则Zookeeper就会爆掉了。kafka使用zookeeper可以实现动态的集群扩展，而不需要更改客户端（producer和consumer）的任何配置（对外来说，集群是一个整体，集群内部的扩展对外是不可感知的）。broker会在zookeeper注册并保持相关的元数据（topic，partition信息等）更新。Zookeeper中kafka节点的元数据存储结构如下：
-<img style="clear: both;display: block;margin:auto;" src="/img/2018/2018-06-01-04.jpg" width="90%">
+<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-01-04.jpg" width="90%">
