@@ -310,3 +310,11 @@ Disconnected: No supported authentication methods available (server sent: public
 151.101.72.133 assets-cdn.github.com
 151.101.109.194 github.global.ssl.fastly.net
 ```
+
+## 误修改ssh key导致push报错
+&emsp;&emsp;某次误重新生成本地ssh key之后更新到了github配置中，结果提交push时报如下错误：
+```
+TortoiseGitPlink Fatal Error  
+Disconnected: No supported authentication methods available (Sever sent: public key)
+```
+&emsp;&emsp;解决方法：将TortoiseGit->settings->Network->SSH Client的值由原来的TortoiseGitPlink.exe的地址改为本地安装的Git下的ssh.exe即可；比如我本机原来是C:\Program Files\TortoiseGit\bin\TortoiseGitPlink.exe，修改后为C:\Program Files\Git\usr\bin\ssh.exe。
