@@ -313,3 +313,42 @@ Disconnected: No supported authentication methods available (server sent: public
 
 ## 关于博客图片的问题
 &emsp;&emsp;为了这个博客图片存储的问题，兜兜转转走过几条路：最开始就是直接把图片放在了hexo博客的source目录里面，相对目录引用很方便，但是这样放总觉得有些怪怪的，于是就天天想着怎么优一下；后来花了些小工夫切到了七牛云，用了有那么三四个月吧，某一天突然收到邮件说测试域名将被回收，本来打算买个域名，不过发现还要一堆繁琐的认证，只得作罢；终于直到有一天发现博客图片都不显示了，就开始着手在网上找图床，试用了几个网站都不甚满意；于是转过头还是在github上开了个专用的图片仓库来存储吧，好在只写写博客图片的量也不大，上传之前先tinyPng压缩一下，访问速度也还可以，如此甚好。
+
+## algolia生成索引报错
+```
+Lin.C@DESKTOP-DDQ99D1 MINGW64 /e/07-Github/ttfisher.github.io (hexo)
+$ hexo algolia
+INFO  Start processing
+INFO  [Algolia] Identified 132 posts to index.
+INFO  [Algolia] Clearing index...
+INFO  [Algolia] Index cleared.
+INFO  [Algolia] Starting indexation...
+
+E:\07-Github\ttfisher.github.io\node_modules\hexo-algolia\lib\command.js:85
+      throw err;
+      ^
+AlgoliaSearchError: Record at the position 0 objectID=a4e482ef7d11bd9cca40e1b35a11ff30e2608df1 is too big size=130212 bytes. Contact us if you need an extended quota
+    at success (E:\07-Github\ttfisher.github.io\node_modules\algoliasearch\src\AlgoliaSearchCore.js:375:32)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+```
+&emsp;&emsp;很明显的错误提示：too big size；推测基本上是因为文章超长导致索引出现了错误（毕竟用的是人家免费的东西，要求不要太高），鉴于检索也是个锦上添花的功能，检索全文内容也不大实用，所以考虑将内容不放入索引是不是就可以解决问题了呢？于是有了下面的尝试（大约在command.js文件的30行左右）：
+```js
+	.map(function(data) {
+	  // 这是老的代码，删除其中的content，这样在上传到algolia生成索引时就不会上传内容了
+	  // var storedPost = _.pick(data, ['title', 'date', 'slug', 'content', 'excerpt', 'permalink']);  
+	  var storedPost = _.pick(data, ['title', 'date', 'slug', 'excerpt', 'permalink']); 
+```
+&emsp;&emsp;经过如此一番改动，重新试着生成了一次索引，完美解决之前的报错，perfect！唯一有点遗憾的是，这个文件是npm管理的，所以每次新装环境之后，又会恢复原来的样子，好在新装环境的时候不多，改动也不是多麻烦。
+```
+Lin.C@DESKTOP-DDQ99D1 MINGW64 /e/07-Github/ttfisher.github.io (hexo)
+$ hexo algolia
+INFO  Start processing
+INFO  [Algolia] Identified 132 posts to index.
+INFO  [Algolia] Clearing index...
+INFO  [Algolia] Index cleared.
+INFO  [Algolia] Starting indexation...
+INFO  [Algolia] Import done.
+
+Lin.C@DESKTOP-DDQ99D1 MINGW64 /e/07-Github/ttfisher.github.io (hexo)
+$
+```
