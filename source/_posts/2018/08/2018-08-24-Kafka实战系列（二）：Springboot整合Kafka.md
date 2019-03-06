@@ -10,7 +10,7 @@ abbrlink: 67479509
 date: 2018-08-24 11:22:39
 ---
 【引言】做Java的基本也都注意到了，Springboot最近迅速走红，当然它的走红也是个必然，所以今天也借着Springboot的东风来试试Kafka的集成；当然这个Demo也只是简单的演示一下怎么用，具体到怎么用好可不是一两个Demo可以解决的事情了。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/public/000017.jpg" width="500">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/public/000017.jpg" width="500">
 <!-- more -->
 
 # Maven

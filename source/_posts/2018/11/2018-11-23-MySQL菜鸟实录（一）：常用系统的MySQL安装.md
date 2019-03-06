@@ -9,7 +9,7 @@ abbrlink: d62bf25b
 date: 2018-11-23 09:40:43
 ---
 【引言】
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-11-13-02.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-11-13-02.jpg" width="500"/></div>
 <!-- more -->
 
 # CentOS 7
@@ -268,7 +268,7 @@ mysql>
 
 ### 补充内容
 &emsp;&emsp;实际上这种免安装模式是将MySQL注册为Windows的一个服务了，通过查看服务列表我们能发现这个MySQL服务，也可以控制服务的启动方式、运行状态等等。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-11-14-03.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-11-14-03.jpg" width="75%">
 
 ### 怎么卸载？
 - 首先要停止当前正在运行的服务，然后删除mysql目录

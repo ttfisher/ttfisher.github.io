@@ -9,7 +9,7 @@ abbrlink: 32ba51ec
 date: 2018-08-22 07:53:43
 ---
 【引言】本章着重讲一讲ActiveMQ在点对点模式下如何实现消息传递的，包括传统方式和Springboot方式两种实现；所谓的点对点通俗理解的话，就是Producer发送的一条消息只能被监听这个Topic的某一个Consumer接收（个人理解，不见得准确）。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-21-04.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-21-04.jpg" width="500"/></div>
 <!-- more -->
 
 # 传统实现

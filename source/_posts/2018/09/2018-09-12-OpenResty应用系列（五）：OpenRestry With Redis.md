@@ -8,7 +8,7 @@ abbrlink: 95a8ee39
 date: 2018-09-12 19:26:00
 ---
 【引言】既然是在OpenResty里面使用，Lua基本上是更多的参与到一些请求管理方面的工作，比如分发，比如请求复制，比如还能做一些反爬，说到反爬，实际可以结合Redis这个帮手来做，所以这一章我们先不纠结Lua本身的语法，先来看一个Redis操作的Demo，从实践中去理解Lua的基本语法。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-13-05.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-05.jpg" width="500"/></div>
 <!-- more -->
 
 # Redis库引入

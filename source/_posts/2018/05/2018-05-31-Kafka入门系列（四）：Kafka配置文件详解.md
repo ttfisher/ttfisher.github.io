@@ -10,7 +10,7 @@ abbrlink: d67d13cd
 date: 2018-05-31 19:09:28
 ---
 【引言】本篇为Kafka入门系列的第四讲，从配置中深入一点去理解Kafka！
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000012.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000012.jpg" width="500"/></div>
 <!-- more -->
 
 # 默认配置项（kafka_2.10-0.9.0.0）

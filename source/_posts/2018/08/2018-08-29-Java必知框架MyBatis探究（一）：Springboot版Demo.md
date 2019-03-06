@@ -9,7 +9,7 @@ abbrlink: 85554181
 date: 2018-08-29 08:29:28
 ---
 【引言】记得前段时间参加阿里的电话面试，被面试官问到MyBatis的一级缓存和二级缓存的知识，结果自然是No Answer；所以便考虑着抽些时间来看看MyBatis的源码吧，一来让自己更熟悉一些别人是怎么做这种组件实现的，二来到了现在这个阶段，该往深处看看了！
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-30-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-30-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 闲言

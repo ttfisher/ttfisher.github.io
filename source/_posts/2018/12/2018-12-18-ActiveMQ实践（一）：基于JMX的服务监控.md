@@ -9,7 +9,7 @@ abbrlink: b4afbbb6
 date: 2018-12-17 15:09:11
 ---
 【引言】无意间接触到一种消息积压处理的场景，想着是否可以监控MQ的队列参数进行发送端的策略调整，于是有了这一篇文章；当然本次也参考了网络上很多的分享，但无奈的发现天下文章一大抄，很难找到一篇写的完整的。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000019.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000019.jpg" width="500"/></div>
 <!-- more -->
 
 # 前言

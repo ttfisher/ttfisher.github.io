@@ -9,7 +9,7 @@ abbrlink: 8138b98c
 date: 2018-06-06 09:09:28
 ---
 【引言】本篇为Spring Framework的开篇之作，作为Java开发人员必知必会的框架，我们的掌握程度到什么火候了呢？恐怕我们很多人也都只是知其然，但却不知其所以然；我一直信奉的一个原则就是：技不贵多，而贵精。所以，不求甚解我是从来不推崇的，这个系列我们就来求一求Spring的甚解。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-04-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-06-04-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 闲话开篇
@@ -47,7 +47,7 @@ date: 2018-06-06 09:09:28
 &emsp;&emsp;创建对象因为使用了反射技术，在效率上有些损耗。但相对于IoC提高的维护性和灵活性来说，这点损耗是微不足道的，除非某对象的生成对效率要求特别高。
 
 # Spring的组成
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-04-02.jpg" width="90%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-06-04-02.jpg" width="90%">
 &emsp;&emsp;上图是一张经典的Spring框架图，下面针对其中的具体组件简单做一个说明：
 + Spring Core
  + 这是Spring框架最基础的部分，它提供了依赖注入（Dependency Injection）特征来实现容器对Bean的管理。
@@ -181,4 +181,4 @@ date: 2018-06-06 09:09:28
 - Spring Cloud Zookeeper：操作Zookeeper的工具包，用于使用zookeeper方式的服务注册和发现。
 - Spring Cloud Stream：数据流操作开发包，封装了与Redis,Rabbit、Kafka等发送接收消息。
 - Spring Cloud CLI：基于 Spring Boot CLI，可以让你以命令行方式快速建立云组件。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-27-01.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-27-01.jpg" width="75%">

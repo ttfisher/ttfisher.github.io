@@ -10,7 +10,7 @@ abbrlink: ad8a452
 date: 2018-08-24 16:25:55
 ---
 【引言】同样是作为消息中间件（虽然具体的应用场景不同），为什么Kafka优于其他的中间件呢？都说Kafka高性能，具体为什么会有那么高的性能呢？除了在软件本身层面的设计优化，其他层面是否有新的技术运用呢？针对这一系列的问题，就通过这个进阶系列的专题来详细的探究探究......
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-24-02.jpg" width="500">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-24-02.jpg" width="500">
 <!-- more -->
 
 # Kafka的特性

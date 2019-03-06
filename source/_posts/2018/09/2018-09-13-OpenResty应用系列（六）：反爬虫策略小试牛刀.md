@@ -8,7 +8,7 @@ abbrlink: 5e12f98d
 date: 2018-09-13 09:26:00
 ---
 【引言】其实前一节引入Lua操作Redis的应用意图是很明显的，也是为了本节做一个铺垫，有了Redis，我们可以很方便的记录很多信息，而且Redis的自动过期特性对我们做反爬监控也是如虎添翼，所以本章我们基于前面的积累来探讨一下反爬的策略，当然还很粗浅，只是实现了一些非常基础的反爬策略。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000025.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000025.jpg" width="500"/></div>
 <!-- more -->
 
 # 基本思路
@@ -409,7 +409,7 @@ end
 
 # 成果验证
 &emsp;&emsp;本次针对反爬策略的验证，使用的是tomcat自带的example来进行的，通过浏览器多次访问后触发拦截限制，会出现403的现象，实际证明拦截策略生效。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-13-07.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-07.jpg" width="60%">
 
 # 结语
 &emsp;&emsp;此次试验仅简单的针对同一IP的高频度访问进行了拦截，效果是实现了，但是距离实际使用可能还有一段距离；因为实际业务场景中，爬虫远不会如此简单粗暴，所以后面还是要考虑从其他层面来进行拦截策略的补充；所以后面会有个大展拳脚的专题来对反爬进行升级优化，虽然理论上爬虫是无法完全被检测到的，但是在能力范围内能做的尽量还是要去做到。

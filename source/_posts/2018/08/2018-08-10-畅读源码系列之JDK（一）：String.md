@@ -9,7 +9,7 @@ abbrlink: 7e8c5b5a
 date: 2018-08-10 08:34:00
 ---
 【引言】String，在我们日常开发过程中，想必也是最常用到的一种类型，所以，这次的畅读源码系列的第一站就选择来读一读String这个我们熟悉但可能有些地方还很陌生的类吧！
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-08-10-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-10-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 声明

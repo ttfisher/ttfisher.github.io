@@ -8,7 +8,7 @@ abbrlink: c6d4da27
 date: 2017-10-10 09:11:00
 ---
 【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000007.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000007.jpg" width="500"/></div>
 <!-- more -->
 
 # 基础语法篇
@@ -90,7 +90,7 @@ date: 2017-10-10 09:11:00
 
 ## 插入图像
 &emsp;&emsp;一般使用 使用\!\[描述\](图片链接地址) 插入图像，当然也可以用HTML语言的div来实现（考虑到能想得起玩儿Markdown的同学应该都有些编程基础，所以这里就不赘述了），Please enjoy this moment!
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/public/000005.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/public/000005.jpg" width="75%">
 
 ## 分隔线
 &emsp;&emsp;一般在一行中用三个以上的 \*、\-、\_ 来建立一个分隔线，行内不能有除空格以外的其他内容
@@ -179,7 +179,7 @@ c2(no)->op2->e
 ## 常用HTML
 ```
 # 插入图片，居中指定宽度
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-06-04-03.jpg" width="500">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-06-04-03.jpg" width="500">
 
 # 字体或颜色设置
 <font face="微软雅黑" color="red" size="6">字体及字体颜色和大小</font>

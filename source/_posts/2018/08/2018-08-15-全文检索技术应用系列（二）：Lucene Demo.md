@@ -9,7 +9,7 @@ abbrlink: 603f4bd6
 date: 2018-08-15 08:07:01
 ---
 【引言】既然是Demo，基本上也就是代码和测试方法了，这里只是一个很简单很简单的演示效果，跟实际应用还差着十万八千里，不过通过这段简短的Demo，我们可以一窥Lucene的究竟。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/public/000017.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000017.jpg" width="500"/></div>
 <!-- more -->
 
 # Maven依赖

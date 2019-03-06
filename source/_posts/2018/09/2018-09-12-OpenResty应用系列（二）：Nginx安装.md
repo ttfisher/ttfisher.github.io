@@ -8,7 +8,7 @@ abbrlink: b2489ab
 date: 2018-09-12 07:26:00
 ---
 【引言】作为OpenResty的基石，Nginx是必须先了解的，所以本节就来说一说它的安装方法，其实和现在很多开箱即用的软件一样，Nginx也是基本上解压完配置配置就能用起来了。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-13-03.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-03.jpg" width="500"/></div>
 <!-- more -->
 
 # windows下安装
@@ -35,7 +35,7 @@ D:\work_install\nginx-1.10.2 的目录
 
 &emsp;&emsp;双击nginx.exe就可以运行nginx了，默认情况下不做任何配置直接启动也可以，这时会在本地80端口启动服务。
 &emsp;&emsp;接下来本地浏览器访问：http://localhost/ ；出现如下展示信息的页面即表示启动成功（实际上是因为nginx默认启动在80端口，所以localhost后面的端口号是可以省略的）：
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-12-03.jpg" width="70%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-12-03.jpg" width="70%">
 
 # Linux环境的安装
 - 获取 Nginx源码包，在http://nginx.org/en/download.html上可以获取当前最新的版本

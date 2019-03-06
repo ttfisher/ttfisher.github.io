@@ -9,7 +9,7 @@ abbrlink: ae7da3ed
 date: 2018-09-08 10:03:00
 ---
 【引言】借着此次用到了Nginx和Keepalived来实现负载均衡的双机热备的机会，整理一下基本的安装和配置，很多东西都是在使用中熟知的，但是没多久就会遗忘，所以还是写几笔吧！
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-13-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 概念
@@ -74,7 +74,7 @@ make install
 
 ## 验证服务
 &emsp;&emsp;经过上面的一系列步骤之后，Nginx应该都已经正常安装完成了，默认配置中Nginx是绑定80端口的，所以直接通过IP访问即可验证Nginx是否正常提供服务。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-08-01.jpg" width="70%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-08-01.jpg" width="70%">
 
 # Keepalived安装
 
@@ -346,7 +346,7 @@ Sep  8 11:40:18 localhost Keepalived_healthcheckers[3258]: Using LinkWatch kerne
 
 ### 验证服务
 &emsp;&emsp;直接通过keepalived配置的虚拟IP来访问即可实现请求的跳转。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-08-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-08-02.jpg" width="75%">
 
 ## 主死备活
 
@@ -382,7 +382,7 @@ Sep  8 11:44:04 localhost Keepalived_vrrp[3259]: VRRP_Instance(VI_1) Sending gra
 
 ### 验证服务
 &emsp;&emsp;主挂掉后，通过虚拟IP仍然可以正常实现服务访问。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-08-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-08-02.jpg" width="75%">
 
 ## 主备双活
 
@@ -437,5 +437,5 @@ Sep  8 11:46:52 localhost ntpd[1462]: peers refreshed
 
 ### 验证服务
 &emsp;&emsp;主恢复后，通过虚拟IP仍旧可以正常实现访问。
-<img style="clear: both;display: block;margin:auto;" src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-09-08-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-08-02.jpg" width="75%">
 

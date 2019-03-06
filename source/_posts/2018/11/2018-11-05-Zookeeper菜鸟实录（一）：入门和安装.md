@@ -9,7 +9,7 @@ abbrlink: 7a8febe
 date: 2018-11-05 11:48:43
 ---
 【引言】已经记不得第一次接触Zookeeper是什么时候了，如今很多的分布式系统都会用到这个家伙，但实则对Zookeeper这个东西，如今是熟悉又陌生，感觉很多年前就认识了，但让我说说它的话，甚至都不知道从何说起；故而借着这次尝试了解solr的机会，先探究探究Zookeeper。
-<div align=center><img src="http://pm4hdun71.bkt.clouddn.com/img/2018/2018-11-12-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-11-12-01.jpg" width="500"/></div>
 <!-- more -->
 
 # 概念
