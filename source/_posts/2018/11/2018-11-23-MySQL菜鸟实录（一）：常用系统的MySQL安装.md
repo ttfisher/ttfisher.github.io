@@ -8,7 +8,7 @@ comments: true
 abbrlink: d62bf25b
 date: 2018-11-23 09:40:43
 ---
-【引言】
+【引言】于我而言，MySQL真的是个熟悉又陌生的领域，说熟悉是因为从刚开始做开发就接触到它，说陌生实则这么多年，对MySQL或者说数据库这个领域还是有些微微的畏惧心理，说到底还是因为不熟，没把握，所以这就从菜鸟级别开始练着吧！
 <div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-11-13-02.jpg" width="500"/></div>
 <!-- more -->
 
