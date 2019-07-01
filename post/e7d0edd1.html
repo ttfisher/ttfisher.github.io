@@ -1,0 +1,973 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="读万卷书,架构,编程思想,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】《代码不朽》，书名全称《代码不朽：编写可维护软件的10大要则（Java版）》，作者：【荷】Joost Visser（约斯特·维瑟），英文原版名《Building Maintainable Software》，豆瓣读书评分7.7。（阅读周期： 2018.03.01 - 2018.08.15）">
+<meta name="keywords" content="读万卷书,架构,编程思想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《代码不朽》">
+<meta property="og:url" content="https://ttfisher.github.io/post/e7d0edd1.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】《代码不朽》，书名全称《代码不朽：编写可维护软件的10大要则（Java版）》，作者：【荷】Joost Visser（约斯特·维瑟），英文原版名《Building Maintainable Software》，豆瓣读书评分7.7。（阅读周期： 2018.03.01 - 2018.08.15）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-05-24-06.jpg">
+<meta property="og:updated_time" content="2019-05-14T23:29:20.417Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《代码不朽》">
+<meta name="twitter:description" content="【引言】《代码不朽》，书名全称《代码不朽：编写可维护软件的10大要则（Java版）》，作者：【荷】Joost Visser（约斯特·维瑟），英文原版名《Building Maintainable Software》，豆瓣读书评分7.7。（阅读周期： 2018.03.01 - 2018.08.15）">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-05-24-06.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/e7d0edd1.html">
+
+
+
+
+
+  <title>《代码不朽》 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/e7d0edd1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《代码不朽》</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-01T14:09:59+08:00">
+                2018-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Lin-C读书记之泛技术系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Lin.C读书记之泛技术系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】《代码不朽》，书名全称《代码不朽：编写可维护软件的10大要则（Java版）》，作者：【荷】Joost Visser（约斯特·维瑟），英文原版名《Building Maintainable Software》，豆瓣读书评分7.7。（阅读周期： 2018.03.01 - 2018.08.15）</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-05-24-06.jpg" width="275"></div><br><a id="more"></a></p>
+<h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>&emsp;&emsp;序言中有一句很好的古语：“上医治未病,中医治欲病,下医治已病”（这么传统的国语风，想必是译者的发挥吧！）；用到软件质量管理上，再合适不过了；我们经常说的要以客户为中心，客户最关注的想必也是产品的质量。<br>&emsp;&emsp;本书陆陆续续到半年之后的某天（2018.08.15），算是草草浏览完毕，真的仅仅是草草浏览，虽然书中说得很多道理都是很基本的，但是想把软件做好，这些原则也是必不可缺的基石和根本。</p>
+<h1 id="第1章：简介"><a href="#第1章：简介" class="headerlink" title="第1章：简介"></a>第1章：简介</h1><h2 id="软件质量的8个特征"><a href="#软件质量的8个特征" class="headerlink" title="软件质量的8个特征"></a>软件质量的8个特征</h2><ul>
+<li>可维护性</li>
+<li>功能可适性</li>
+<li>性能效率</li>
+<li>兼容性</li>
+<li>可使用性</li>
+<li>可靠性</li>
+<li>安全性</li>
+<li>可移植性</li>
+</ul>
+<h2 id="可维护性基本原则"><a href="#可维护性基本原则" class="headerlink" title="可维护性基本原则"></a>可维护性基本原则</h2><ul>
+<li>坚持简单的原则有助于提高可维护性</li>
+<li>可维护性不是开发完成后才取考虑的，而应该是在项目开发的一开始就需要考虑，每一个人的贡献都需要计算在内（避免破窗效应）。</li>
+<li>对各个原则的违背会带来不同的影响，有些严重程度甚于其他；一个软件系统越遵守原则，可维护性越高。（2-11章便是软件可维护性的十大原则）</li>
+</ul>
+<h1 id="第2章：编写短小的代码单元"><a href="#第2章：编写短小的代码单元" class="headerlink" title="第2章：编写短小的代码单元"></a>第2章：编写短小的代码单元</h1><h2 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>代码单元的长度应该限制在15行代码以内；</li>
+<li>为此首先不要编写超过15行代码的单元，或者将长的单元分解成多个更短的单元，直到每个单元都不超过15行代码（还是有些难度的）；</li>
+<li>该原则能提高可维护性的原因：短小的代码单元易于理解、测试以及重用。</li>
+</ul>
+<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>短小的代码单元易于测试、分析和重用。</li>
+</ul>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>适时的进行代码重构</li>
+<li>将方法替换为方法对象（尤其是针对多参数的方法）</li>
+</ul>
+<h1 id="第3章：编写简单的代码单元"><a href="#第3章：编写简单的代码单元" class="headerlink" title="第3章：编写简单的代码单元"></a>第3章：编写简单的代码单元</h1><h2 id="基本原则-1"><a href="#基本原则-1" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>限制每个代码单元分支点的数量不超过4个</li>
+<li>考虑将复杂的代码单元拆分成多个简单的单元，避免多个复杂的单元糅合在一起</li>
+<li>该原则对可维护性的提高很显而易见，主要是因为分支点越少代码单元越容易被理解、修改和测试</li>
+</ul>
+<h2 id="动机-1"><a href="#动机-1" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>简单的代码单元易于修改和测试</li>
+</ul>
+<h2 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>if、case、while、switch、for之类的分支嵌套都需要控制好层次</li>
+<li>可考虑借用Map或者利用Java语言的多态性来精简链式条件语句</li>
+<li>可考虑利用函数抽取或反条件return/break的方式，减少嵌套语句的嵌套层次</li>
+</ul>
+<h1 id="第4章：不写重复代码"><a href="#第4章：不写重复代码" class="headerlink" title="第4章：不写重复代码"></a>第4章：不写重复代码</h1><h2 id="基本原则-2"><a href="#基本原则-2" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>禁止复制代码；禁止复制代码；禁止复制代码；重要的事情说三遍</li>
+<li>应编写可重用的、通用的代码；或者是复用已有的代码单元</li>
+</ul>
+<h2 id="动机-2"><a href="#动机-2" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>重复代码的分析和修改都更浪费成本</li>
+</ul>
+<h2 id="操作-2"><a href="#操作-2" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>有超过6行重复的代码或代码块，就必须考虑提取以解决重复性</li>
+<li>处理的方式：类的继承、提取出公共工具</li>
+<li>善用第三方工具（比如Apache本身有很多工具封装），不要重复造轮子</li>
+<li>不要认为重复字符串就不需要重构，实际也是很有必要的（比如sql里面的关键词）</li>
+</ul>
+<h1 id="第5章：保持代码单元和接口简单"><a href="#第5章：保持代码单元和接口简单" class="headerlink" title="第5章：保持代码单元和接口简单"></a>第5章：保持代码单元和接口简单</h1><h2 id="基本原则-3"><a href="#基本原则-3" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>每个方法的参数尽量控制在不超过4个</li>
+<li>参数过多时，尽量使用对象封装</li>
+</ul>
+<h2 id="动机-3"><a href="#动机-3" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>短接口更易于理解和重用</li>
+<li>短接口的方法更易于修改</li>
+</ul>
+<h2 id="操作-3"><a href="#操作-3" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>必须时刻牢记控制接口参数的数量</li>
+<li>对默认值进行方法重载（比如：JDK里的很多集合类，有很多不同的重载构造方法）</li>
+<li>单一职责原则，就是一个方法尽量只做一件事，流程主方法负责串联流程，每个方法要做到责任明确</li>
+</ul>
+<h1 id="第6章：分离模块之间的关注点"><a href="#第6章：分离模块之间的关注点" class="headerlink" title="第6章：分离模块之间的关注点"></a>第6章：分离模块之间的关注点</h1><h2 id="基本原则-4"><a href="#基本原则-4" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>避免形成超大型的模块，便于实现模块之间的松耦合</li>
+<li>类的职责尽量要单一化，简单明了；不要将不同职责糅合到一个模块，尽量做好职责划分</li>
+<li>面向接口，通过接口屏蔽实际实现</li>
+</ul>
+<h2 id="动机-4"><a href="#动机-4" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>小型、松耦合的模块允许开发人员独立进行工作（便于工作划分）</li>
+<li>小型、松耦合的模块降低了浏览理解代码的难度</li>
+<li>小型、松耦合的模块避免让新人赶到手足无措和焦虑</li>
+</ul>
+<h2 id="操作-4"><a href="#操作-4" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>避免写超大的类，可以考虑根据不同的关注点将一个大类拆分成多个小类</li>
+<li>可利用很多第三方库或框架来替换自己写的代码，毕竟它们的稳定性和可靠性是经过验证的（StringUtils、FileUtils等很多不同的Utils）</li>
+</ul>
+<h1 id="第7章：架构组件松耦合"><a href="#第7章：架构组件松耦合" class="headerlink" title="第7章：架构组件松耦合"></a>第7章：架构组件松耦合</h1><h2 id="基本原则-5"><a href="#基本原则-5" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>顶层组件之间应该做到松耦合</li>
+<li>尽可能的减少当前模块中需要暴露给（例如：被调用）其他组件中模块的相关代码</li>
+</ul>
+<h2 id="动机-5"><a href="#动机-5" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>低组件依赖允许独立维护，不依赖于整个系统</li>
+<li>低组件依赖可以分离维护职责</li>
+<li>低组件依赖让测试变得更容易</li>
+</ul>
+<h2 id="操作-5"><a href="#操作-5" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>限制作为组件接口的模块的大小</li>
+<li>做更高层次的抽象</li>
+<li>避免使用透传调用（避免对其他组件接口模块的直接调用）</li>
+<li>注意设计模式的使用（比如：抽象工厂）</li>
+</ul>
+<h1 id="第8章：保持架构组件之间的平衡"><a href="#第8章：保持架构组件之间的平衡" class="headerlink" title="第8章：保持架构组件之间的平衡"></a>第8章：保持架构组件之间的平衡</h1><h2 id="基本原则-6"><a href="#基本原则-6" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>需要平衡代码中顶层组件的数量和体积；也就是要保证组件平衡性</li>
+<li>应该保持源代码中的组件数量接近于9（比如：6-12），并且要保证组件的体积基本一致</li>
+</ul>
+<h2 id="动机-6"><a href="#动机-6" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>好的组件平衡能让查找和分析代码更容易</li>
+<li>好的组件平衡能隔离维护所带来的影响</li>
+<li>好的组件平衡能分离维护职责</li>
+</ul>
+<h2 id="操作-6"><a href="#操作-6" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>确定将功能合成组件的合适原则，不要盲目的合成</li>
+<li>明确系统的领域并一直坚持下去</li>
+</ul>
+<h1 id="第9章：保持小规模代码库"><a href="#第9章：保持小规模代码库" class="headerlink" title="第9章：保持小规模代码库"></a>第9章：保持小规模代码库</h1><h2 id="基本原则-7"><a href="#基本原则-7" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>保持代码库的规模尽可能小</li>
+<li>控制代码库的增长，并且必要的情况下要主动减少系统的代码体积</li>
+</ul>
+<h2 id="动机-7"><a href="#动机-7" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>以大型代码库为目标的项目易失败</li>
+<li>大型代码库的维护难度更高</li>
+<li>大型系统会出现更密集的缺陷</li>
+</ul>
+<h2 id="操作-7"><a href="#操作-7" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>控制需求的蔓延</li>
+<li>不要复制粘贴代码</li>
+<li>适时重构已有代码</li>
+<li>使用第三方库和框架</li>
+</ul>
+<h1 id="第10章：自动化开发部署和测试"><a href="#第10章：自动化开发部署和测试" class="headerlink" title="第10章：自动化开发部署和测试"></a>第10章：自动化开发部署和测试</h1><h2 id="基本原则-8"><a href="#基本原则-8" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>需要对你的代码进行自动化测试</li>
+<li>尽量通过测试框架来编写测试代码</li>
+</ul>
+<h2 id="动机-8"><a href="#动机-8" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>自动化测试让测试可重复</li>
+<li>自动化测试会让开发更有效率</li>
+<li>自动化测试让代码行为可预测</li>
+<li>测试实际是对被测代码的一个补充文档</li>
+<li>编写单元测试用例能让你编写更好的代码</li>
+</ul>
+<h2 id="操作-8"><a href="#操作-8" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>Junit</li>
+<li>编写单元测试必须严谨（正常、非正常；保持测试的独立性）</li>
+<li>保证测试覆盖率</li>
+</ul>
+<h1 id="第11章：编写简洁的代码"><a href="#第11章：编写简洁的代码" class="headerlink" title="第11章：编写简洁的代码"></a>第11章：编写简洁的代码</h1><h2 id="基本原则-9"><a href="#基本原则-9" class="headerlink" title="基本原则"></a>基本原则</h2><ul>
+<li>代码必须保持简洁</li>
+<li>不应该在完成开发工作后留下代码坏味道（“离开营地时，要让它比来时更干净”）</li>
+</ul>
+<h2 id="操作-9"><a href="#操作-9" class="headerlink" title="操作"></a>操作</h2><ul>
+<li>不要编写单元级别的代码坏味道</li>
+<li>不要编写不好的注释</li>
+<li>不要注释代码</li>
+<li>不要保留废弃代码</li>
+<li>不要使用过长的标识符命名</li>
+<li>不要使用魔数常量</li>
+<li>不要使用未正确处理的异常（禁止吞噬异常）；尽量按照特定异常多次捕获；特定异常特定返回</li>
+</ul>
+<h1 id="第12章：后续事宜"><a href="#第12章：后续事宜" class="headerlink" title="第12章：后续事宜"></a>第12章：后续事宜</h1><ul>
+<li>将前面所有原则变成实践</li>
+<li>低层级（代码单元）的原则要优先于高层级（组件）的原则</li>
+<li>每个人都需要对自己每次提交的代码的质量负责，个体的优化是整体优化的前提</li>
+</ul>
+<h1 id="后记-2019-02-21"><a href="#后记-2019-02-21" class="headerlink" title="后记-2019.02.21"></a>后记-2019.02.21</h1><p>&emsp;&emsp;今天大约是写完这篇文档的半年后了，最近有一段时间没怎么写东西了，一来是前段时间比较忙，二来最近多数空闲时间在思考一些方向；今天抽了点小空把当初记录的这篇《代码不朽》的摘录又过了一遍，愈发深切的体会到“大道至简”这句话的深意。把复杂的东西简单化，才是我们作为技术从业者的终极追求吧！<br>&emsp;&emsp;今天早上看了一个日本作家的关于阅读技巧的书籍，提到了flow式的阅读体验，在此实践了一下，这一次留下的总体印象大体可以概括为以下几个词：短小、简洁、不重复、复用。希望一段时间之后会有一些新的体会吧！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/读万卷书/" rel="tag"># 读万卷书</a>
+          
+            <a href="/tags/架构/" rel="tag"># 架构</a>
+          
+            <a href="/tags/编程思想/" rel="tag"># 编程思想</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/f743d1c.html" rel="next" title="GitHub博客平台搭建（四）：谈一谈越来越火的Git（未完成...)">
+                <i class="fa fa-chevron-left"></i> GitHub博客平台搭建（四）：谈一谈越来越火的Git（未完成...)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/261fb14d.html" rel="prev" title="Java第三方工具系列（一）：log4j">
+                Java第三方工具系列（一）：log4j <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#序言"><span class="nav-number">1.</span> <span class="nav-text">序言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第1章：简介"><span class="nav-number">2.</span> <span class="nav-text">第1章：简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#软件质量的8个特征"><span class="nav-number">2.1.</span> <span class="nav-text">软件质量的8个特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可维护性基本原则"><span class="nav-number">2.2.</span> <span class="nav-text">可维护性基本原则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第2章：编写短小的代码单元"><span class="nav-number">3.</span> <span class="nav-text">第2章：编写短小的代码单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则"><span class="nav-number">3.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">3.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作"><span class="nav-number">3.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第3章：编写简单的代码单元"><span class="nav-number">4.</span> <span class="nav-text">第3章：编写简单的代码单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-1"><span class="nav-number">4.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-1"><span class="nav-number">4.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-1"><span class="nav-number">4.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第4章：不写重复代码"><span class="nav-number">5.</span> <span class="nav-text">第4章：不写重复代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-2"><span class="nav-number">5.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-2"><span class="nav-number">5.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-2"><span class="nav-number">5.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第5章：保持代码单元和接口简单"><span class="nav-number">6.</span> <span class="nav-text">第5章：保持代码单元和接口简单</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-3"><span class="nav-number">6.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-3"><span class="nav-number">6.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-3"><span class="nav-number">6.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第6章：分离模块之间的关注点"><span class="nav-number">7.</span> <span class="nav-text">第6章：分离模块之间的关注点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-4"><span class="nav-number">7.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-4"><span class="nav-number">7.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-4"><span class="nav-number">7.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第7章：架构组件松耦合"><span class="nav-number">8.</span> <span class="nav-text">第7章：架构组件松耦合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-5"><span class="nav-number">8.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-5"><span class="nav-number">8.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-5"><span class="nav-number">8.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第8章：保持架构组件之间的平衡"><span class="nav-number">9.</span> <span class="nav-text">第8章：保持架构组件之间的平衡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-6"><span class="nav-number">9.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-6"><span class="nav-number">9.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-6"><span class="nav-number">9.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第9章：保持小规模代码库"><span class="nav-number">10.</span> <span class="nav-text">第9章：保持小规模代码库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-7"><span class="nav-number">10.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-7"><span class="nav-number">10.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-7"><span class="nav-number">10.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第10章：自动化开发部署和测试"><span class="nav-number">11.</span> <span class="nav-text">第10章：自动化开发部署和测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-8"><span class="nav-number">11.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动机-8"><span class="nav-number">11.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-8"><span class="nav-number">11.3.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第11章：编写简洁的代码"><span class="nav-number">12.</span> <span class="nav-text">第11章：编写简洁的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本原则-9"><span class="nav-number">12.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作-9"><span class="nav-number">12.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第12章：后续事宜"><span class="nav-number">13.</span> <span class="nav-text">第12章：后续事宜</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记-2019-02-21"><span class="nav-number">14.</span> <span class="nav-text">后记-2019.02.21</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

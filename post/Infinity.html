@@ -1,0 +1,837 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Java语言特性,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】简单描述呢，序列化就是把对象转成字节序列（通常用于对象持久化或克隆），在Java中，只要需要序列化的对象类型实现了Serializbale接口，就算完成了对序列化的支持，但是序列化具体细节是如何实现的呢？">
+<meta name="keywords" content="Java语言特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java高级特性系列（一）：对象序列化">
+<meta property="og:url" content="https://ttfisher.github.io/post/Infinity.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】简单描述呢，序列化就是把对象转成字节序列（通常用于对象持久化或克隆），在Java中，只要需要序列化的对象类型实现了Serializbale接口，就算完成了对序列化的支持，但是序列化具体细节是如何实现的呢？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-05-24-09.jpg">
+<meta property="og:updated_time" content="2019-05-30T23:15:45.455Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java高级特性系列（一）：对象序列化">
+<meta name="twitter:description" content="【引言】简单描述呢，序列化就是把对象转成字节序列（通常用于对象持久化或克隆），在Java中，只要需要序列化的对象类型实现了Serializbale接口，就算完成了对序列化的支持，但是序列化具体细节是如何实现的呢？">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-05-24-09.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/Infinity.html">
+
+
+
+
+
+  <title>Java高级特性系列（一）：对象序列化 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/Infinity.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java高级特性系列（一）：对象序列化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-21T17:36:55+08:00">
+                2018-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术结构升级之JDK微专题/" itemprop="url" rel="index">
+                    <span itemprop="name">技术结构升级之JDK微专题</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】简单描述呢，序列化就是把对象转成字节序列（通常用于对象持久化或克隆），在Java中，只要需要序列化的对象类型实现了Serializbale接口，就算完成了对序列化的支持，但是序列化具体细节是如何实现的呢？</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-05-24-09.jpg" width="55%"></div><br><a id="more"></a></p>
+<h1 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h1><p>&emsp;&emsp;在Java语言中，提供了序列化和反序列化机制，所谓序列化就是将对象转换为字节序列的过程（可以理解为做了一个对象快照），反序列化很显而易见就是将字节序列再转换为对象的过程。在序列化的过程中形成的字节序列，包括了该对象的数据内容、对象的类型信息和存储在对象中数据的类型信息，而这些都是保证可以正确的反序列化的关键所在。<br>&emsp;&emsp;序列化和反序列化的过程都是平台无关的，也就是说只要JVM版本兼容，在任何平台都可以支持这种序列化和反序列化的操作。</p>
+<h1 id="为什么要使用序列化？"><a href="#为什么要使用序列化？" class="headerlink" title="为什么要使用序列化？"></a>为什么要使用序列化？</h1><p>&emsp;&emsp;第一个场景：我们需要将Java程序运行过程中的某些对象持久化保存（做备份或者转储等等），这时候一般都是通过序列化操作将字节序列直接存到磁盘的某个文件中。<br>&emsp;&emsp;第二个场景：满足Java对象在网络传输的过程中的需要，因为网络中只能以二进制形式传输数据；比如之前做过一个比较low的爬虫，在境外爬取数据生成Java对象后，序列化成文件保存到磁盘，然后建立一个rsync同步到本地再反序列化导入本地系统。</p>
+<h1 id="如何完成序列化？"><a href="#如何完成序列化？" class="headerlink" title="如何完成序列化？"></a>如何完成序列化？</h1><h2 id="序列化的关键类"><a href="#序列化的关键类" class="headerlink" title="序列化的关键类"></a>序列化的关键类</h2><p>&emsp;&emsp;序列化操作，涉及两个关键的类：ObjectOutputStream和ObjectInputStream；通过类名我们就很容易分辨出来，这两个类一个是输出流一个是输入流。以下两段是java的io包中的源码注释。<br>&emsp;&emsp;An ObjectOutputStream writes primitive data types and graphs of Java objects to an OutputStream.  The objects can be read (reconstituted) using an ObjectInputStream.  Persistent storage of objects can be accomplished by using a file for the stream.  If the stream is a network socket stream, the objects can be reconstituted on another host or in another process.</p>
+<h2 id="序列化深克隆实例"><a href="#序列化深克隆实例" class="headerlink" title="序列化深克隆实例"></a>序列化深克隆实例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过序列化Clone对象（深克隆）</span></span><br><span class="line"><span class="comment"> * - 如果不需要深克隆或类内部不包含非基本数据类型属性的情况可以通过实现Cloneable接口即可完成clone</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt; 泛型</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> t 需要被clone的对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 复制后的新对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception  IO异常</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">clone</span><span class="params">(T t)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ObjectOutputStream out = <span class="keyword">null</span>;</span><br><span class="line">    ObjectInputStream in = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 通过输出流将t进行序列化</span></span><br><span class="line">        ByteArrayOutputStream byteOut = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        out = <span class="keyword">new</span> ObjectOutputStream(byteOut);</span><br><span class="line">        out.writeObject(t);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 再通过输入流，将t序列化后的byteOut流读入然后转化成返回对象</span></span><br><span class="line">        ByteArrayInputStream byteIn = <span class="keyword">new</span> ByteArrayInputStream(byteOut.toByteArray());</span><br><span class="line">        in = <span class="keyword">new</span> ObjectInputStream(byteIn);</span><br><span class="line">        <span class="keyword">return</span> (T) in.readObject();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        IOUtils.closeQuietly(out);</span><br><span class="line">        IOUtils.closeQuietly(in);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="序列化流程分析"><a href="#序列化流程分析" class="headerlink" title="序列化流程分析"></a>序列化流程分析</h1><blockquote>
+<p>这里贴出的源码仅供观赏性阅读，不做深入分析</p>
+</blockquote>
+<h2 id="ObjectOutputStream"><a href="#ObjectOutputStream" class="headerlink" title="ObjectOutputStream"></a>ObjectOutputStream</h2><h3 id="ObjectOutputStream构造方法"><a href="#ObjectOutputStream构造方法" class="headerlink" title="ObjectOutputStream构造方法"></a>ObjectOutputStream构造方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ObjectOutputStream</span><span class="params">(OutputStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    verifySubclass();</span><br><span class="line">    bout = <span class="keyword">new</span> BlockDataOutputStream(out);</span><br><span class="line">    handles = <span class="keyword">new</span> HandleTable(<span class="number">10</span>, (<span class="keyword">float</span>) <span class="number">3.00</span>);</span><br><span class="line">    subs = <span class="keyword">new</span> ReplaceTable(<span class="number">10</span>, (<span class="keyword">float</span>) <span class="number">3.00</span>);</span><br><span class="line">    enableOverride = <span class="keyword">false</span>;</span><br><span class="line">    writeStreamHeader();</span><br><span class="line">    bout.setBlockDataMode(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        debugInfoStack = <span class="keyword">new</span> DebugTraceInfoStack();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        debugInfoStack = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ObjectOutputStream的构造方法源码解读"><a href="#ObjectOutputStream的构造方法源码解读" class="headerlink" title="ObjectOutputStream的构造方法源码解读"></a>ObjectOutputStream的构造方法源码解读</h3><p>&emsp;&emsp;构造函数中首先会把bout对象绑定到底层的字节数据容器，接着会调用writeStreamHeader()方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bout = new BlockDataOutputStream(out);</span></span><br><span class="line">BlockDataOutputStream(OutputStream out) &#123;</span><br><span class="line">    <span class="keyword">this</span>.out = out;</span><br><span class="line">    dout = <span class="keyword">new</span> DataOutputStream(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// writeStreamHeader();</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">writeStreamHeader</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    bout.writeShort(STREAM_MAGIC);</span><br><span class="line">    bout.writeShort(STREAM_VERSION);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;在writeStreamHeader()方法中首先会往底层字节容器中写入表示序列化的Magic Number以及版本号，定义如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Magic number that is written to the stream header.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">short</span> STREAM_MAGIC = (<span class="keyword">short</span>)<span class="number">0xaced</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Version number that is written to the stream header.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">short</span> STREAM_VERSION = <span class="number">5</span>;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;接下来会调用writeObject()方法进行序列化，具体实现如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(Object obj)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (enableOverride) &#123;</span><br><span class="line">        writeObjectOverride(obj);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 实际序列化的write方法</span></span><br><span class="line">        writeObject0(obj, <span class="keyword">false</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException ex) &#123;</span><br><span class="line">        <span class="keyword">if</span> (depth == <span class="number">0</span>) &#123;</span><br><span class="line">            writeFatalException(ex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> ex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;writeObject内部调用了writeObject0，它内部实现了很多不同的write方法的调用，具体的细节这里就不深入了，通过一系列的write，将对象完成序列化<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject0</span><span class="params">(Object obj, <span class="keyword">boolean</span> unshared)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> oldMode = bout.setBlockDataMode(<span class="keyword">false</span>);</span><br><span class="line">    depth++;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// handle previously written and non-replaceable objects</span></span><br><span class="line">        <span class="keyword">int</span> h;</span><br><span class="line">        <span class="keyword">if</span> ((obj = subs.lookup(obj)) == <span class="keyword">null</span>) &#123;</span><br><span class="line">            writeNull();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!unshared &amp;&amp; (h = handles.lookup(obj)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            writeHandle(h);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Class) &#123;</span><br><span class="line">            writeClass((Class) obj, unshared);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> ObjectStreamClass) &#123;</span><br><span class="line">            writeClassDesc((ObjectStreamClass) obj, unshared);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// check for replacement object</span></span><br><span class="line">        Object orig = obj;</span><br><span class="line">        Class&lt;?&gt; cl = obj.getClass();</span><br><span class="line">        ObjectStreamClass desc;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            <span class="comment">// REMIND: skip this check for strings/arrays?</span></span><br><span class="line">            Class&lt;?&gt; repCl;</span><br><span class="line">            desc = ObjectStreamClass.lookup(cl, <span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">if</span> (!desc.hasWriteReplaceMethod() ||</span><br><span class="line">                (obj = desc.invokeWriteReplace(obj)) == <span class="keyword">null</span> ||</span><br><span class="line">                (repCl = obj.getClass()) == cl)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            cl = repCl;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (enableReplace) &#123;</span><br><span class="line">            Object rep = replaceObject(obj);</span><br><span class="line">            <span class="keyword">if</span> (rep != obj &amp;&amp; rep != <span class="keyword">null</span>) &#123;</span><br><span class="line">                cl = rep.getClass();</span><br><span class="line">                desc = ObjectStreamClass.lookup(cl, <span class="keyword">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            obj = rep;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// if object replaced, run through original checks a second time</span></span><br><span class="line">        <span class="keyword">if</span> (obj != orig) &#123;</span><br><span class="line">            subs.assign(orig, obj);</span><br><span class="line">            <span class="keyword">if</span> (obj == <span class="keyword">null</span>) &#123;</span><br><span class="line">                writeNull();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!unshared &amp;&amp; (h = handles.lookup(obj)) != -<span class="number">1</span>) &#123;</span><br><span class="line">                writeHandle(h);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Class) &#123;</span><br><span class="line">                writeClass((Class) obj, unshared);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> ObjectStreamClass) &#123;</span><br><span class="line">                writeClassDesc((ObjectStreamClass) obj, unshared);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// remaining cases</span></span><br><span class="line">        <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            writeString((String) obj, unshared);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">            writeArray(obj, desc, unshared);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">            writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">            writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                    cl.getName() + <span class="string">"\n"</span> + debugInfoStack.toString());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        depth--;</span><br><span class="line">        bout.setBlockDataMode(oldMode);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="ObjectInputStream"><a href="#ObjectInputStream" class="headerlink" title="ObjectInputStream"></a>ObjectInputStream</h2><h3 id="ObjectInputStream的构造方法源码解读"><a href="#ObjectInputStream的构造方法源码解读" class="headerlink" title="ObjectInputStream的构造方法源码解读"></a>ObjectInputStream的构造方法源码解读</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates an ObjectInputStream that reads from the specified InputStream.</span></span><br><span class="line"><span class="comment"> * A serialization stream header is read from the stream and verified.</span></span><br><span class="line"><span class="comment"> * This constructor will block until the corresponding ObjectOutputStream</span></span><br><span class="line"><span class="comment"> * has written and flushed the header.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;If a security manager is installed, this constructor will check for</span></span><br><span class="line"><span class="comment"> * the "enableSubclassImplementation" SerializablePermission when invoked</span></span><br><span class="line"><span class="comment"> * directly or indirectly by the constructor of a subclass which overrides</span></span><br><span class="line"><span class="comment"> * the ObjectInputStream.readFields or ObjectInputStream.readUnshared</span></span><br><span class="line"><span class="comment"> * methods.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   in input stream to read from</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span>  StreamCorruptedException if the stream header is incorrect</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span>  IOException if an I/O error occurs while reading stream header</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span>  SecurityException if untrusted subclass illegally overrides</span></span><br><span class="line"><span class="comment"> *          security-sensitive methods</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span>  NullPointerException if &lt;code&gt;in&lt;/code&gt; is &lt;code&gt;null&lt;/code&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     ObjectInputStream#ObjectInputStream()</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     ObjectInputStream#readFields()</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     ObjectOutputStream#ObjectOutputStream(OutputStream)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ObjectInputStream</span><span class="params">(InputStream in)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    verifySubclass();</span><br><span class="line">    bin = <span class="keyword">new</span> BlockDataInputStream(in);</span><br><span class="line">    handles = <span class="keyword">new</span> HandleTable(<span class="number">10</span>);</span><br><span class="line">    vlist = <span class="keyword">new</span> ValidationList();</span><br><span class="line">    serialFilter = ObjectInputFilter.Config.getSerialFilter();</span><br><span class="line">    enableOverride = <span class="keyword">false</span>;</span><br><span class="line">    readStreamHeader();</span><br><span class="line">    bin.setBlockDataMode(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;首先会调用readObject()方法进行反序列化，实际整个流程的逻辑和ObjectOutputStream是类似的，具体实现如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Object <span class="title">readObject</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException, ClassNotFoundException</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (enableOverride) &#123;</span><br><span class="line">        <span class="keyword">return</span> readObjectOverride();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if nested read, passHandle contains handle of enclosing object</span></span><br><span class="line">    <span class="keyword">int</span> outerHandle = passHandle;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object obj = readObject0(<span class="keyword">false</span>);</span><br><span class="line">        handles.markDependency(outerHandle, passHandle);</span><br><span class="line">        ClassNotFoundException ex = handles.lookupException(passHandle);</span><br><span class="line">        <span class="keyword">if</span> (ex != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> ex;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (depth == <span class="number">0</span>) &#123;</span><br><span class="line">            vlist.doCallbacks();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        passHandle = outerHandle;</span><br><span class="line">        <span class="keyword">if</span> (closed &amp;&amp; depth == <span class="number">0</span>) &#123;</span><br><span class="line">            clear();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;再接下来就是核心的一个方法readObject0，它内部提供了不同的read方法调用，最终将序列化后的文件给反序列化为一个对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Underlying readObject implementation.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readObject0</span><span class="params">(<span class="keyword">boolean</span> unshared)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> oldMode = bin.getBlockDataMode();</span><br><span class="line">    <span class="keyword">if</span> (oldMode) &#123;</span><br><span class="line">        <span class="keyword">int</span> remain = bin.currentBlockRemaining();</span><br><span class="line">        <span class="keyword">if</span> (remain &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> OptionalDataException(remain);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (defaultDataEnd) &#123;</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">             * Fix for 4360508: stream is currently at the end of a field</span></span><br><span class="line"><span class="comment">             * value block written via default serialization; since there</span></span><br><span class="line"><span class="comment">             * is no terminating TC_ENDBLOCKDATA tag, simulate</span></span><br><span class="line"><span class="comment">             * end-of-custom-data behavior explicitly.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> OptionalDataException(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        bin.setBlockDataMode(<span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">byte</span> tc;</span><br><span class="line">    <span class="keyword">while</span> ((tc = bin.peekByte()) == TC_RESET) &#123;</span><br><span class="line">        bin.readByte();</span><br><span class="line">        handleReset();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    depth++;</span><br><span class="line">    totalObjectRefs++;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> (tc) &#123;</span><br><span class="line">            <span class="keyword">case</span> TC_NULL:</span><br><span class="line">                <span class="keyword">return</span> readNull();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_REFERENCE:</span><br><span class="line">                <span class="keyword">return</span> readHandle(unshared);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_CLASS:</span><br><span class="line">                <span class="keyword">return</span> readClass(unshared);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_CLASSDESC:</span><br><span class="line">            <span class="keyword">case</span> TC_PROXYCLASSDESC:</span><br><span class="line">                <span class="keyword">return</span> readClassDesc(unshared);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_STRING:</span><br><span class="line">            <span class="keyword">case</span> TC_LONGSTRING:</span><br><span class="line">                <span class="keyword">return</span> checkResolve(readString(unshared));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_ARRAY:</span><br><span class="line">                <span class="keyword">return</span> checkResolve(readArray(unshared));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_ENUM:</span><br><span class="line">                <span class="keyword">return</span> checkResolve(readEnum(unshared));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_OBJECT:</span><br><span class="line">                <span class="keyword">return</span> checkResolve(readOrdinaryObject(unshared));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_EXCEPTION:</span><br><span class="line">                IOException ex = readFatalException();</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> WriteAbortedException(<span class="string">"writing aborted"</span>, ex);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_BLOCKDATA:</span><br><span class="line">            <span class="keyword">case</span> TC_BLOCKDATALONG:</span><br><span class="line">                <span class="keyword">if</span> (oldMode) &#123;</span><br><span class="line">                    bin.setBlockDataMode(<span class="keyword">true</span>);</span><br><span class="line">                    bin.peek();             <span class="comment">// force header read</span></span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> OptionalDataException(</span><br><span class="line">                        bin.currentBlockRemaining());</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> StreamCorruptedException(</span><br><span class="line">                        <span class="string">"unexpected block data"</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> TC_ENDBLOCKDATA:</span><br><span class="line">                <span class="keyword">if</span> (oldMode) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> OptionalDataException(<span class="keyword">true</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> StreamCorruptedException(</span><br><span class="line">                        <span class="string">"unexpected end of block data"</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> StreamCorruptedException(</span><br><span class="line">                    String.format(<span class="string">"invalid type code: %02X"</span>, tc));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        depth--;</span><br><span class="line">        bin.setBlockDataMode(oldMode);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="补充一些概念"><a href="#补充一些概念" class="headerlink" title="补充一些概念"></a>补充一些概念</h1><h2 id="关于transient"><a href="#关于transient" class="headerlink" title="关于transient"></a>关于transient</h2><p>&emsp;&emsp;在实际开发过程中，我们常常会遇到这样的问题，这个类的有些属性需要序列化，而其他属性不需要被序列化，打个比方，如果一个用户有一些敏感信息（如密码，银行卡号等），为了安全起见，不希望在网络操作（主要涉及到序列化操作，本地序列化缓存也适用）中被传输，这些信息对应的变量就可以加上transient关键字。换句话说，这个字段的生命周期仅存于调用者的内存中而不会写到磁盘里持久化。java 的transient关键字为我们提供了便利，你只需要实现Serilizable接口，将不需要序列化的属性前添加关键字transient，序列化对象的时候，这个属性就不会序列化到指定的目的地中。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserSerialize</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> String sex;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="关于SerialVersionUID"><a href="#关于SerialVersionUID" class="headerlink" title="关于SerialVersionUID"></a>关于SerialVersionUID</h2><p>&emsp;&emsp;简单来说，Java的序列化机制是通过在运行时判断类的serialVersionUID来验证版本一致性的。在进行反序列化时，JVM会把传来的字节流中的serialVersionUID与本地相应实体（类）的serialVersionUID进行比较，如果相同就认为是一致的，可以进行反序列化，否则就会出现序列化版本不一致的异常。(InvalidCastException)</p>
+<h2 id="关于Externalizable"><a href="#关于Externalizable" class="headerlink" title="关于Externalizable"></a>关于Externalizable</h2><p>&emsp;&emsp;它是Serializable接口的子类，当我们不希望序列化那么多内容的时候，可以选择使用这个接口，通过这个接口的writeExternal()和readExternal()方法可以指定序列化哪些属性;<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Externalizable</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The object implements the writeExternal method to save its contents</span></span><br><span class="line"><span class="comment">     * by calling the methods of DataOutput for its primitive values or</span></span><br><span class="line"><span class="comment">     * calling the writeObject method of ObjectOutput for objects, strings,</span></span><br><span class="line"><span class="comment">     * and arrays.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@serialData</span> Overriding methods should use this tag to describe</span></span><br><span class="line"><span class="comment">     *             the data layout of this Externalizable object.</span></span><br><span class="line"><span class="comment">     *             List the sequence of element types and, if possible,</span></span><br><span class="line"><span class="comment">     *             relate the element to a public/protected field and/or</span></span><br><span class="line"><span class="comment">     *             method of this Externalizable class.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> out the stream to write the object to</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span> IOException Includes any I/O exceptions that may occur</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">writeExternal</span><span class="params">(ObjectOutput out)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The object implements the readExternal method to restore its</span></span><br><span class="line"><span class="comment">     * contents by calling the methods of DataInput for primitive</span></span><br><span class="line"><span class="comment">     * types and readObject for objects, strings and arrays.  The</span></span><br><span class="line"><span class="comment">     * readExternal method must read the values in the same sequence</span></span><br><span class="line"><span class="comment">     * and with the same types as were written by writeExternal.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> in the stream to read data from in order to restore the object</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span> IOException if I/O errors occur</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span> ClassNotFoundException If the class for an object being</span></span><br><span class="line"><span class="comment">     *              restored cannot be found.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">readExternal</span><span class="params">(ObjectInput in)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;Externalizable应用示例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserSerialize</span> <span class="keyword">implements</span> <span class="title">Externalizable</span></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUserId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userId;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserId</span><span class="params">(String userId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userId = userId;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUserName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userName;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserName</span><span class="params">(String userName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userName = userName;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeExternal</span><span class="params">(ObjectOutput objectoutput)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        objectoutput.writeObject(userId);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readExternal</span><span class="params">(ObjectInput objectinput)</span> <span class="keyword">throws</span> IOException,</span></span><br><span class="line"><span class="function">            ClassNotFoundException </span>&#123;</span><br><span class="line">        userId = (String) objectinput.readObject();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="简单的总结"><a href="#简单的总结" class="headerlink" title="简单的总结"></a>简单的总结</h1><ul>
+<li><strong>重点：待序列化的类必须实现 java.io.Serializable对象</strong></li>
+<li><strong>重点：待序列化的类的所有属性必须是可序列化的。如果有属性不是需要序列化的，则该属性必须注明是临时的（transient）</strong></li>
+<li><strong>重点：序列化时，只对对象的状态进行保存，实际是不管对象的方法的</strong></li>
+<li><strong>重点：当一个父类实现序列化，子类自动实现序列化，不需要显式实现Serializable接口</strong></li>
+<li><strong>重点：强烈建议在一个可序列化类中显示的定义serialVersionUID，为它赋予明确的值</strong></li>
+<li><strong>重点：静态变量不管是否被transient修饰，均不能被序列化</strong></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java语言特性/" rel="tag"># Java语言特性</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/409c4b9a.html" rel="next" title="Kafka入门系列（二）：常用shell和配置文件">
+                <i class="fa fa-chevron-left"></i> Kafka入门系列（二）：常用shell和配置文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/a09d86b.html" rel="prev" title="Java高级特性系列（二）：对象的克隆">
+                Java高级特性系列（二）：对象的克隆 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#序列化和反序列化"><span class="nav-number">1.</span> <span class="nav-text">序列化和反序列化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要使用序列化？"><span class="nav-number">2.</span> <span class="nav-text">为什么要使用序列化？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何完成序列化？"><span class="nav-number">3.</span> <span class="nav-text">如何完成序列化？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化的关键类"><span class="nav-number">3.1.</span> <span class="nav-text">序列化的关键类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化深克隆实例"><span class="nav-number">3.2.</span> <span class="nav-text">序列化深克隆实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#序列化流程分析"><span class="nav-number">4.</span> <span class="nav-text">序列化流程分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ObjectOutputStream"><span class="nav-number">4.1.</span> <span class="nav-text">ObjectOutputStream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectOutputStream构造方法"><span class="nav-number">4.1.1.</span> <span class="nav-text">ObjectOutputStream构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectOutputStream的构造方法源码解读"><span class="nav-number">4.1.2.</span> <span class="nav-text">ObjectOutputStream的构造方法源码解读</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ObjectInputStream"><span class="nav-number">4.2.</span> <span class="nav-text">ObjectInputStream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectInputStream的构造方法源码解读"><span class="nav-number">4.2.1.</span> <span class="nav-text">ObjectInputStream的构造方法源码解读</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充一些概念"><span class="nav-number">5.</span> <span class="nav-text">补充一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于transient"><span class="nav-number">5.1.</span> <span class="nav-text">关于transient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于SerialVersionUID"><span class="nav-number">5.2.</span> <span class="nav-text">关于SerialVersionUID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Externalizable"><span class="nav-number">5.3.</span> <span class="nav-text">关于Externalizable</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单的总结"><span class="nav-number">6.</span> <span class="nav-text">简单的总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

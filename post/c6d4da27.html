@@ -1,0 +1,1319 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="GitHub,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。">
+<meta name="keywords" content="GitHub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github博客平台搭建（二）：通用标记语言Markdown入门">
+<meta property="og:url" content="https://ttfisher.github.io/post/c6d4da27.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/public/000007.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/public/000005.jpg">
+<meta property="og:updated_time" content="2019-05-30T23:15:45.375Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Github博客平台搭建（二）：通用标记语言Markdown入门">
+<meta name="twitter:description" content="【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/public/000007.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/c6d4da27.html">
+
+
+
+
+
+  <title>Github博客平台搭建（二）：通用标记语言Markdown入门 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/c6d4da27.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Github博客平台搭建（二）：通用标记语言Markdown入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T09:11:00+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/多元化技能储备之Git-GitHub/" itemprop="url" rel="index">
+                    <span itemprop="name">多元化技能储备之Git&GitHub</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。此篇文章用于介绍其基础语法用法。</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/public/000007.jpg" width="55%"></div><br><a id="more"></a></p>
+<h1 id="基础语法篇"><a href="#基础语法篇" class="headerlink" title="基础语法篇"></a>基础语法篇</h1><h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><p>&emsp;&emsp;一般在行首加井号表示不同级别的标题 (H1-H6)，例如：## H1, ### H2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 这是H1</span><br><span class="line">## 这是H2</span><br><span class="line">### 这是H3</span><br><span class="line">#### 这是H4</span><br><span class="line">##### 这是H5</span><br><span class="line">###### 这是H6</span><br></pre></td></tr></table></figure></p>
+<h2 id="斜体和粗体"><a href="#斜体和粗体" class="headerlink" title="斜体和粗体"></a>斜体和粗体</h2><p>&emsp;&emsp;一般使用左右各1个*号进行包围的部分，是斜体：</p>
+<ul>
+<li><em>我就是斜体</em></li>
+</ul>
+<p>&emsp;&emsp;一般使用左右各2个*号进行包围的部分，是粗体：</p>
+<ul>
+<li><strong>我就是粗体</strong></li>
+</ul>
+<h2 id="外部链接引用"><a href="#外部链接引用" class="headerlink" title="外部链接引用"></a>外部链接引用</h2><p>&emsp;&emsp;一般使用如下语法：[描述内容](链接地址) 添加外部链接</p>
+<ul>
+<li>去<a href="https://ttfisher.github.io/">我的博客</a>逛逛吧。</li>
+</ul>
+<h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><p>&emsp;&emsp;一般添加 *，+，- 于列表描述前表示无序列表</p>
+<ul>
+<li>无序列表1<ul>
+<li>无序列表2</li>
+</ul>
+<ul>
+<li>无序列表3</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><p>&emsp;&emsp;一般添加 数字加点 于列表描述前表示有序列表</p>
+<ol>
+<li>有序列表1</li>
+<li>有序列表2</li>
+<li>有序列表3</li>
+</ol>
+<h2 id="文字引用"><a href="#文字引用" class="headerlink" title="文字引用"></a>文字引用</h2><ul>
+<li>一般使用 &gt; 表示文字引用，本条说明本身使用的就是文字引用语法样式。</li>
+<li>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等：</li>
+<li>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的 > ；比如<blockquote>
+<p>我是第二层引用</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="行内代码块"><a href="#行内代码块" class="headerlink" title="行内代码块"></a>行内代码块</h2><p>&emsp;&emsp;一般使用 `代码内容` 表示行内代码块。</p>
+<ul>
+<li>怎么给方法设置默认返回值呢？<code>public int length() default 255;</code></li>
+</ul>
+<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>&emsp;&emsp;一般使用 四个缩进空格 表示大段的代码块；但为了美观和显示效果清晰，我一般更倾向于使用带高亮和行数的模式（也就是下面一节说到的），其实代码不仅仅是完成功能，也是一种产品，所以我个人的追求是在格式上力求看着舒服！</p>
+<h2 id="代码块高亮和行数显示"><a href="#代码块高亮和行数显示" class="headerlink" title="代码块高亮和行数显示"></a>代码块高亮和行数显示</h2><p>&emsp;&emsp;一般使用 ```代码开发语言 开头，以 ``` 结尾包围的代码块即可进行高亮和行数显示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">extractVideos</span><span class="params">(String sourceUrl, String filePath, CrawlRegular regular)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">// 读取文件</span></span><br><span class="line">        Document doc = Jsoup.parse(StreamIOUtil.read(filePath));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 取全文Elements</span></span><br><span class="line">        Elements els = doc.children();</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == els) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">        <span class="comment">// 根据xPath取得匹配区域，只要存在，则证明该页面是视频页面</span></span><br><span class="line">        Elements xPathEles = els.select(regular.getxPath());</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != xPathEles &amp;&amp; xPathEles.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> sourceUrl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="插入图像"><a href="#插入图像" class="headerlink" title="插入图像"></a>插入图像</h2><p>&emsp;&emsp;一般使用 使用![描述](图片链接地址) 插入图像，当然也可以用HTML语言的div来实现（考虑到能想得起玩儿Markdown的同学应该都有些编程基础，所以这里就不赘述了），Please enjoy this moment!<br><img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/public/000005.jpg" width="75%"></p>
+<h2 id="分隔线"><a href="#分隔线" class="headerlink" title="分隔线"></a>分隔线</h2><p>&emsp;&emsp;一般在一行中用三个以上的 *、-、_ 来建立一个分隔线，行内不能有除空格以外的其他内容</p>
+<ul>
+<li>我是多*分隔线</li>
+</ul>
+<hr>
+<ul>
+<li>我是多-分隔线</li>
+</ul>
+<hr>
+<ul>
+<li>我是多_分隔线</li>
+</ul>
+<hr>
+<h2 id="反斜杠"><a href="#反斜杠" class="headerlink" title="反斜杠"></a>反斜杠</h2><p>&emsp;&emsp;一般使用 \特殊字符 进行字符转义（类似编程语言）</p>
+<ul>
+<li>我就是要展示星号，就在星号前面加入反斜杠（*）</li>
+</ul>
+<h1 id="进阶语法篇"><a href="#进阶语法篇" class="headerlink" title="进阶语法篇"></a>进阶语法篇</h1><h2 id="表格基本语法"><a href="#表格基本语法" class="headerlink" title="表格基本语法"></a>表格基本语法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">| 水果        | 价格    |  数量  |</span><br><span class="line">| --------   | -----:   | :----: |</span><br><span class="line">| 香蕉        | $1      |   5    |</span><br><span class="line">| 苹果        | $1      |   6    |</span><br><span class="line">| 草莓        | $1      |   7    |</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>水果</th>
+<th style="text-align:right">价格</th>
+<th style="text-align:center">数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>香蕉</td>
+<td style="text-align:right">$1</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td>苹果</td>
+<td style="text-align:right">$1</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td>草莓</td>
+<td style="text-align:right">$1</td>
+<td style="text-align:center">7</td>
+</tr>
+</tbody>
+</table>
+<h2 id="表格转换工具"><a href="#表格转换工具" class="headerlink" title="表格转换工具"></a>表格转换工具</h2><p>&emsp;&emsp;使用大杀器转换工具: <a href="https://link.zhihu.com/?target=http://fanfeilong.github.io/exceltk0.0.4.7z" target="_blank" rel="noopener">exceltk</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">整个表格：    exceltk.exe -t md -xls xxx.xls  </span><br><span class="line">              exceltk.exe -t md -xls xxx.xlsx</span><br><span class="line">指定sheet：  </span><br><span class="line">              exceltk.exe -t md -xls xx.xls -sheet sheetname   </span><br><span class="line">              exceltk.exe -t md -xls xx.xlsx -sheet sheetnameexceltk</span><br><span class="line">特性：</span><br><span class="line">     转换Excel表格到MarkDown表格</span><br><span class="line">     支持Excel单元格带超链接</span><br><span class="line">     如果Excel里有合并的跨行单元格，在转换后的MarkDown里是分开的单元格，这是因为MarkDown本身不支持跨行单元格</span><br><span class="line">     如果Excel表格右侧有大量的空列，则会被自动裁剪，算法是根据前100行来检测并计算</span><br></pre></td></tr></table></figure>
+<h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p>&emsp;&emsp;使用 三个`加flow 起始，使用 三个` 结尾，语法参考：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: Start|past:&gt;http://www.google.com[blank]</span><br><span class="line">e=&gt;end: End:&gt;http://www.google.com</span><br><span class="line">op1=&gt;operation: My Operation|past</span><br><span class="line">op2=&gt;operation: Stuff|current</span><br><span class="line">sub1=&gt;subroutine: My Subroutine|invalid</span><br><span class="line">cond=&gt;condition: Yes</span><br><span class="line">or No?|approved:&gt;http://www.google.com</span><br><span class="line">c2=&gt;condition: Good idea|rejected</span><br><span class="line">io=&gt;inputoutput: catch something...|request</span><br><span class="line">st-&gt;op1(right)-&gt;cond</span><br><span class="line">cond(yes, right)-&gt;c2</span><br><span class="line">cond(no)-&gt;sub1(left)-&gt;op1</span><br><span class="line">c2(yes)-&gt;io-&gt;e</span><br><span class="line">c2(no)-&gt;op2-&gt;e</span><br></pre></td></tr></table></figure>
+<p><div id="flowchart-0" class="flow-chart"></div></p>
+<h1 id="其他常用语法"><a href="#其他常用语法" class="headerlink" title="其他常用语法"></a>其他常用语法</h1><h2 id="常用HTML"><a href="#常用HTML" class="headerlink" title="常用HTML"></a>常用HTML</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 插入图片，居中指定宽度</span><br><span class="line">&lt;img style=&quot;clear: both;display: block;margin:auto;&quot; src=&quot;https://github.com/ttfisher/images/raw/master/2018/2018-06-04-03.jpg&quot; width=&quot;55%&quot;&gt;</span><br><span class="line"></span><br><span class="line"># 字体或颜色设置</span><br><span class="line">&lt;font face=&quot;微软雅黑&quot; color=&quot;red&quot; size=&quot;6&quot;&gt;字体及字体颜色和大小&lt;/font&gt;</span><br><span class="line">&lt;font color=&quot;#0000ff&quot;&gt;字体颜色&lt;/font&gt;</span><br><span class="line"></span><br><span class="line"># 文本不同的对齐方式</span><br><span class="line">&lt;p align=&quot;left&quot;&gt;居左文本&lt;/p&gt;</span><br><span class="line">&lt;p align=&quot;center&quot;&gt;居中文本&lt;/p&gt;</span><br><span class="line">&lt;p align=&quot;right&quot;&gt;居右文本&lt;/p&gt;</span><br><span class="line"></span><br><span class="line"># 换行</span><br><span class="line">使用html标签`&lt;br/&gt;`&lt;br/&gt;换行</span><br><span class="line"></span><br><span class="line"># 特殊格式：下划线（加粗，斜体等都支持）</span><br><span class="line">&lt;u&gt;下划线文本&lt;/u&gt;</span><br><span class="line">&lt;b&gt;加粗文本&lt;/b&gt;</span><br><span class="line">&lt;i&gt;斜体文本&lt;/i&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="常见转义符"><a href="#常见转义符" class="headerlink" title="常见转义符"></a>常见转义符</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">对应编码(+实际用时不需要)</th>
+<th style="text-align:center">英文怎么说</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">&amp;</td>
+<td style="text-align:center">AND 符号</td>
+<td style="text-align:center">&amp; + amp;</td>
+<td style="text-align:center">ampersand</td>
+</tr>
+<tr>
+<td style="text-align:center">&lt;</td>
+<td style="text-align:center">小于</td>
+<td style="text-align:center">&amp; + lt;</td>
+<td style="text-align:center">little</td>
+</tr>
+<tr>
+<td style="text-align:center">&gt;</td>
+<td style="text-align:center">大于</td>
+<td style="text-align:center">&amp; + gt;</td>
+<td style="text-align:center">great</td>
+</tr>
+<tr>
+<td style="text-align:center">空格</td>
+<td style="text-align:center">&amp; + nbsp;</td>
+<td style="text-align:center">number space</td>
+</tr>
+<tr>
+<td style="text-align:center">¿</td>
+<td style="text-align:center">倒问号</td>
+<td style="text-align:center">&amp; + iquest;</td>
+<td style="text-align:center">inverted question</td>
+</tr>
+<tr>
+<td style="text-align:center">?</td>
+<td style="text-align:center">问号</td>
+<td style="text-align:center">&amp; + quest;</td>
+<td style="text-align:center">question</td>
+</tr>
+<tr>
+<td style="text-align:center">«</td>
+<td style="text-align:center">左书名号</td>
+<td style="text-align:center">&amp; + laquo;</td>
+<td style="text-align:center">left angle quote</td>
+</tr>
+<tr>
+<td style="text-align:center">»</td>
+<td style="text-align:center">右书名号</td>
+<td style="text-align:center">&amp; + raquo;</td>
+<td style="text-align:center">right angle quote</td>
+</tr>
+<tr>
+<td style="text-align:center">“</td>
+<td style="text-align:center">引号</td>
+<td style="text-align:center">&amp; + quot;</td>
+<td style="text-align:center">quote</td>
+</tr>
+<tr>
+<td style="text-align:center">‘</td>
+<td style="text-align:center">左单引号</td>
+<td style="text-align:center">&amp; + lsquo;</td>
+<td style="text-align:center">left single quote</td>
+</tr>
+<tr>
+<td style="text-align:center">’</td>
+<td style="text-align:center">右单引号</td>
+<td style="text-align:center">&amp; + rsquo:</td>
+<td style="text-align:center">right single quote</td>
+</tr>
+<tr>
+<td style="text-align:center">“</td>
+<td style="text-align:center">左双引号</td>
+<td style="text-align:center">&amp; + ldquo:</td>
+<td style="text-align:center">left double quote</td>
+</tr>
+<tr>
+<td style="text-align:center">”</td>
+<td style="text-align:center">右双引号</td>
+<td style="text-align:center">&amp; + rdquo:</td>
+<td style="text-align:center">right double quote</td>
+</tr>
+<tr>
+<td style="text-align:center">¶</td>
+<td style="text-align:center">段落符号</td>
+<td style="text-align:center">&amp; + para;</td>
+<td style="text-align:center">paragraph</td>
+</tr>
+<tr>
+<td style="text-align:center">§</td>
+<td style="text-align:center">章节符</td>
+<td style="text-align:center">&amp; + sect;</td>
+<td style="text-align:center">section</td>
+</tr>
+<tr>
+<td style="text-align:center">×</td>
+<td style="text-align:center">乘号</td>
+<td style="text-align:center">&amp; + times;</td>
+<td style="text-align:center">times</td>
+</tr>
+<tr>
+<td style="text-align:center">÷</td>
+<td style="text-align:center">除号</td>
+<td style="text-align:center">&amp; + divide;</td>
+<td style="text-align:center">divide</td>
+</tr>
+<tr>
+<td style="text-align:center">±</td>
+<td style="text-align:center">加减号</td>
+<td style="text-align:center">&amp; + plusmn;</td>
+<td style="text-align:center">plus minus</td>
+</tr>
+<tr>
+<td style="text-align:center">ƒ</td>
+<td style="text-align:center">function</td>
+<td style="text-align:center">&amp; + fnof;</td>
+<td style="text-align:center">还没查到</td>
+</tr>
+<tr>
+<td style="text-align:center">√</td>
+<td style="text-align:center">根号</td>
+<td style="text-align:center">&amp; + radic;</td>
+<td style="text-align:center">radic</td>
+</tr>
+<tr>
+<td style="text-align:center">∞</td>
+<td style="text-align:center">无穷大</td>
+<td style="text-align:center">&amp; + infin;</td>
+<td style="text-align:center">infinite</td>
+</tr>
+<tr>
+<td style="text-align:center">°</td>
+<td style="text-align:center">度</td>
+<td style="text-align:center">&amp; + deg;</td>
+<td style="text-align:center">degree</td>
+</tr>
+<tr>
+<td style="text-align:center">≠</td>
+<td style="text-align:center">不等号</td>
+<td style="text-align:center">&amp; + ne;</td>
+<td style="text-align:center">ne</td>
+</tr>
+<tr>
+<td style="text-align:center">≡</td>
+<td style="text-align:center">恒等于</td>
+<td style="text-align:center">&amp; + equiv;</td>
+<td style="text-align:center">equivalent</td>
+</tr>
+<tr>
+<td style="text-align:center">≤</td>
+<td style="text-align:center">小于等于</td>
+<td style="text-align:center">&amp; + le;</td>
+<td style="text-align:center">less than or equal to</td>
+</tr>
+<tr>
+<td style="text-align:center">≥</td>
+<td style="text-align:center">大于等于</td>
+<td style="text-align:center">&amp; + ge;</td>
+<td style="text-align:center">great than or equal to</td>
+</tr>
+<tr>
+<td style="text-align:center">⊥</td>
+<td style="text-align:center">垂直符号</td>
+<td style="text-align:center">&amp; + perp;</td>
+<td style="text-align:center">perpendicular</td>
+</tr>
+<tr>
+<td style="text-align:center">←</td>
+<td style="text-align:center">左箭头</td>
+<td style="text-align:center">&amp; + larr;</td>
+<td style="text-align:center">left arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">→</td>
+<td style="text-align:center">右箭头</td>
+<td style="text-align:center">&amp; + rarr;</td>
+<td style="text-align:center">right arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">↑</td>
+<td style="text-align:center">上箭头</td>
+<td style="text-align:center">&amp; + uarr;</td>
+<td style="text-align:center">up arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">↓</td>
+<td style="text-align:center">下箭头</td>
+<td style="text-align:center">&amp; + darr;</td>
+<td style="text-align:center">down arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">↔</td>
+<td style="text-align:center">水平箭头</td>
+<td style="text-align:center">&amp; + harr;</td>
+<td style="text-align:center">horizontal arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">↕</td>
+<td style="text-align:center">竖直箭头</td>
+<td style="text-align:center">&amp; + varr;</td>
+<td style="text-align:center">vertical arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">⇐</td>
+<td style="text-align:center">双线左箭头</td>
+<td style="text-align:center">&amp; + lArr;</td>
+<td style="text-align:center">left arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">⇒</td>
+<td style="text-align:center">双线右箭头</td>
+<td style="text-align:center">&amp; + rArr;</td>
+<td style="text-align:center">right arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">⇑</td>
+<td style="text-align:center">双线上箭头</td>
+<td style="text-align:center">&amp; + uArr;</td>
+<td style="text-align:center">up arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">⇓</td>
+<td style="text-align:center">双线上箭头</td>
+<td style="text-align:center">&amp; + dArr;</td>
+<td style="text-align:center">down arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">⇔</td>
+<td style="text-align:center">双线水平双箭头</td>
+<td style="text-align:center">&amp; + hArr;</td>
+<td style="text-align:center">horizontal arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">⇕</td>
+<td style="text-align:center">双线竖直箭头</td>
+<td style="text-align:center">&amp; + vArr;</td>
+<td style="text-align:center">vertical arrow</td>
+</tr>
+<tr>
+<td style="text-align:center">♠</td>
+<td style="text-align:center">黑桃</td>
+<td style="text-align:center">&amp; + spades;</td>
+<td style="text-align:center">spades</td>
+</tr>
+<tr>
+<td style="text-align:center">♥</td>
+<td style="text-align:center">红桃</td>
+<td style="text-align:center">&amp; + hearts;</td>
+<td style="text-align:center">hearts</td>
+</tr>
+<tr>
+<td style="text-align:center">♣</td>
+<td style="text-align:center">梅花</td>
+<td style="text-align:center">&amp; + clubs;</td>
+<td style="text-align:center">club</td>
+</tr>
+<tr>
+<td style="text-align:center">♦</td>
+<td style="text-align:center">方块</td>
+<td style="text-align:center">&amp; + diams;</td>
+<td style="text-align:center">diamonds</td>
+</tr>
+<tr>
+<td style="text-align:center">©</td>
+<td style="text-align:center">版权</td>
+<td style="text-align:center">&amp; + copy;</td>
+<td style="text-align:center">copy right</td>
+</tr>
+<tr>
+<td style="text-align:center">®</td>
+<td style="text-align:center">注册商标</td>
+<td style="text-align:center">&amp; + reg;</td>
+<td style="text-align:center">registration</td>
+</tr>
+<tr>
+<td style="text-align:center">™</td>
+<td style="text-align:center">商标</td>
+<td style="text-align:center">&amp; + trade;</td>
+<td style="text-align:center">trade</td>
+</tr>
+<tr>
+<td style="text-align:center">¥</td>
+<td style="text-align:center">人民币</td>
+<td style="text-align:center">&amp; + yen;</td>
+</tr>
+<tr>
+<td style="text-align:center">€</td>
+<td style="text-align:center">欧元</td>
+<td style="text-align:center">&amp; + euro;</td>
+<td style="text-align:center">euro</td>
+</tr>
+<tr>
+<td style="text-align:center">¢</td>
+<td style="text-align:center">美分</td>
+<td style="text-align:center">&amp; + cent;</td>
+<td style="text-align:center">cent</td>
+</tr>
+<tr>
+<td style="text-align:center">£</td>
+<td style="text-align:center">英磅</td>
+<td style="text-align:center">&amp; + pound;</td>
+<td style="text-align:center">pound</td>
+</tr>
+<tr>
+<td style="text-align:center">⊕</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">&amp; + oplus;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">½</td>
+<td style="text-align:center">二分之一</td>
+<td style="text-align:center">&amp; + frac12;</td>
+<td style="text-align:center">fraction</td>
+</tr>
+<tr>
+<td style="text-align:center">¼</td>
+<td style="text-align:center">四分之一</td>
+<td style="text-align:center">&amp; + frac14;</td>
+<td style="text-align:center">fraction</td>
+</tr>
+<tr>
+<td style="text-align:center">‰</td>
+<td style="text-align:center">千分符号</td>
+<td style="text-align:center">&amp; + permil;</td>
+<td style="text-align:center">per mille</td>
+</tr>
+<tr>
+<td style="text-align:center">∴</td>
+<td style="text-align:center">所以</td>
+<td style="text-align:center">&amp; + there4;</td>
+<td style="text-align:center">there fore</td>
+</tr>
+<tr>
+<td style="text-align:center">π</td>
+<td style="text-align:center">圆周率</td>
+<td style="text-align:center">&amp; + pi;</td>
+</tr>
+<tr>
+<td style="text-align:center">¹</td>
+<td style="text-align:center">商标1</td>
+<td style="text-align:center">&amp; + sup1;</td>
+<td style="text-align:center">super 1</td>
+</tr>
+<tr>
+<td style="text-align:center">α</td>
+<td style="text-align:center">alpha</td>
+<td style="text-align:center">&amp; + alpha;</td>
+<td style="text-align:center">alpha</td>
+</tr>
+<tr>
+<td style="text-align:center">β</td>
+<td style="text-align:center">beta</td>
+<td style="text-align:center">&amp; + beta;</td>
+<td style="text-align:center">beta</td>
+</tr>
+<tr>
+<td style="text-align:center">γ</td>
+<td style="text-align:center">gamma</td>
+<td style="text-align:center">&amp; + gamma;</td>
+<td style="text-align:center">gamma</td>
+</tr>
+<tr>
+<td style="text-align:center">δ</td>
+<td style="text-align:center">delta</td>
+<td style="text-align:center">&amp; + delta;</td>
+<td style="text-align:center">delta</td>
+</tr>
+<tr>
+<td style="text-align:center">θ</td>
+<td style="text-align:center">theta</td>
+<td style="text-align:center">&amp; + theta;</td>
+<td style="text-align:center">theta</td>
+</tr>
+<tr>
+<td style="text-align:center">λ</td>
+<td style="text-align:center">lambda</td>
+<td style="text-align:center">&amp; + lambda;</td>
+<td style="text-align:center">lambda</td>
+</tr>
+<tr>
+<td style="text-align:center">σ</td>
+<td style="text-align:center">sigma</td>
+<td style="text-align:center">&amp; + sigma;</td>
+<td style="text-align:center">sigma</td>
+</tr>
+<tr>
+<td style="text-align:center">τ</td>
+<td style="text-align:center">tau</td>
+<td style="text-align:center">&amp; + tau;</td>
+<td style="text-align:center">tau</td>
+</tr>
+</tbody>
+</table>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: Start|past:>http://www.google.com[blank]
+e=>end: End:>http://www.google.com
+op1=>operation: My Operation|past
+op2=>operation: Stuff|current
+sub1=>subroutine: My Subroutine|invalid
+cond=>condition: Yes
+or No?|approved:>http://www.google.com
+c2=>condition: Good idea|rejected
+io=>inputoutput: catch something...|request
+st->op1(right)->cond
+cond(yes, right)->c2
+cond(no)->sub1(left)->op1
+c2(yes)->io->e
+c2(no)->op2->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/61a5954.html" rel="next" title="GitHub博客平台搭建（一）：与GitHub的结缘">
+                <i class="fa fa-chevron-left"></i> GitHub博客平台搭建（一）：与GitHub的结缘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/30aba86c.html" rel="prev" title="GitHub博客平台搭建（三）：GitHub博客的搭建与迁移">
+                GitHub博客平台搭建（三）：GitHub博客的搭建与迁移 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础语法篇"><span class="nav-number">1.</span> <span class="nav-text">基础语法篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标题"><span class="nav-number">1.1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斜体和粗体"><span class="nav-number">1.2.</span> <span class="nav-text">斜体和粗体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外部链接引用"><span class="nav-number">1.3.</span> <span class="nav-text">外部链接引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无序列表"><span class="nav-number">1.4.</span> <span class="nav-text">无序列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序列表"><span class="nav-number">1.5.</span> <span class="nav-text">有序列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文字引用"><span class="nav-number">1.6.</span> <span class="nav-text">文字引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行内代码块"><span class="nav-number">1.7.</span> <span class="nav-text">行内代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码块"><span class="nav-number">1.8.</span> <span class="nav-text">代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码块高亮和行数显示"><span class="nav-number">1.9.</span> <span class="nav-text">代码块高亮和行数显示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入图像"><span class="nav-number">1.10.</span> <span class="nav-text">插入图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分隔线"><span class="nav-number">1.11.</span> <span class="nav-text">分隔线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反斜杠"><span class="nav-number">1.12.</span> <span class="nav-text">反斜杠</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶语法篇"><span class="nav-number">2.</span> <span class="nav-text">进阶语法篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#表格基本语法"><span class="nav-number">2.1.</span> <span class="nav-text">表格基本语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表格转换工具"><span class="nav-number">2.2.</span> <span class="nav-text">表格转换工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程图"><span class="nav-number">2.3.</span> <span class="nav-text">流程图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他常用语法"><span class="nav-number">3.</span> <span class="nav-text">其他常用语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用HTML"><span class="nav-number">3.1.</span> <span class="nav-text">常用HTML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见转义符"><span class="nav-number">3.2.</span> <span class="nav-text">常见转义符</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

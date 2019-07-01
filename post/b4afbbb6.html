@@ -1,0 +1,834 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="ActiveMQ,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】无意间接触到一种消息积压处理的场景，想着是否可以监控MQ的队列参数进行发送端的策略调整，于是有了这一篇文章；当然本次也参考了网络上很多的分享，但无奈的发现天下文章一大抄，很难找到一篇写的完整的。">
+<meta name="keywords" content="ActiveMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ActiveMQ扫盲系列（三）：核心配置和应用">
+<meta property="og:url" content="https://ttfisher.github.io/post/b4afbbb6.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】无意间接触到一种消息积压处理的场景，想着是否可以监控MQ的队列参数进行发送端的策略调整，于是有了这一篇文章；当然本次也参考了网络上很多的分享，但无奈的发现天下文章一大抄，很难找到一篇写的完整的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/public/000008.jpg">
+<meta property="og:updated_time" content="2019-06-23T23:50:03.778Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ActiveMQ扫盲系列（三）：核心配置和应用">
+<meta name="twitter:description" content="【引言】无意间接触到一种消息积压处理的场景，想着是否可以监控MQ的队列参数进行发送端的策略调整，于是有了这一篇文章；当然本次也参考了网络上很多的分享，但无奈的发现天下文章一大抄，很难找到一篇写的完整的。">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/public/000008.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/b4afbbb6.html">
+
+
+
+
+
+  <title>ActiveMQ扫盲系列（三）：核心配置和应用 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/b4afbbb6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ActiveMQ扫盲系列（三）：核心配置和应用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T22:09:11+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/消息和缓存系列之ActiveMQ/" itemprop="url" rel="index">
+                    <span itemprop="name">消息和缓存系列之ActiveMQ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】无意间接触到一种消息积压处理的场景，想着是否可以监控MQ的队列参数进行发送端的策略调整，于是有了这一篇文章；当然本次也参考了网络上很多的分享，但无奈的发现天下文章一大抄，很难找到一篇写的完整的。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/public/000008.jpg" width="55%"></div>
+
+<a id="more"></a>
+<hr>
+<h1 id="细说核心配置文件"><a href="#细说核心配置文件" class="headerlink" title="细说核心配置文件"></a><div align="center">细说核心配置文件</div></h1><hr>
+<blockquote>
+<p>参考版本<code>5.15.8</code></p>
+</blockquote>
+<h2 id="activemq-xml"><a href="#activemq-xml" class="headerlink" title="activemq.xml"></a>activemq.xml</h2><p>&emsp;&emsp;文件路径一般为<code>~\apache-activemq-5.15.8\conf</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 【Lin.C】 首节是关于License等的说明 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Licensed to the Apache Software Foundation (ASF) under one or more</span></span><br><span class="line"><span class="comment">    contributor license agreements.  See the NOTICE file distributed with</span></span><br><span class="line"><span class="comment">    this work for additional information regarding copyright ownership.</span></span><br><span class="line"><span class="comment">    The ASF licenses this file to You under the Apache License, Version 2.0</span></span><br><span class="line"><span class="comment">    (the "License"); you may not use this file except in compliance with</span></span><br><span class="line"><span class="comment">    the License.  You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment">    distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment">    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment">    See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment">    limitations under the License.</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- START SNIPPET: example --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 【Lin.C】 xml namespaces和xml schema instance定义 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">  http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 【Lin.C】 PropertyPlaceholderConfigurer是Spring相关的类，具体的关于此类的说明参考后面的章节；简单理解这个配置文件也是用来实现配置注入的 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Allows us to use system properties as variables in this configuration file --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"locations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:$&#123;activemq.conf&#125;/credentials.properties<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 【Lin.C】网上找了一大圈，也没有发现关于这个配置项的解释，猜测是关于日志监控相关的，存疑【？？？】 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Allows accessing the server log --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"logQuery"</span> <span class="attr">class</span>=<span class="string">"io.fabric8.insight.log.log4j.Log4jLogQuery"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">lazy-init</span>=<span class="string">"false"</span> <span class="attr">scope</span>=<span class="string">"singleton"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">init-method</span>=<span class="string">"start"</span> <span class="attr">destroy-method</span>=<span class="string">"stop"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 【Lin.C】broker节点是activemq的核心配置节点，首先在根节点中配置了namespace、broker的名字（保证网络环境内的唯一性）、数据存储目录 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        The &lt;broker&gt; element is used to configure the ActiveMQ broker.</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">broker</span> <span class="attr">xmlns</span>=<span class="string">"http://activemq.apache.org/schema/core"</span> <span class="attr">brokerName</span>=<span class="string">"localhost"</span> <span class="attr">dataDirectory</span>=<span class="string">"$&#123;activemq.data&#125;"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 【Lin.C】为慢消费者制定的消息保留策略 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">destinationPolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">policyMap</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">policyEntries</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">&lt;!-- 【Lin.C】 1. 仅针对topic生效，且只对nondurable的consumer有效，用于控制有大量消息在通道中积压时，broker可以保留的消息量 </span></span><br><span class="line"><span class="comment">                             2. 针对Topic，某条消息只有所有订阅者都消费了才会被删除 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">topic</span>=<span class="string">"&gt;"</span> &gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- The constantPendingMessageLimitStrategy is used to prevent</span></span><br><span class="line"><span class="comment">                         slow topic consumers to block producers and affect other consumers</span></span><br><span class="line"><span class="comment">                         by limiting the number of messages that are retained</span></span><br><span class="line"><span class="comment">                         For more information, see:</span></span><br><span class="line"><span class="comment">                         http://activemq.apache.org/slow-consumer-handling.html</span></span><br><span class="line"><span class="comment">                    --&gt;</span></span><br><span class="line"></span><br><span class="line">                  <span class="comment">&lt;!-- 【Lin.C】 这里的pendingMessageLimitStrategy是控制消息保存的策略的，会有两种配置方式  --&gt;</span></span><br><span class="line">                  <span class="comment">&lt;!-- 【Lin.C】 1. ConstantPendingMessageLimitStrategy，保留固定数量，超过limit则会使用MessageEvictionStrategy策略清除消息</span></span><br><span class="line"><span class="comment">                               2. PrefetchRatePendingMessageLimitStrategy，保留prefetchSize的N倍条消息 --&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">pendingMessageLimitStrategy</span>&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">constantPendingMessageLimitStrategy</span> <span class="attr">limit</span>=<span class="string">"1000"</span>/&gt;</span></span><br><span class="line">                      <span class="comment">&lt;!-- &lt;prefetchRatePendingMessageLimitStrategy multiplier="10"/&gt; --&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">pendingMessageLimitStrategy</span>&gt;</span></span><br><span class="line"></span><br><span class="line">                  <span class="comment">&lt;!-- 【Lin.C】 1. 这个配置项在默认的配置文件里面是没有的.</span></span><br><span class="line"><span class="comment">                               2. 这个配置项也是针对慢消费者的，仅针对topic生效，且只对nondurable的consumer有效 --&gt;</span></span><br><span class="line">                  <span class="comment">&lt;!-- 【Lin.C】 1. OldestMessageEvictionStrategy: 移除最旧的消息，默认策略</span></span><br><span class="line"><span class="comment">                               2. OldestMessageWithLowestPriorityEvictionStrategy: 移除旧消息中权重较低的消息</span></span><br><span class="line"><span class="comment">                               3. UniquePropertyMessageEvictionStrategy: 移除具有指定property的旧消息。</span></span><br><span class="line"><span class="comment">                                  property可由开发人员指定，从此属性值相同的消息列表中移除最旧的（也就是消息创建时间最早的） --&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">messageEvictionStrategy</span>&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">OldestMessageWithLowestPriorityEvictionStrategy</span> /&gt;</span>  </span><br><span class="line">                  <span class="tag">&lt;/<span class="name">messageEvictionStrategy</span>&gt;</span>  </span><br><span class="line">                <span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;/<span class="name">policyEntries</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">policyMap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">destinationPolicy</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="comment">&lt;!-- 【Lin.C】 慢消费者策略：Broker根据此配置决定如何处理慢消费者。Broker会启动一个后台线程用来监测所有的慢速消费者并按策略处理。  --&gt;</span></span><br><span class="line">         <span class="comment">&lt;!-- 【Lin.C】 1. AbortSlowConsumerStrategy: 慢消费将会被关闭；但abortConnection可控制是否关闭连接</span></span><br><span class="line"><span class="comment">                      2. AbortSlowConsumerStrategy: 如果慢消费者最后一个ACK距离现在的时间间隔超过maxTimeSinceLastAck，则中慢速消费者。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">slowConsumerStrategy</span>&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">abortSlowConsumerStrategy</span> <span class="attr">abortConnection</span>=<span class="string">"false"</span>/&gt;</span> </span><br><span class="line">            <span class="comment">&lt;!-- &lt;abortSlowConsumerStrategy maxTimeSinceLastAck="3000"/&gt; --&gt;</span> </span><br><span class="line">        <span class="tag">&lt;/<span class="name">slowConsumerStrategy</span>&gt;</span> </span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 【Lin.C】 转发策略：用于控制将消息转发给消费者的方式 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 【Lin.C】 1. RoundRobinDispatchPolicy: 轮询策略，消息将按顺序依次发给每个“订阅者”。“订阅者”列表默认按照订阅的先后顺序排列，在转发消息时，</span></span><br><span class="line"><span class="comment">                        对于匹配消息的第一个订阅者，将会被移动到“订阅者”列表的尾部，这也意味着“下一条”消息，将会较晚的转发给它。</span></span><br><span class="line"><span class="comment">                     2. StrictOrderDispatchPolicy: 严格有序，消息依次发送给每个订阅者，按照“订阅者”订阅的时间先后。它和RoundRobin最大的区别是，</span></span><br><span class="line"><span class="comment">                        没有移动“订阅者”顺序的操作。</span></span><br><span class="line"><span class="comment">                     3. PriorityDispatchPolicy: 基于权重对“订阅者”排序。它要求开发者首先需要对每个订阅者指定priority，默认每个consumer的权重都一样。</span></span><br><span class="line"><span class="comment">                     4. SimpleDispatchPolicy: 默认值，按照当前“订阅者”列表的顺序。PriorityDispatchPolicy是其子类。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dispatchPolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">strictOrderDispatchPolicy</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dispatchPolicy</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 【Lin.C】 恢复策略：用于控制ActiveMQ服务重启如何进行数据恢复--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 【Lin.C】 1. FixedSizedSubscriptionRecoveryPolicy: 保存一定size的消息，broker将为此Topic开辟定额的RAM用来保存最新的消息，使用maximumSize属性指定大小（单位：Byte）。</span></span><br><span class="line"><span class="comment">                     2. FixedCountSubscriptionRecoveryPolicy: 保存一定条数的消息。 使用maximumSize属性指定保存的消息条数</span></span><br><span class="line"><span class="comment">                     3. LastImageSubscriptionRecoveryPolicy: 只保留最新的一条数据</span></span><br><span class="line"><span class="comment">                     4. QueryBasedSubscriptionRecoveryPolicy: 符合置顶selector的消息都将被保存，具体能够恢复多少消息，由底层存储机制决定；比如对于非持久化消息，只要内存中还</span></span><br><span class="line"><span class="comment">                                                        存在，则都可以恢复。</span></span><br><span class="line"><span class="comment">                     5. TimedSubscriptionRecoveryPolicy: 保留最近一段时间的消息。使用recoverDuration属性指定保存时间（单位毫秒）</span></span><br><span class="line"><span class="comment">                     6. NoSubscriptionRecoveryPolicy: 关闭“恢复机制”，默认值。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">subscriptionRecoveryPolicy</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- eg: 恢复最近半小时内的信息--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timedSubscriptionRecoveryPolicy</span> <span class="attr">recoverDuration</span>=<span class="string">"1800000"</span>/&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- &lt;fixedSizedSubscriptionRecoveryPolicy maximumSize="1024"/&gt;  </span></span><br><span class="line"><span class="comment">            &lt;fixedCountSubscriptionRecoveryPolicy maximumSize="100"/&gt;   --&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">subscriptionRecoveryPolicy</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">            The managementContext is used to configure how ActiveMQ is exposed in</span></span><br><span class="line"><span class="comment">            JMX. By default, ActiveMQ uses the MBean server that is started by</span></span><br><span class="line"><span class="comment">            the JVM. For more information, see:</span></span><br><span class="line"><span class="comment">            http://activemq.apache.org/jmx.html</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">managementContext</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">managementContext</span> <span class="attr">createConnector</span>=<span class="string">"true"</span> <span class="attr">connectorPort</span>=<span class="string">"11099"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">managementContext</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">            Configure message persistence for the broker. The default persistence</span></span><br><span class="line"><span class="comment">            mechanism is the KahaDB store (identified by the kahaDB tag).</span></span><br><span class="line"><span class="comment">            For more information, see:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            http://activemq.apache.org/persistence.html</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">kahaDB</span> <span class="attr">directory</span>=<span class="string">"$&#123;activemq.data&#125;/kahadb"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">          <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">            The systemUsage controls the maximum amount of space the broker will</span></span><br><span class="line"><span class="comment">            use before disabling caching and/or slowing down producers. For more information, see:</span></span><br><span class="line"><span class="comment">            http://activemq.apache.org/producer-flow-control.html</span></span><br><span class="line"><span class="comment">          --&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">systemUsage</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">systemUsage</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">memoryUsage</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">memoryUsage</span> <span class="attr">percentOfJvmHeap</span>=<span class="string">"70"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">memoryUsage</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">storeUsage</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">storeUsage</span> <span class="attr">limit</span>=<span class="string">"100 gb"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">storeUsage</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tempUsage</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">tempUsage</span> <span class="attr">limit</span>=<span class="string">"50 gb"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tempUsage</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">systemUsage</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">systemUsage</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">            The transport connectors expose ActiveMQ over a given protocol to</span></span><br><span class="line"><span class="comment">            clients and other brokers. For more information, see:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            http://activemq.apache.org/configuring-transports.html</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">transportConnectors</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">name</span>=<span class="string">"openwire"</span> <span class="attr">uri</span>=<span class="string">"tcp://0.0.0.0:61616?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">name</span>=<span class="string">"amqp"</span> <span class="attr">uri</span>=<span class="string">"amqp://0.0.0.0:5672?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">name</span>=<span class="string">"stomp"</span> <span class="attr">uri</span>=<span class="string">"stomp://0.0.0.0:61613?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">name</span>=<span class="string">"mqtt"</span> <span class="attr">uri</span>=<span class="string">"mqtt://0.0.0.0:1883?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">name</span>=<span class="string">"ws"</span> <span class="attr">uri</span>=<span class="string">"ws://0.0.0.0:61614?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">transportConnectors</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- destroy the spring context on shutdown to stop jetty --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">shutdownHooks</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span> <span class="attr">class</span>=<span class="string">"org.apache.activemq.hooks.SpringContextHook"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">shutdownHooks</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">broker</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        Enable web consoles, REST and Ajax APIs and demos</span></span><br><span class="line"><span class="comment">        The web consoles requires by default login, you can disable this in the jetty.xml file</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        Take a look at $&#123;ACTIVEMQ_HOME&#125;/conf/jetty.xml for more details</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"jetty.xml"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- END SNIPPET: example --&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="XML-Namespace"><a href="#XML-Namespace" class="headerlink" title="XML Namespace"></a>XML Namespace</h2><p>&emsp;&emsp;XML Namespaces一般简写为xmlns，在xml文件头上基本都会见到，它是XML（eXtensible Markup Language）的命名空间。作用是赋予命名空间一个唯一的名称。下面是从Spring的beans命名空间文件中节选的部分（参考地址： <a href="http://www.springframework.org/schema/beans/spring-beans.xsd" target="_blank" rel="noopener">http://www.springframework.org/schema/beans/spring-beans.xsd</a> ）。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">xsd:schema</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:xsd</span>=<span class="string">"http://www.w3.org/2001/XMLSchema"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">targetNamespace</span>=<span class="string">"http://www.springframework.org/schema/beans"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">xsd:import</span> <span class="attr">namespace</span>=<span class="string">"http://www.w3.org/XML/1998/namespace"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Top-level &lt;beans&gt; tag --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">name</span>=<span class="string">"beans"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsd:annotation</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:documentation</span>&gt;</span>&lt;![CDATA[</span><br><span class="line">    Container for &lt;bean&gt; and other elements, typically the root element in the document.</span><br><span class="line">    Allows the definition of default values for all nested bean definitions. May itself</span><br><span class="line">    be nested for the purpose of defining a subset of beans with certain default values or</span><br><span class="line">    to be registered only when certain profile(s) are active. Any such nested &lt;beans&gt; element</span><br><span class="line">    must be declared as the last element in the document.</span><br><span class="line">            ]]&gt;<span class="tag">&lt;/<span class="name">xsd:documentation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">xsd:annotation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsd:complexType</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:sequence</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">ref</span>=<span class="string">"description"</span> <span class="attr">minOccurs</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">xsd:choice</span> <span class="attr">minOccurs</span>=<span class="string">"0"</span> <span class="attr">maxOccurs</span>=<span class="string">"unbounded"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">ref</span>=<span class="string">"import"</span>/&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">ref</span>=<span class="string">"alias"</span>/&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">ref</span>=<span class="string">"bean"</span>/&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">xsd:any</span> <span class="attr">namespace</span>=<span class="string">"##other"</span> <span class="attr">processContents</span>=<span class="string">"strict"</span> <span class="attr">minOccurs</span>=<span class="string">"0"</span> <span class="attr">maxOccurs</span>=<span class="string">"unbounded"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">xsd:choice</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">ref</span>=<span class="string">"beans"</span> <span class="attr">minOccurs</span>=<span class="string">"0"</span> <span class="attr">maxOccurs</span>=<span class="string">"unbounded"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">xsd:sequence</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:attribute</span> <span class="attr">name</span>=<span class="string">"profile"</span> <span class="attr">use</span>=<span class="string">"optional"</span> <span class="attr">type</span>=<span class="string">"xsd:string"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">xsd:annotation</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">xsd:documentation</span>&gt;</span>&lt;![CDATA[...]]&gt;<span class="tag">&lt;/<span class="name">xsd:documentation</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">xsd:annotation</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">xsd:attribute</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 省略若干行...... --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:anyAttribute</span> <span class="attr">namespace</span>=<span class="string">"##other"</span> <span class="attr">processContents</span>=<span class="string">"lax"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">xsd:complexType</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xsd:element</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 省略若干行...... --&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- simple internal types --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">xsd:simpleType</span> <span class="attr">name</span>=<span class="string">"defaultable-boolean"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">xsd:restriction</span> <span class="attr">base</span>=<span class="string">"xsd:NMTOKEN"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:enumeration</span> <span class="attr">value</span>=<span class="string">"default"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:enumeration</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xsd:enumeration</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">xsd:restriction</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">xsd:simpleType</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">xsd:schema</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="PropertyPlaceholderConfigurer"><a href="#PropertyPlaceholderConfigurer" class="headerlink" title="PropertyPlaceholderConfigurer"></a>PropertyPlaceholderConfigurer</h2><p>&emsp;&emsp;PropertyPlaceholderConfigurer这个类是一个bean工厂后置处理器的实现类，是实现了BeanFactoryPostProcessor接口的，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PropertyPlaceholderConfigurer</span><br><span class="line">PlaceholderResolvingStringValueResolver</span><br><span class="line">PropertyPlaceholderConfigurerResolver</span><br><span class="line">resolvePlaceholder</span><br><span class="line">resolvePlaceholder</span><br><span class="line">resolveSystemProperty</span><br><span class="line">processProperties</span><br><span class="line">SYSTEM_PROPERTIES_MODE_NEVER</span><br><span class="line">SYSTEM_PROPERTIES_MODE_FALLBACK</span><br><span class="line">SYSTEM_PROPERTIES_MODE_OVERRIDE</span><br><span class="line">constants</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="一次基于JMX的服务监控应用"><a href="#一次基于JMX的服务监控应用" class="headerlink" title="一次基于JMX的服务监控应用"></a><div align="center">一次基于JMX的服务监控应用</div></h1><hr>
+<blockquote>
+<p>这次研究这个主题的起因是因为无意间接触到一种消息积压处理的场景，想着是否可以监控MQ的队列参数进行发送端的策略调整，于是有了这一篇文章。下面就这个Demo实现的过程逐一说明。</p>
+</blockquote>
+<h2 id="安装Activemq"><a href="#安装Activemq" class="headerlink" title="安装Activemq"></a>安装Activemq</h2><p>&emsp;&emsp;鉴于本机并没有AMQ的环境，于是临时下载了一个Release版本安装了一下（其实也谈不上安装那么复杂，解压即用而已），AMQ的目录结构大致是下面这个样子（有点类似于tomcat的目录结构），本次重点涉及的几个文件都做了标注，以备参考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">PS D:\05-Pracs\apache-activemq-5.15.8&gt; tree /f</span><br><span class="line">文件夹 PATH 列表</span><br><span class="line">卷序列号为 DA18-EBFA</span><br><span class="line">D:.</span><br><span class="line">│</span><br><span class="line">├─bin</span><br><span class="line">│  │  activemq                 # 启动配置文件</span><br><span class="line">│  │  activemq.bat             # 启动文件（实际使用时可能用到bin下面的32和64两个子目录下的activemq.bat直接启动）</span><br><span class="line">│                              # 使用这里的启动文件，需要全命令模式（.\activemq.bat start）</span><br><span class="line">├─conf</span><br><span class="line">│      activemq.xml            # activemq自身的配置文件</span><br><span class="line">│      ...</span><br><span class="line">│      jmx.access              # 用户管理</span><br><span class="line">│      jmx.password            # 用户密码管理</span><br><span class="line">│      ...</span><br><span class="line">│</span><br><span class="line">├─data</span><br><span class="line">│  ├─...</span><br><span class="line">│</span><br><span class="line">├─docs</span><br><span class="line">│  ├─...</span><br><span class="line">│</span><br><span class="line">├─examples</span><br><span class="line">│  ├─...</span><br><span class="line">│</span><br><span class="line">├─lib</span><br><span class="line">│  ├─...</span><br><span class="line">│</span><br><span class="line">├─webapps</span><br><span class="line">│  ├─...</span><br><span class="line">│</span><br><span class="line">├─webapps-demo</span><br><span class="line">│  ├─...</span><br><span class="line"></span><br><span class="line">PS D:\05-Pracs\apache-activemq-5.15.8&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="修改配置项"><a href="#修改配置项" class="headerlink" title="修改配置项"></a>修改配置项</h2><p>&emsp;&emsp;配置项的修改其实比较简单，也就是在managementContext节点开启一个端口（本项修改涉及的文件为conf目录下的activemq.xml）：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 修改前 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">managementContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">managementContext</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">managementContext</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 修改后 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">managementContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">managementContext</span> <span class="attr">createConnector</span>=<span class="string">"true"</span> <span class="attr">connectorPort</span>=<span class="string">"11099"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">managementContext</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="添加新用户"><a href="#添加新用户" class="headerlink" title="添加新用户"></a>添加新用户</h2><p>&emsp;&emsp;这里的配置主要是控制登录用户的连接后操作权限的（本项修改涉及的文件为conf目录下的jmx.access和jmx.password两个文件）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># jmx.access文件，定义用户的权限</span><br><span class="line">admin readwrite</span><br><span class="line">monitor readonly</span><br><span class="line"></span><br><span class="line"># jmx.password文件，定义用户登录密码</span><br><span class="line">admin activemq</span><br><span class="line">monitor smart</span><br></pre></td></tr></table></figure></p>
+<h2 id="修改启动项"><a href="#修改启动项" class="headerlink" title="修改启动项"></a>修改启动项</h2><p>&emsp;&emsp;这里添加了一些启动参数，其实也是基于前面的几项操作对应添加的，比如端口号、用户文件、密码文件等等（本项修改涉及的文件为bin目录下的activemq）；修改位置在invoke_start方法之前：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># - $ACTIVEMQ_SSL_OPTS     : options for SSL encryption</span><br><span class="line"></span><br><span class="line">ACTIVEMQ_CONF=&quot;D:/05-Pracs/apache-activemq-5.15.8/conf&quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;-Dcom.sun.management.jmxremote.port=11099 &quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.password.file=$&#123;ACTIVEMQ_CONF&#125;/jmx.password&quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.access.file=$&#123;ACTIVEMQ_CONF&#125;/jmx.access&quot;</span><br><span class="line">ACTIVEMQ_SUNJMX_START=&quot;$ACTIVEMQ_SUNJMX_START -Dcom.sun.management.jmxremote.ssl=false&quot;</span><br><span class="line"></span><br><span class="line">invoke_start()&#123;</span><br></pre></td></tr></table></figure></p>
+<h2 id="启动Activemq"><a href="#启动Activemq" class="headerlink" title="启动Activemq"></a>启动Activemq</h2><p>&emsp;&emsp;通过bat脚本启动AMQ服务，通过观察日志可以发现很多有用信息（比如：JMX的启动信息包括启动端口号，不同的连接服务信息比如TCP、Stomp等等）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">PS D:\05-Pracs\apache-activemq-5.15.8\bin&gt; .\activemq.bat start</span><br><span class="line">Java Runtime: Oracle Corporation 1.8.0_181 C:\Program Files\Java\jdk1.8.0_181\jre</span><br><span class="line">  Heap sizes: current=1005056k  free=989327k  max=1005056k</span><br><span class="line">    JVM args: -Dcom.sun.management.jmxremote -Xms1G -Xmx1G -Djava.util.logging.config.file=logging.properties ...</span><br><span class="line">Extensions classpath:</span><br><span class="line">  [D:\05-Pracs\apache-activemq-5.15.8\bin\..\lib,...]</span><br><span class="line">ACTIVEMQ_HOME: D:\05-Pracs\apache-activemq-5.15.8\bin\..</span><br><span class="line">ACTIVEMQ_BASE: D:\05-Pracs\apache-activemq-5.15.8\bin\..</span><br><span class="line">ACTIVEMQ_CONF: D:\05-Pracs\apache-activemq-5.15.8\bin\..\conf</span><br><span class="line">ACTIVEMQ_DATA: D:\05-Pracs\apache-activemq-5.15.8\bin\..\data</span><br><span class="line">Loading message broker from: xbean:activemq.xml</span><br><span class="line"> INFO | Refreshing org.apache.activemq.xbean.XBeanBrokerFactory$1@5f2108b5: startup date [Tue Dec 18 15:13:33 CST 2018];...</span><br><span class="line"> INFO | Using Persistence Adapter: KahaDBPersistenceAdapter[D:\05-Pracs\apache-activemq-5.15.8\bin\..\data\kahadb]</span><br><span class="line"> INFO | JMX consoles can connect to service:jmx:rmi:///jndi/rmi://localhost:11099/jmxrmi</span><br><span class="line"> INFO | KahaDB is version 6</span><br><span class="line"> INFO | PListStore:[D:\05-Pracs\apache-activemq-5.15.8\bin\..\data\localhost\tmp_storage] started</span><br><span class="line"> INFO | Apache ActiveMQ 5.15.8 (localhost, ID:IVF21BBAA9XWLKD-65387-1545117214542-0:1) is starting</span><br><span class="line"> INFO | Listening for connections at: </span><br><span class="line">    tcp://IVF21BBAA9XWLKD:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600</span><br><span class="line"> INFO | Connector openwire started</span><br><span class="line"> INFO | Listening for connections at: </span><br><span class="line">    amqp://IVF21BBAA9XWLKD:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600</span><br><span class="line"> INFO | Connector amqp started</span><br><span class="line"> INFO | Listening for connections at: </span><br><span class="line">    stomp://IVF21BBAA9XWLKD:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600</span><br><span class="line"> INFO | Connector stomp started</span><br><span class="line"> INFO | Listening for connections at: </span><br><span class="line">    mqtt://IVF21BBAA9XWLKD:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600</span><br><span class="line"> INFO | Connector mqtt started</span><br><span class="line"> INFO | Starting Jetty server</span><br><span class="line"> INFO | Creating Jetty connector</span><br><span class="line"> WARN | ServletContext@o.e.j.s.ServletContextHandler@38604b81&#123;/,null,STARTING&#125; has uncovered http methods for path: /</span><br><span class="line"> INFO | Listening for connections at </span><br><span class="line">    ws://IVF21BBAA9XWLKD:61614?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600</span><br><span class="line"> INFO | Connector ws started</span><br><span class="line"> INFO | Apache ActiveMQ 5.15.8 (localhost, ID:IVF21BBAA9XWLKD-65387-1545117214542-0:1) started</span><br><span class="line"> INFO | For help or more information please see: http://activemq.apache.org</span><br><span class="line"> INFO | No Spring WebApplicationInitializer types detected on classpath</span><br><span class="line"> INFO | ActiveMQ WebConsole available at http://0.0.0.0:8161/</span><br><span class="line"> INFO | ActiveMQ Jolokia REST API available at http://0.0.0.0:8161/api/jolokia/</span><br><span class="line"> INFO | Initializing Spring FrameworkServlet &apos;dispatcher&apos;</span><br><span class="line"> INFO | No Spring WebApplicationInitializer types detected on classpath</span><br><span class="line"> INFO | jolokia-agent: Using policy access restrictor classpath:/jolokia-access.xml</span><br><span class="line"> WARN | Transport Connection to: tcp://127.0.0.1:60850 failed: java.net.SocketException: Connection reset</span><br><span class="line"> WARN | Transport Connection to: tcp://127.0.0.1:57564 failed: java.net.SocketException: Connection reset</span><br></pre></td></tr></table></figure></p>
+<h2 id="编码之Maven引入"><a href="#编码之Maven引入" class="headerlink" title="编码之Maven引入"></a>编码之Maven引入</h2><p>&emsp;&emsp;本次编码涉及到的关于activemq-web的一些类，需要通过Maven引入：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-web --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.activemq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>activemq-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.15.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="编码之核心代码"><a href="#编码之核心代码" class="headerlink" title="编码之核心代码"></a>编码之核心代码</h2><p>&emsp;&emsp;这里的Demo也没有过多的操作，只是针对AMQ的一些基础信息做了常规的打印，有扩展需求的话可以根据这里的打印信息参考扩展：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ttfisher;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.activemq.broker.jmx.BrokerViewMBean;</span><br><span class="line"><span class="keyword">import</span> org.apache.activemq.broker.jmx.QueueViewMBean;</span><br><span class="line"><span class="keyword">import</span> org.apache.activemq.broker.jmx.TopicViewMBean;</span><br><span class="line"><span class="keyword">import</span> org.apache.activemq.web.RemoteJMXBrokerFacade;</span><br><span class="line"><span class="keyword">import</span> org.apache.activemq.web.config.SystemPropertiesConfiguration;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 基于JMX的Activemq服务状态监控</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: chenglin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 2018/12/18 18:59</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JMXMonitor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String jmxUrl = <span class="string">"service:jmx:rmi:///jndi/rmi://127.0.0.1:11099/jmxrmi"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String jmxUser = <span class="string">"monitor"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String jmxPwd = <span class="string">"smart"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 监控服务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doMonitor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 创建连接</span></span><br><span class="line">            RemoteJMXBrokerFacade createConnector = <span class="keyword">new</span> RemoteJMXBrokerFacade();</span><br><span class="line">            System.setProperty(<span class="string">"webconsole.jmx.url"</span>, jmxUrl);</span><br><span class="line">            System.setProperty(<span class="string">"webconsole.jmx.user"</span>, jmxUser);</span><br><span class="line">            System.setProperty(<span class="string">"webconsole.jmx.password"</span>, jmxPwd);</span><br><span class="line">            createConnector.setConfiguration(<span class="keyword">new</span> SystemPropertiesConfiguration());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 监控Broker</span></span><br><span class="line">            BrokerViewMBean brokerAdmin = createConnector.getBrokerAdmin();</span><br><span class="line">            System.out.println(<span class="string">"============= Broker Info ================"</span>);</span><br><span class="line">            System.out.println(<span class="string">"BrokerName: "</span> + brokerAdmin.getBrokerName());</span><br><span class="line">            System.out.println(<span class="string">"TotalMessageCount: "</span> + brokerAdmin.getTotalMessageCount());</span><br><span class="line">            System.out.println(<span class="string">"TotalConsumerCount: "</span> + brokerAdmin.getTotalConsumerCount());</span><br><span class="line">            System.out.println(<span class="string">"TotalDequeueCount: "</span> + brokerAdmin.getTotalDequeueCount());</span><br><span class="line">            System.out.println(<span class="string">"TotalEnqueueCount: "</span> + brokerAdmin.getTotalEnqueueCount());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 监控所有的Topic</span></span><br><span class="line">            System.out.println(<span class="string">"============= Topic List Info ================"</span>);</span><br><span class="line">            <span class="keyword">for</span> (TopicViewMBean topicViewMBean : createConnector.getTopics()) &#123;</span><br><span class="line">                System.out.println(<span class="string">"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;"</span>);</span><br><span class="line">                System.out.println(<span class="string">"Topic Name: "</span> + topicViewMBean.getName());</span><br><span class="line">                System.out.println(<span class="string">"ConsumerCount: "</span> + topicViewMBean.getConsumerCount());</span><br><span class="line">                System.out.println(<span class="string">"DequeueCount: "</span> + topicViewMBean.getDequeueCount());</span><br><span class="line">                System.out.println(<span class="string">"EnqueueCount: "</span> + topicViewMBean.getEnqueueCount());</span><br><span class="line">                System.out.println(<span class="string">"DispatchCount: "</span> + topicViewMBean.getDispatchCount());</span><br><span class="line">                System.out.println(<span class="string">"ExpiredCount: "</span> + topicViewMBean.getExpiredCount());</span><br><span class="line">                System.out.println(<span class="string">"MaxEnqueueTime: "</span> + topicViewMBean.getMaxEnqueueTime());</span><br><span class="line">                System.out.println(<span class="string">"ProducerCount: "</span> + topicViewMBean.getProducerCount());</span><br><span class="line">                System.out.println(<span class="string">"MemoryPercentUsage: "</span> + topicViewMBean.getMemoryPercentUsage());</span><br><span class="line">                System.out.println(<span class="string">"MemoryLimit: "</span> + topicViewMBean.getMemoryLimit());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 监控所有的Queue</span></span><br><span class="line">            System.out.println(<span class="string">"============ Queue List Info =================="</span>);</span><br><span class="line">            <span class="keyword">for</span> (QueueViewMBean queueViewMBean : createConnector.getQueues()) &#123;</span><br><span class="line">                System.out.println(<span class="string">"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;"</span>);</span><br><span class="line">                System.out.println(<span class="string">"Queue Name: "</span> + queueViewMBean.getName());</span><br><span class="line">                System.out.println(<span class="string">"ConsumerCount: "</span> + queueViewMBean.getConsumerCount());</span><br><span class="line">                System.out.println(<span class="string">"DequeueCount: "</span> + queueViewMBean.getDequeueCount());</span><br><span class="line">                System.out.println(<span class="string">"EnqueueCount: "</span> + queueViewMBean.getEnqueueCount());</span><br><span class="line">                System.out.println(<span class="string">"DispatchCount: "</span> + queueViewMBean.getDispatchCount());</span><br><span class="line">                System.out.println(<span class="string">"ExpiredCount: "</span> + queueViewMBean.getExpiredCount());</span><br><span class="line">                System.out.println(<span class="string">"MaxEnqueueTime: "</span> + queueViewMBean.getMaxEnqueueTime());</span><br><span class="line">                System.out.println(<span class="string">"ProducerCount: "</span> + queueViewMBean.getProducerCount());</span><br><span class="line">                System.out.println(<span class="string">"MemoryPercentUsage: "</span> + queueViewMBean.getMemoryPercentUsage());</span><br><span class="line">                System.out.println(<span class="string">"MemoryLimit: "</span> + queueViewMBean.getMemoryLimit());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Have a test</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        doMonitor();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="编码之测试结果"><a href="#编码之测试结果" class="headerlink" title="编码之测试结果"></a>编码之测试结果</h2><p>&emsp;&emsp;通过测试日志能看到AMQ的基本信息和实时的数据状态，比如Broker的信息，不同Topic的信息（包括出入队的数据量等）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">08:41:46.963 [main] DEBUG org.apache.activemq.web.RemoteJMXBrokerFacade - Creating a new JMX-Connection to the broker</span><br><span class="line">08:41:47.219 [main] INFO org.apache.activemq.web.RemoteJMXBrokerFacade - Connected via JMX to the broker at service:jmx:rmi:///jndi/rmi://127.0.0.1:11099/jmxrmi</span><br><span class="line">============= Broker Info ================</span><br><span class="line">BrokerName: localhost</span><br><span class="line">TotalMessageCount: 0</span><br><span class="line">TotalConsumerCount: 0</span><br><span class="line">TotalDequeueCount: 55</span><br><span class="line">TotalEnqueueCount: 610</span><br><span class="line">============= Topic List Info ================</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">Topic Name: queue.pub.sub</span><br><span class="line">ConsumerCount: 0</span><br><span class="line">DequeueCount: 55</span><br><span class="line">EnqueueCount: 120</span><br><span class="line">DispatchCount: 55</span><br><span class="line">ExpiredCount: 0</span><br><span class="line">MaxEnqueueTime: 6</span><br><span class="line">ProducerCount: 0</span><br><span class="line">MemoryPercentUsage: 0</span><br><span class="line">MemoryLimit: 720424141</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">Topic Name: ActiveMQ.Advisory.MasterBroker</span><br><span class="line">ConsumerCount: 0</span><br><span class="line">DequeueCount: 0</span><br><span class="line">EnqueueCount: 1</span><br><span class="line">DispatchCount: 0</span><br><span class="line">ExpiredCount: 0</span><br><span class="line">MaxEnqueueTime: 0</span><br><span class="line">ProducerCount: 0</span><br><span class="line">MemoryPercentUsage: 0</span><br><span class="line">MemoryLimit: 720424141</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">Topic Name: ActiveMQ.Advisory.Connection</span><br><span class="line">ConsumerCount: 0</span><br><span class="line">DequeueCount: 0</span><br><span class="line">EnqueueCount: 244</span><br><span class="line">DispatchCount: 0</span><br><span class="line">ExpiredCount: 0</span><br><span class="line">MaxEnqueueTime: 0</span><br><span class="line">ProducerCount: 0</span><br><span class="line">MemoryPercentUsage: 0</span><br><span class="line">MemoryLimit: 720424141</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">Topic Name: ActiveMQ.Advisory.Consumer.Topic.queue.pub.sub</span><br><span class="line">ConsumerCount: 0</span><br><span class="line">DequeueCount: 0</span><br><span class="line">EnqueueCount: 4</span><br><span class="line">DispatchCount: 0</span><br><span class="line">ExpiredCount: 0</span><br><span class="line">MaxEnqueueTime: 0</span><br><span class="line">ProducerCount: 0</span><br><span class="line">MemoryPercentUsage: 0</span><br><span class="line">MemoryLimit: 720424141</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">Topic Name: ActiveMQ.Advisory.Topic</span><br><span class="line">ConsumerCount: 0</span><br><span class="line">DequeueCount: 0</span><br><span class="line">EnqueueCount: 1</span><br><span class="line">DispatchCount: 0</span><br><span class="line">ExpiredCount: 0</span><br><span class="line">MaxEnqueueTime: 0</span><br><span class="line">ProducerCount: 0</span><br><span class="line">MemoryPercentUsage: 0</span><br><span class="line">MemoryLimit: 720424141</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">Topic Name: ActiveMQ.Advisory.Producer.Topic.queue.pub.sub</span><br><span class="line">ConsumerCount: 0</span><br><span class="line">DequeueCount: 0</span><br><span class="line">EnqueueCount: 240</span><br><span class="line">DispatchCount: 0</span><br><span class="line">ExpiredCount: 0</span><br><span class="line">MaxEnqueueTime: 0</span><br><span class="line">ProducerCount: 0</span><br><span class="line">MemoryPercentUsage: 0</span><br><span class="line">MemoryLimit: 720424141</span><br><span class="line">============ Queue List Info ==================</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ActiveMQ/" rel="tag"># ActiveMQ</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/6d12f07b.html" rel="next" title="ActiveMQ扫盲系列（二）：编码之外">
+                <i class="fa fa-chevron-left"></i> ActiveMQ扫盲系列（二）：编码之外
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/17f0c072.html" rel="prev" title="Kafka入门系列（三）：Demo in SpringBoot">
+                Kafka入门系列（三）：Demo in SpringBoot <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#细说核心配置文件"><span class="nav-number">1.</span> <span class="nav-text">细说核心配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#activemq-xml"><span class="nav-number">1.1.</span> <span class="nav-text">activemq.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML-Namespace"><span class="nav-number">1.2.</span> <span class="nav-text">XML Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PropertyPlaceholderConfigurer"><span class="nav-number">1.3.</span> <span class="nav-text">PropertyPlaceholderConfigurer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一次基于JMX的服务监控应用"><span class="nav-number">2.</span> <span class="nav-text">一次基于JMX的服务监控应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Activemq"><span class="nav-number">2.1.</span> <span class="nav-text">安装Activemq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改配置项"><span class="nav-number">2.2.</span> <span class="nav-text">修改配置项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加新用户"><span class="nav-number">2.3.</span> <span class="nav-text">添加新用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改启动项"><span class="nav-number">2.4.</span> <span class="nav-text">修改启动项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动Activemq"><span class="nav-number">2.5.</span> <span class="nav-text">启动Activemq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码之Maven引入"><span class="nav-number">2.6.</span> <span class="nav-text">编码之Maven引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码之核心代码"><span class="nav-number">2.7.</span> <span class="nav-text">编码之核心代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码之测试结果"><span class="nav-number">2.8.</span> <span class="nav-text">编码之测试结果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

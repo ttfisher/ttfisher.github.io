@@ -1,0 +1,832 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="OpenResty,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】前面几章主要是在讨论nginx，这一章开始终于要实实在在的接触到OpenResty了，跟很多常规的工具一样，我们必然首先要从安装说起。">
+<meta name="keywords" content="OpenResty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenResty应用系列（二）：OpenResty环境搭建">
+<meta property="og:url" content="https://ttfisher.github.io/post/1cf451ee.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】前面几章主要是在讨论nginx，这一章开始终于要实实在在的接触到OpenResty了，跟很多常规的工具一样，我们必然首先要从安装说起。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/public/000004.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-09-12-14.jpg">
+<meta property="og:updated_time" content="2019-05-30T23:15:45.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenResty应用系列（二）：OpenResty环境搭建">
+<meta name="twitter:description" content="【引言】前面几章主要是在讨论nginx，这一章开始终于要实实在在的接触到OpenResty了，跟很多常规的工具一样，我们必然首先要从安装说起。">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/public/000004.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/1cf451ee.html">
+
+
+
+
+
+  <title>OpenResty应用系列（二）：OpenResty环境搭建 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/1cf451ee.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenResty应用系列（二）：OpenResty环境搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T17:26:00+08:00">
+                2018-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式服务辅助之OpenResty/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式服务辅助之OpenResty</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】前面几章主要是在讨论nginx，这一章开始终于要实实在在的接触到OpenResty了，跟很多常规的工具一样，我们必然首先要从安装说起。</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/public/000004.jpg" width="55%"></div><br><a id="more"></a></p>
+<h1 id="windows安装"><a href="#windows安装" class="headerlink" title="windows安装"></a>windows安装</h1><p>&emsp;&emsp;下载地址： <a href="http://openresty.org/cn/download.html" target="_blank" rel="noopener">http://openresty.org/cn/download.html</a> ；下载完成后解压到：D:\ProgramsGreen\openresty-1.13.6.1-win32；双击执行nginx.exe 或者使用命令start nginx启动nginx，如果没有错误现在nginx已经开始运行了；本地浏览器访问： <a href="http://localhost/" target="_blank" rel="noopener">http://localhost/</a> ；出现“Welcome to nginx!”页面即表示启动成功。</p>
+<h1 id="CentOS-yum安装"><a href="#CentOS-yum安装" class="headerlink" title="CentOS yum安装"></a>CentOS yum安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost openresty]# yum install yum-utils</span><br><span class="line">......</span><br><span class="line">Complete!</span><br><span class="line">[root@localhost openresty]# yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo</span><br><span class="line">已加载插件：fastestmirror, refresh-packagekit</span><br><span class="line">adding repo from: https://openresty.org/package/centos/openresty.repo</span><br><span class="line">grabbing file https://openresty.org/package/centos/openresty.repo to /etc/yum.repos.d/openresty.repo</span><br><span class="line">openresty.repo                                                        |  267 B     00:00     </span><br><span class="line">repo saved to /etc/yum.repos.d/openresty.repo</span><br><span class="line">[root@localhost openresty]# yum install openresty</span><br><span class="line">......</span><br><span class="line">完毕！</span><br><span class="line"></span><br><span class="line"># 至此已完成安装；为了便于启动，可以考虑修改一下环境变量（为了永久生效，最好还是直接修改/etc/profile）</span><br><span class="line">[root@localhost openresty]# export PATH=$PATH:/opt/openresty/nginx/sbin追加到/etc/profile</span><br><span class="line">[root@localhost openresty]# source /etc/profile</span><br></pre></td></tr></table></figure>
+<h1 id="CentOS编译安装"><a href="#CentOS编译安装" class="headerlink" title="CentOS编译安装"></a>CentOS编译安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 这个安装方式因为没有实际验证过，不保证完全准确</span><br><span class="line"># 为了保险起见，先切换到root用户（后面的步骤也一样）</span><br><span class="line"></span><br><span class="line"># 输入以下命令一次性安装需要的库；安装成功后会有“Complete！”字样。</span><br><span class="line">[root@localhost conf]# yum install readline-devel pcre-devel openssl-devel perl </span><br><span class="line"></span><br><span class="line"># 下载OpenResty源码包</span><br><span class="line">[root@localhost conf]# wget http://xxx/ngx_openresty-1.7.10.1.tar.gz</span><br><span class="line"></span><br><span class="line"># 解压</span><br><span class="line">[root@localhost conf]# tar xzvf ngx_openresty-1.7.10.1.tar.gz</span><br><span class="line"></span><br><span class="line"># 配置</span><br><span class="line">[root@localhost conf]# cd ngx_openresty-1.7.10.1</span><br><span class="line">[root@localhost conf]# ./configure --prefix=/opt/openresty\  --with-luajit\ --without-http_redis2_module \  --with-http_iconv_module</span><br><span class="line"></span><br><span class="line"># 编译</span><br><span class="line">[root@localhost conf]# make</span><br><span class="line">[root@localhost conf]# make install</span><br></pre></td></tr></table></figure>
+<h1 id="安装结果验证"><a href="#安装结果验证" class="headerlink" title="安装结果验证"></a>安装结果验证</h1><p>&emsp;&emsp;在启动前，修改一下nginx.conf文件，加入了一句Lua脚本，内容如下（实际就是Lua版的Hello World）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">worker_processes  1;        #nginx worker 数量</span><br><span class="line">error_log logs/error.log;   #指定错误日志文件路径</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 1024;</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        #监听端口，若你的6699端口已经被占用，则需要修改</span><br><span class="line">        listen 6699;</span><br><span class="line">        location / &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                ngx.say(&quot;HelloWorld&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;然后就开始启动nginx服务了（因为本机安装了普通版本的nginx，所以前面会有一个停服务的过程）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost conf]# pwd</span><br><span class="line">/usr/local/openresty/nginx/conf</span><br><span class="line">[root@localhost conf]# ps -ef|grep nginx</span><br><span class="line">root      2352     1  0 14:07 ?        00:00:00 nginx: master process nginx</span><br><span class="line">nobody    2396  2352  0 14:11 ?        00:00:00 nginx: worker process</span><br><span class="line">root      3161  2398  0 17:20 pts/3    00:00:00 grep nginx</span><br><span class="line">[root@localhost conf]# nginx -s stop</span><br><span class="line">[root@localhost conf]# ps -ef|grep nginx</span><br><span class="line">root      3164  2398  0 17:20 pts/3    00:00:00 grep nginx</span><br><span class="line">[root@localhost conf]# /usr/local/openresty/nginx/sbin/nginx -p /usr/local/openresty/nginx/ -c conf/nginx.conf</span><br><span class="line">[root@localhost conf]# ps -ef|grep nginx</span><br><span class="line">root      3176     1  0 17:23 ?        00:00:00 nginx: master process /usr/local/openresty/nginx/sbin/nginx -p /usr/local/openresty/nginx/ -c conf/nginx.conf</span><br><span class="line">nobody    3177  3176  0 17:23 ?        00:00:00 nginx: worker process                                                                  </span><br><span class="line">root      3179  2398  0 17:23 pts/3    00:00:00 grep nginx</span><br><span class="line">[root@localhost conf]#</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;通过 <a href="http://localhost/" target="_blank" rel="noopener">http://localhost/</a> 访问，页面返回信息如下即表示安装验证成功；顺便补充说明一下，nginx启动时-p指定了启动的工作目录，-c指定了启动使用的配置文件，其实实际使用自定义配置和脚本时是可以单独拉一个目录出来做的。<br><img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-12-14.jpg" width="60%"></p>
+<h1 id="LuaJIT"><a href="#LuaJIT" class="headerlink" title="LuaJIT"></a>LuaJIT</h1><p>&emsp;&emsp;因为OpenResty的一大特点就是用到了Lua，而我们做Lua的开发肯定必不可少的需要做一些调试操作，所以在本机安装一个Lua环境也是必要的。<br>&emsp;&emsp;那么为什么这节的标题是LuaJIT呢？首先lua其实就是为了嵌入其它应用程序而开发的一个脚本语言，而LuaJIT是lua的一个Just-In-Time也就是运行时编译器，也可以说是lua的一个高效版，所以我们选择了它。Lua和LuaJIT的对比如下：</p>
+<ul>
+<li>Lua非常高效，它比许多其它脚本(如Perl、Python、Ruby)都快，尽管如此，仍然有人不满足。</li>
+<li>LuaJIT就是一个为了再榨出一点速度的尝试，它利用JIT编译技术把Lua代码编译成本地机器码后交由CPU直接执行。</li>
+<li>LuaJIT 是采用 C 语言写的 Lua 的解释器。LuaJIT 被设计成全兼容标准 Lua 5.1, 因此 LuaJIT 代码的语法和标准 Lua 的语法没多大区别。</li>
+<li>LuaJIT 和 Lua 的区别就是LuaJIT 的运行速度比标准 Lua 快数十倍；可以当做Lua 的高效率版本。</li>
+<li>LuaJIT 编译安装比较复杂，所以这里附上一个编译好的版本，亲测可用（ <a target="new" href="http://pm4hdun71.bkt.clouddn.com/attaches/2018-09-13-LuaJIT.zip">点击下载编译好的windows版本LuaJIT.zip</a> ）</li>
+</ul>
+<h1 id="Redis库引入"><a href="#Redis库引入" class="headerlink" title="Redis库引入"></a>Redis库引入</h1><p>&emsp;&emsp;实际上，Lua和很多语言也有类似之处，比如它在较高版本后也支持模块和包，而对于Redis的操作，在Python里面我们有第三方的库可以引用，在SpringBoot里面也有相对应的Template，到了Lua里，实际也是有这么一个库的，这里是参考地址： <a href="https://github.com/openresty/lua-resty-redis" target="_blank" rel="noopener">https://github.com/openresty/lua-resty-redis</a><br>&emsp;&emsp;这个Redis库下载到本地，解压完会有个lua-resty-redis-master目录，实际对我们比较有用的就是其中的lib，其他的暂时可以不关注。（redis.lua的下载地址： <a href="https://github.com/openresty/lua-resty-redis/tree/master/lib/resty" target="_blank" rel="noopener">https://github.com/openresty/lua-resty-redis/tree/master/lib/resty</a> ）<br>&emsp;&emsp;随后我们将lib上传到已经安装好OpenResty环境的服务器的某个路径下（特别要注意的是，要对所有需要执行的脚本进行赋权操作，一般755权限就够用了）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost openresty]# chmod 755 -R *</span><br><span class="line">[root@localhost openresty]# ls -R -lrt</span><br><span class="line">.:</span><br><span class="line">总用量 8</span><br><span class="line">-rwxr-xr-x 1 root root 1529 9月  13 10:40 test_redis.lua</span><br><span class="line">drwxr-xr-x 3 root root 4096 9月  13 10:40 lib</span><br><span class="line"></span><br><span class="line">./lib:</span><br><span class="line">总用量 4</span><br><span class="line">drwxr-xr-x 2 root root 4096 9月  13 10:40 resty</span><br><span class="line"></span><br><span class="line">./lib/resty:</span><br><span class="line">总用量 12</span><br><span class="line">-rwxr-xr-x 1 root root 9250 9月  13 10:40 redis.lua</span><br><span class="line">[root@localhost openresty]#</span><br></pre></td></tr></table></figure></p>
+<h1 id="nginx-conf配置全貌"><a href="#nginx-conf配置全貌" class="headerlink" title="nginx.conf配置全貌"></a>nginx.conf配置全貌</h1><p>&emsp;&emsp;因为OpenResty里面Lua是依赖nginx来触发运行的，所以首先我们要搞定一套OK的nginx配置，保证nginx服务可以正常提供访问。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost conf]# pwd</span><br><span class="line">/usr/local/openresty/nginx/conf</span><br><span class="line">[root@localhost conf]#</span><br><span class="line">[root@localhost conf]# cat nginx.conf</span><br><span class="line"></span><br><span class="line"># 注意点1</span><br><span class="line">#user  nobody;</span><br><span class="line">user root;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    lua_package_path &quot;/root/openresty/lib/?.lua;;&quot;;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line">    #include /usr/local/nginx/ext/anti_spider.conf;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            default_type &apos;text/html&apos;;</span><br><span class="line">            lua_code_cache on;</span><br><span class="line">            content_by_lua_file /root/openresty/test_redis.lua;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">[root@localhost conf]#</span><br></pre></td></tr></table></figure></p>
+<h1 id="nginx-conf配置详述"><a href="#nginx-conf配置详述" class="headerlink" title="nginx.conf配置详述"></a>nginx.conf配置详述</h1><p>&emsp;&emsp;这里我将我测试时用到的配置文件原封不动的贴过来了，一来比较完整，二来里面对应的部分可以做充分的解释理解；实际上主要是3个地方需要注意的，下面将一一道来。</p>
+<h2 id="user"><a href="#user" class="headerlink" title="user"></a>user</h2><p>&emsp;&emsp;为什么要配置这个user为root呢？因为默认配置文件是没有配置user的，这时候启动nginx的用户默认就是nobody，而nobody是没有执行lua脚本权限的，所以会一直报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"># 1. 因为浏览器访问nginx服务总是404，所以我们去后台查看了一下nginx的error.log，发现如下日志：</span><br><span class="line">2018/09/13 10:54:44 [error] 9654#9654: *2 failed to load external Lua file &quot;/root/openresty/test_redis.lua&quot;: </span><br><span class="line">cannot open /root/openresty/test_redis.lua: Permission denied, client: 192.168.1.9, </span><br><span class="line">server: localhost, request: &quot;GET /lua_test HTTP/1.1&quot;, host: &quot;192.168.1.168&quot;</span><br><span class="line"></span><br><span class="line"># 2. 然后想到去修改一下Lua脚本的权限；结果发现还是一样的结果</span><br><span class="line">[root@localhost openresty]# chmod 755 -R *</span><br><span class="line"></span><br><span class="line"># 3. 于是通过进程运行用户查看发现nginx是nobody用户启动的</span><br><span class="line">[root@localhost ~]# ps -ef|grep nginx</span><br><span class="line">root      9574     1  0 10:49 ?        00:00:00 nginx: master process nginx -p /usr/local/openresty/nginx/ -c conf/nginx.conf</span><br><span class="line">nobody    9575  9574  0 10:49 ?        00:00:00 nginx: worker process                                  </span><br><span class="line">root      9576  9540  0 10:49 pts/2    00:00:00 vi nginx.conf</span><br><span class="line">root      9580  9500  0 10:50 pts/1    00:00:00 grep nginx</span><br><span class="line">[root@localhost ~]#</span><br><span class="line"></span><br><span class="line"># 4. 于是修改了一下nginx.conf将用户改为root，然后重启nginx服务</span><br><span class="line">#user  nobody;</span><br><span class="line">user root;</span><br><span class="line"></span><br><span class="line"># 5. 重新查看发现用户确实是root</span><br><span class="line">[root@localhost ~]# ps -ef|grep nginx</span><br><span class="line">root      9668     1  0 10:57 ?        00:00:00 nginx: master process nginx -p /usr/local/openresty/nginx/ -c conf/nginx.conf</span><br><span class="line">root      9669  9668  0 10:57 ?        00:00:00 nginx: worker process                                  </span><br><span class="line">root      9671  9500  0 10:58 pts/1    00:00:00 grep nginx</span><br><span class="line">[root@localhost ~]# </span><br><span class="line"></span><br><span class="line"># 6. 最后通过curl测试一下，访问正常</span><br><span class="line">[root@localhost openresty]# curl &quot;http://localhost/lua&quot;</span><br><span class="line">ngs.say : this is redis speaking</span><br><span class="line">[root@localhost openresty]#</span><br></pre></td></tr></table></figure></p>
+<h2 id="lua-package-path"><a href="#lua-package-path" class="headerlink" title="lua_package_path"></a>lua_package_path</h2><p>&emsp;&emsp;这个地方其实可说的不多，参照着配置就可以了，基本通过命名也很好理解，就是配置Lua引入的包路径（也就是刚刚我们上传依赖库的路径，其实和很多语言的package引入的原理都是类似的）。</p>
+<h2 id="location"><a href="#location" class="headerlink" title="location"></a>location</h2><p>&emsp;&emsp;这个节点有两个配置：一个是lua_code_cache，用来控制lua脚本缓存的，若设置为off则nginx不缓存lua脚本（但是启动nginx时会有alert信息出现，如下），每次改变lua代码，不必reload nginx，比较便于调试；但off实际上对性能有影响，故正式环境下一定记得设置为on；另外一个是content_by_lua_file，实际上类似的配置有好几种方式（后面再一一说明），这个地方就是以文件的方式引入；所以按照上面的配置，只要没有匹配到合适规则的url，都会走到/root/openresty/test_redis.lua这个文件里面去完成后续处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# nginx -p /usr/local/openresty/nginx/ -c conf/nginx.conf</span><br><span class="line">nginx: [alert] lua_code_cache is off; this will hurt performance in /usr/local/openresty/nginx/conf/nginx.conf:40</span><br><span class="line">[root@localhost ~]#</span><br></pre></td></tr></table></figure></p>
+<h1 id="Lua脚本"><a href="#Lua脚本" class="headerlink" title="Lua脚本"></a>Lua脚本</h1><p>&emsp;&emsp;这里我将测试的脚本完整的附在这边，有一个粗略的概念，并不要深究每句语法的细节，具体的语法细节后面会逐渐在实践中积累总结。<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 关闭redis连接</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">close_redis</span><span class="params">(redis)</span></span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> redis <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">local</span> ok,err = redis:<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span></span><br><span class="line">        ngx.say(<span class="string">"Error : "</span>,err);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 引入redis的module</span></span><br><span class="line"><span class="keyword">local</span> m_redis = <span class="built_in">require</span>(<span class="string">"resty.redis"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建redis实例</span></span><br><span class="line"><span class="keyword">local</span> redis = m_redis:new();</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置操作的超时（ms）时间，包括连接也会遵循这个时间限制</span></span><br><span class="line">redis:set_timeout(<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 建立到本地redis的连接</span></span><br><span class="line"><span class="keyword">local</span> ok,err = redis:connect(<span class="string">'127.0.0.1'</span>,<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 连接如果不Ok，那么就给前端返回一句error信息，然后关闭连接</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span></span><br><span class="line">    ngx.say(<span class="string">"Error : "</span>,err)</span><br><span class="line">    <span class="keyword">return</span> close_redis(redis);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Redis的key</span></span><br><span class="line"><span class="keyword">local</span> key = <span class="string">"k1"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置一个key和对应的消息到redis，如果返回不正常就给前端返回错误信息</span></span><br><span class="line"><span class="keyword">local</span> resp,err = redis:set(key, <span class="string">"this is redis speaking"</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> resp <span class="keyword">then</span></span><br><span class="line">    ngx.say(<span class="string">"Error : "</span>,err)</span><br><span class="line">    <span class="keyword">return</span> close_redis(redis)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 获取redis存储的消息</span></span><br><span class="line"><span class="keyword">local</span> resp, err = redis:get(key) </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 没响应</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> resp <span class="keyword">then</span>  </span><br><span class="line">    ngx.say(<span class="string">"Error : "</span>, err)</span><br><span class="line">    <span class="keyword">return</span> close_redis(redis)</span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 值为空</span></span><br><span class="line"><span class="keyword">if</span> resp == ngx.null <span class="keyword">then</span></span><br><span class="line">    resp = <span class="string">'No data found in redis'</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 正常返回</span></span><br><span class="line">ngx.say(<span class="string">"ngs.say : "</span>, resp)  </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 关闭连接</span></span><br><span class="line">close_redis(redis)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenResty/" rel="tag"># OpenResty</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/4fbd6846.html" rel="next" title="OpenResty应用系列（一）：基础概念和Nginx装配">
+                <i class="fa fa-chevron-left"></i> OpenResty应用系列（一）：基础概念和Nginx装配
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/5e12f98d.html" rel="prev" title="OpenResty应用系列（三）：反爬虫策略小试牛刀">
+                OpenResty应用系列（三）：反爬虫策略小试牛刀 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#windows安装"><span class="nav-number">1.</span> <span class="nav-text">windows安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS-yum安装"><span class="nav-number">2.</span> <span class="nav-text">CentOS yum安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS编译安装"><span class="nav-number">3.</span> <span class="nav-text">CentOS编译安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装结果验证"><span class="nav-number">4.</span> <span class="nav-text">安装结果验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LuaJIT"><span class="nav-number">5.</span> <span class="nav-text">LuaJIT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis库引入"><span class="nav-number">6.</span> <span class="nav-text">Redis库引入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx-conf配置全貌"><span class="nav-number">7.</span> <span class="nav-text">nginx.conf配置全貌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx-conf配置详述"><span class="nav-number">8.</span> <span class="nav-text">nginx.conf配置详述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#user"><span class="nav-number">8.1.</span> <span class="nav-text">user</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lua-package-path"><span class="nav-number">8.2.</span> <span class="nav-text">lua_package_path</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#location"><span class="nav-number">8.3.</span> <span class="nav-text">location</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lua脚本"><span class="nav-number">9.</span> <span class="nav-text">Lua脚本</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

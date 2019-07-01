@@ -1,0 +1,840 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Java语言特性,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】面向对象的编程过程中，多多少少会涉及到对象的克隆操作，而就克隆来说呢，不同的人可能有不同的实现方式，那如何实现才是最合适的呢？">
+<meta name="keywords" content="Java语言特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java高级特性系列（二）：对象的克隆">
+<meta property="og:url" content="https://ttfisher.github.io/post/a09d86b.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】面向对象的编程过程中，多多少少会涉及到对象的克隆操作，而就克隆来说呢，不同的人可能有不同的实现方式，那如何实现才是最合适的呢？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/public/000011.jpg">
+<meta property="og:updated_time" content="2019-05-30T23:15:45.465Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java高级特性系列（二）：对象的克隆">
+<meta name="twitter:description" content="【引言】面向对象的编程过程中，多多少少会涉及到对象的克隆操作，而就克隆来说呢，不同的人可能有不同的实现方式，那如何实现才是最合适的呢？">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/public/000011.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/a09d86b.html">
+
+
+
+
+
+  <title>Java高级特性系列（二）：对象的克隆 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/a09d86b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java高级特性系列（二）：对象的克隆</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T16:05:56+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术结构升级之JDK微专题/" itemprop="url" rel="index">
+                    <span itemprop="name">技术结构升级之JDK微专题</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】面向对象的编程过程中，多多少少会涉及到对象的克隆操作，而就克隆来说呢，不同的人可能有不同的实现方式，那如何实现才是最合适的呢？</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/public/000011.jpg" width="55%"></div><br><a id="more"></a></p>
+<h1 id="为什么需要克隆"><a href="#为什么需要克隆" class="headerlink" title="为什么需要克隆"></a>为什么需要克隆</h1><p>&emsp;&emsp;在开发过程中，我们常常会遇到这种情况：已经有了一个对象A，并且A里面的一些属性已经有值了，这时候我们想复制一个A对象到B中，但是再对B进行任何操作都不影响A，这在Java环境中通过=赋值是无法实现的（因为=赋值只是做了栈层面的引用拷贝，堆中的对象实际还是同一个），于是我们需要一个方法可以实现这种需求（当然，你要是不嫌麻烦的话，可以自己new一个对象，然后挨个属性去赋值），克隆的出现就是来解决这个问题的。</p>
+<h1 id="什么是对象的克隆？"><a href="#什么是对象的克隆？" class="headerlink" title="什么是对象的克隆？"></a>什么是对象的克隆？</h1><p>&emsp;&emsp;克隆（clone），从字面上理解就是复制出一个一模一样的东西（也就是创建出一个新的对象，这时候可能会让人联想起java的new关键字），那么如何复制出来呢？后面的章节会详细的说明；在这里，我们先了解一下Java语言的两种创建对象的方式（new和clone）有什么区别。</p>
+<h2 id="使用new操作符创建一个对象"><a href="#使用new操作符创建一个对象" class="headerlink" title="使用new操作符创建一个对象"></a>使用new操作符创建一个对象</h2><ul>
+<li>new的本意是分配内存，通常new后面会跟一个类型定义（比如：ArrayList）</li>
+<li>一旦知道了这个对象的类型，也就知道了初始化内存的大小</li>
+<li>于是就去JVM的Heap中申请一块内存区，然后调用构造方法生成对象实例填充到该对象的各个域</li>
+<li>至此，完成了一个对象的初始化，对象也就创建完成了</li>
+<li>对象创建完成后，就可以将该对象的引用（地址）发布到外部（比如：栈里面的局部变量），通过这个引用即可操作这个对象</li>
+</ul>
+<h2 id="使用clone方法复制一个对象"><a href="#使用clone方法复制一个对象" class="headerlink" title="使用clone方法复制一个对象"></a>使用clone方法复制一个对象</h2><ul>
+<li>clone在第一步是和new相似的，也是分配内存</li>
+<li>调用clone方法时，分配的内存和源对象（即调用clone方法的对象）相同</li>
+<li>然后再使用原对象中对应的各个域，填充新对象的域，填充完成之后，clone方法结束，这样一个新的相同的对象被创建</li>
+<li>对象创建完成后，就可以将该对象的引用（地址）发布到外部（比如：栈里面的局部变量），通过这个引用即可操作这个对象</li>
+</ul>
+<h1 id="如何实现一个clone操作？"><a href="#如何实现一个clone操作？" class="headerlink" title="如何实现一个clone操作？"></a>如何实现一个clone操作？</h1><h2 id="编码实例"><a href="#编码实例" class="headerlink" title="编码实例"></a>编码实例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cc.tools.common;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Clone方法实验</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> chenglin</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClone</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Test Main</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Student student1 = <span class="keyword">new</span> Student(<span class="number">1</span>, <span class="string">"chenglin"</span>);</span><br><span class="line">        Student student2 = (Student)student1.clone();</span><br><span class="line"></span><br><span class="line">        System.out.println(student1.getClass());</span><br><span class="line">        System.out.println(student2.getClass());</span><br><span class="line">        System.out.println(student1.equals(student2));</span><br><span class="line">        System.out.println(student1 == student2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Student类定义</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line"></span><br><span class="line">    Student(<span class="keyword">int</span> id, String name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            s = (Student) <span class="keyword">super</span>.clone();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (CloneNotSupportedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">---------------------------------------</span><br><span class="line">运行结果：</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">xunsiya</span>.<span class="title">tools</span>.<span class="title">common</span>.<span class="title">Student</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">com</span>.<span class="title">xunsiya</span>.<span class="title">tools</span>.<span class="title">common</span>.<span class="title">Student</span></span></span><br><span class="line"><span class="class"><span class="title">false</span></span></span><br><span class="line"><span class="class"><span class="title">false</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">Process</span> <span class="title">finished</span> <span class="title">with</span> <span class="title">exit</span> <span class="title">code</span> 0</span></span><br></pre></td></tr></table></figure>
+<h2 id="Cloneable接口的定义"><a href="#Cloneable接口的定义" class="headerlink" title="Cloneable接口的定义"></a>Cloneable接口的定义</h2><p><strong>很明显，该接口是一个里面没有提供任何方法，仅是个标志接口(tagging interface)</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A class implements the &lt;code&gt;Cloneable&lt;/code&gt; interface to</span></span><br><span class="line"><span class="comment"> * indicate to the &#123;<span class="doctag">@link</span> java.lang.Object#clone()&#125; method that it</span></span><br><span class="line"><span class="comment"> * is legal for that method to make a</span></span><br><span class="line"><span class="comment"> * field-for-field copy of instances of that class.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Invoking Object's clone method on an instance that does not implement the</span></span><br><span class="line"><span class="comment"> * &lt;code&gt;Cloneable&lt;/code&gt; interface results in the exception</span></span><br><span class="line"><span class="comment"> * &lt;code&gt;CloneNotSupportedException&lt;/code&gt; being thrown.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * By convention, classes that implement this interface should override</span></span><br><span class="line"><span class="comment"> * &lt;tt&gt;Object.clone&lt;/tt&gt; (which is protected) with a public method.</span></span><br><span class="line"><span class="comment"> * See &#123;<span class="doctag">@link</span> java.lang.Object#clone()&#125; for details on overriding this</span></span><br><span class="line"><span class="comment"> * method.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Note that this interface does &lt;i&gt;not&lt;/i&gt; contain the &lt;tt&gt;clone&lt;/tt&gt; method.</span></span><br><span class="line"><span class="comment"> * Therefore, it is not possible to clone an object merely by virtue of the</span></span><br><span class="line"><span class="comment"> * fact that it implements this interface.  Even if the clone method is invoked</span></span><br><span class="line"><span class="comment"> * reflectively, there is no guarantee that it will succeed.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>  unascribed</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     java.lang.CloneNotSupportedException</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     java.lang.Object#clone()</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>   JDK1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="clone方法的定义"><a href="#clone方法的定义" class="headerlink" title="clone方法的定义"></a>clone方法的定义</h2><p><strong>方法是native定义的，也就是一个java调用非java代码的接口，所以clone是一个其他语言实现的方法。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Creates and returns a copy of this object.  The precise meaning</span></span><br><span class="line"><span class="comment">  * of "copy" may depend on the class of the object. The general</span></span><br><span class="line"><span class="comment">  * intent is that, for any object &#123;<span class="doctag">@code</span> x&#125;, the expression:</span></span><br><span class="line"><span class="comment">  * &lt;blockquote&gt;</span></span><br><span class="line"><span class="comment">  * &lt;pre&gt;</span></span><br><span class="line"><span class="comment">  * x.clone() != x&lt;/pre&gt;&lt;/blockquote&gt;</span></span><br><span class="line"><span class="comment">  * will be true, and that the expression:</span></span><br><span class="line"><span class="comment">  * &lt;blockquote&gt;</span></span><br><span class="line"><span class="comment">  * &lt;pre&gt;</span></span><br><span class="line"><span class="comment">  * x.clone().getClass() == x.getClass()&lt;/pre&gt;&lt;/blockquote&gt;</span></span><br><span class="line"><span class="comment">  * will be &#123;<span class="doctag">@code</span> true&#125;, but these are not absolute requirements.</span></span><br><span class="line"><span class="comment">  * While it is typically the case that:</span></span><br><span class="line"><span class="comment">  * &lt;blockquote&gt;</span></span><br><span class="line"><span class="comment">  * &lt;pre&gt;</span></span><br><span class="line"><span class="comment">  * x.clone().equals(x)&lt;/pre&gt;&lt;/blockquote&gt;</span></span><br><span class="line"><span class="comment">  * will be &#123;<span class="doctag">@code</span> true&#125;, this is not an absolute requirement.</span></span><br><span class="line"><span class="comment">  * &lt;p&gt;</span></span><br><span class="line"><span class="comment">  * By convention, the returned object should be obtained by calling</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> super.clone&#125;.  If a class and all of its superclasses (except</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> Object&#125;) obey this convention, it will be the case that</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> x.clone().getClass() == x.getClass()&#125;.</span></span><br><span class="line"><span class="comment">  * &lt;p&gt;</span></span><br><span class="line"><span class="comment">  * By convention, the object returned by this method should be independent</span></span><br><span class="line"><span class="comment">  * of this object (which is being cloned).  To achieve this independence,</span></span><br><span class="line"><span class="comment">  * it may be necessary to modify one or more fields of the object returned</span></span><br><span class="line"><span class="comment">  * by &#123;<span class="doctag">@code</span> super.clone&#125; before returning it.  Typically, this means</span></span><br><span class="line"><span class="comment">  * copying any mutable objects that comprise the internal "deep structure"</span></span><br><span class="line"><span class="comment">  * of the object being cloned and replacing the references to these</span></span><br><span class="line"><span class="comment">  * objects with references to the copies.  If a class contains only</span></span><br><span class="line"><span class="comment">  * primitive fields or references to immutable objects, then it is usually</span></span><br><span class="line"><span class="comment">  * the case that no fields in the object returned by &#123;<span class="doctag">@code</span> super.clone&#125;</span></span><br><span class="line"><span class="comment">  * need to be modified.</span></span><br><span class="line"><span class="comment">  * &lt;p&gt;</span></span><br><span class="line"><span class="comment">  * The method &#123;<span class="doctag">@code</span> clone&#125; for class &#123;<span class="doctag">@code</span> Object&#125; performs a</span></span><br><span class="line"><span class="comment">  * specific cloning operation. First, if the class of this object does</span></span><br><span class="line"><span class="comment">  * not implement the interface &#123;<span class="doctag">@code</span> Cloneable&#125;, then a</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> CloneNotSupportedException&#125; is thrown. Note that all arrays</span></span><br><span class="line"><span class="comment">  * are considered to implement the interface &#123;<span class="doctag">@code</span> Cloneable&#125; and that</span></span><br><span class="line"><span class="comment">  * the return type of the &#123;<span class="doctag">@code</span> clone&#125; method of an array type &#123;<span class="doctag">@code</span> T[]&#125;</span></span><br><span class="line"><span class="comment">  * is &#123;<span class="doctag">@code</span> T[]&#125; where T is any reference or primitive type.</span></span><br><span class="line"><span class="comment">  * Otherwise, this method creates a new instance of the class of this</span></span><br><span class="line"><span class="comment">  * object and initializes all its fields with exactly the contents of</span></span><br><span class="line"><span class="comment">  * the corresponding fields of this object, as if by assignment; the</span></span><br><span class="line"><span class="comment">  * contents of the fields are not themselves cloned. Thus, this method</span></span><br><span class="line"><span class="comment">  * performs a "shallow copy" of this object, not a "deep copy" operation.</span></span><br><span class="line"><span class="comment">  * &lt;p&gt;</span></span><br><span class="line"><span class="comment">  * The class &#123;<span class="doctag">@code</span> Object&#125; does not itself implement the interface</span></span><br><span class="line"><span class="comment">  * &#123;<span class="doctag">@code</span> Cloneable&#125;, so calling the &#123;<span class="doctag">@code</span> clone&#125; method on an object</span></span><br><span class="line"><span class="comment">  * whose class is &#123;<span class="doctag">@code</span> Object&#125; will result in throwing an</span></span><br><span class="line"><span class="comment">  * exception at run time.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span>     a clone of this instance.</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@throws</span>  CloneNotSupportedException  if the object's class does not</span></span><br><span class="line"><span class="comment">  *               support the &#123;<span class="doctag">@code</span> Cloneable&#125; interface. Subclasses</span></span><br><span class="line"><span class="comment">  *               that override the &#123;<span class="doctag">@code</span> clone&#125; method can also</span></span><br><span class="line"><span class="comment">  *               throw this exception to indicate that an instance cannot</span></span><br><span class="line"><span class="comment">  *               be cloned.</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@see</span> java.lang.Cloneable</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">native</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="clone方法的大致逻辑"><a href="#clone方法的大致逻辑" class="headerlink" title="clone方法的大致逻辑"></a>clone方法的大致逻辑</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> Cloneable)) &#123;  </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CloneNotSupportedException(<span class="string">"Class doesn't implement Cloneable"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> internalClone((Cloneable) <span class="keyword">this</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;如上代码块很清晰的说明了clone的实现逻辑，比如针对上述代码实例删除了implements Cloneable部分的定义，代码也是可以正常编译和运行的，但是运行结果如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">xunsiya</span>.<span class="title">tools</span>.<span class="title">common</span>.<span class="title">Student</span></span></span><br><span class="line">java.lang.CloneNotSupportedException: com.xunsiya.tools.common.Student</span><br><span class="line">    at java.lang.Object.clone(Native Method)</span><br><span class="line">    at com.xunsiya.tools.common.Student.clone(TestClone.java:<span class="number">42</span>)</span><br><span class="line">    at com.xunsiya.tools.common.TestClone.main(TestClone.java:<span class="number">17</span>)</span><br><span class="line">Exception in thread <span class="string">"main"</span> java.lang.NullPointerException</span><br><span class="line">    at com.xunsiya.tools.common.TestClone.main(TestClone.java:<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="浅克隆和深克隆"><a href="#浅克隆和深克隆" class="headerlink" title="浅克隆和深克隆"></a>浅克隆和深克隆</h1><h2 id="浅克隆-shadow-clone"><a href="#浅克隆-shadow-clone" class="headerlink" title="浅克隆(shadow clone)"></a>浅克隆(shadow clone)</h2><p>&emsp;&emsp;浅克隆对于要克隆的对象，对于其基本数据类型的属性，复制一份给新产生的对象（如:int,long,float等，复制的是值），对于非基本数据类型的属性，仅仅复制一份引用（reference，可以理解为内存地址）给新产生的对象，即新产生的对象和原始对象中的非基本数据类型的属性都指向的是同一个对象。<br>&emsp;&emsp;实现浅克隆的步骤：对<strong><font color="red">要克隆的类型本身</font></strong>实现java.lang.Cloneable接口并重写java.lang.Object.clone()方法</p>
+<h2 id="深克隆-deep-clone"><a href="#深克隆-deep-clone" class="headerlink" title="深克隆(deep clone)"></a>深克隆(deep clone)</h2><p>&emsp;&emsp;在浅克隆的基础上，对于要克隆的对象中的非基本数据类型的属性对应的类，也实现克隆（也就是新建一个对象，新开辟内存区域），这样对于非基本数据类型的属性，复制的不是一份引用，即新产生的对象和原始对象中的非基本数据类型的属性指向的不是同一个对象<br>&emsp;&emsp;实现深克隆的步骤：对<strong><font color="red">要克隆的类和类中所有非基本数据类型的属性对应的类</font></strong>实现java.lang.Cloneable接口并重写java.lang.Object.clone()方法</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li><strong>重点：待clone的类必须实现Cloneable接口（因为Object并未默认实现Cloneable接口），否则程序编译运行正常但是会报CloneNotSupportedException</strong></li>
+<li><strong>重点：实现Cloneable之后，必须要重写public Object clone()方法，通常就是直接调用super.Clone()就可以了（注意：clone方法是从Object继承过来的，因为Cloneable是一个空接口）</strong></li>
+<li><strong>重点：Object类中的clone()方法是protected的，重写之后需要把clone()方法设置为public</strong></li>
+<li><strong>重点：对象调用clone方法默认返回类型是Object，需要进行强制类型转换</strong></li>
+<li><strong>重点：clone前后的两个对象因为在堆中有不同的内存区，所以是不相等的</strong></li>
+<li><strong>重点：使用对象序列化和反序列化也可以实现深度克隆（关于序列化的概念会新开一个专题讲述）</strong></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java语言特性/" rel="tag"># Java语言特性</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/Infinity.html" rel="next" title="Java高级特性系列（一）：对象序列化">
+                <i class="fa fa-chevron-left"></i> Java高级特性系列（一）：对象序列化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/5484de22.html" rel="prev" title="Java高级特性系列（三）：好好说说IO其一">
+                Java高级特性系列（三）：好好说说IO其一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么需要克隆"><span class="nav-number">1.</span> <span class="nav-text">为什么需要克隆</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是对象的克隆？"><span class="nav-number">2.</span> <span class="nav-text">什么是对象的克隆？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用new操作符创建一个对象"><span class="nav-number">2.1.</span> <span class="nav-text">使用new操作符创建一个对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用clone方法复制一个对象"><span class="nav-number">2.2.</span> <span class="nav-text">使用clone方法复制一个对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何实现一个clone操作？"><span class="nav-number">3.</span> <span class="nav-text">如何实现一个clone操作？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编码实例"><span class="nav-number">3.1.</span> <span class="nav-text">编码实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloneable接口的定义"><span class="nav-number">3.2.</span> <span class="nav-text">Cloneable接口的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clone方法的定义"><span class="nav-number">3.3.</span> <span class="nav-text">clone方法的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clone方法的大致逻辑"><span class="nav-number">3.4.</span> <span class="nav-text">clone方法的大致逻辑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅克隆和深克隆"><span class="nav-number">4.</span> <span class="nav-text">浅克隆和深克隆</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#浅克隆-shadow-clone"><span class="nav-number">4.1.</span> <span class="nav-text">浅克隆(shadow clone)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深克隆-deep-clone"><span class="nav-number">4.2.</span> <span class="nav-text">深克隆(deep clone)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

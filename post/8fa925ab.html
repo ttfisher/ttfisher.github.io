@@ -1,0 +1,914 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="设计模式,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】此篇主要讨论7种常见的结构型模式：适配器模式（Adapter Pattern）、桥接模式（Bridge Pattern）、组合模式（Composite Pattern）、装饰器模式（Decorator Pattern）、外观模式（Facade Pattern）、享元模式（Flyweight Pattern）、代理模式（Proxy Pattern）。点击查看完整示例代码">
+<meta name="keywords" content="设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式扫盲系列（三）：结构型模式集">
+<meta property="og:url" content="https://ttfisher.github.io/post/8fa925ab.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】此篇主要讨论7种常见的结构型模式：适配器模式（Adapter Pattern）、桥接模式（Bridge Pattern）、组合模式（Composite Pattern）、装饰器模式（Decorator Pattern）、外观模式（Facade Pattern）、享元模式（Flyweight Pattern）、代理模式（Proxy Pattern）。点击查看完整示例代码">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2019/2019-06-03-01.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-06.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-07.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-08.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-09.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-10.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-11.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2019/2019-06-13-01.png">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-12.jpg">
+<meta property="og:updated_time" content="2019-06-13T00:12:53.819Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式扫盲系列（三）：结构型模式集">
+<meta name="twitter:description" content="【引言】此篇主要讨论7种常见的结构型模式：适配器模式（Adapter Pattern）、桥接模式（Bridge Pattern）、组合模式（Composite Pattern）、装饰器模式（Decorator Pattern）、外观模式（Facade Pattern）、享元模式（Flyweight Pattern）、代理模式（Proxy Pattern）。点击查看完整示例代码">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/2019/2019-06-03-01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/8fa925ab.html">
+
+
+
+
+
+  <title>设计模式扫盲系列（三）：结构型模式集 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/8fa925ab.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">设计模式扫盲系列（三）：结构型模式集</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T11:26:13+08:00">
+                2018-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术结构升级之设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">技术结构升级之设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】此篇主要讨论7种常见的结构型模式：适配器模式（Adapter Pattern）、桥接模式（Bridge Pattern）、组合模式（Composite Pattern）、装饰器模式（Decorator Pattern）、外观模式（Facade Pattern）、享元模式（Flyweight Pattern）、代理模式（Proxy Pattern）。<a href="https://github.com/ttfisher/D01-SpringBoot" target="_blank" rel="noopener">点击查看完整示例代码</a> </p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2019/2019-06-03-01.jpg" width="55%"></div>
+
+<a id="more"></a>
+<hr>
+<h1 id="适配器模式（Adapter-Pattern）"><a href="#适配器模式（Adapter-Pattern）" class="headerlink" title="适配器模式（Adapter Pattern）"></a><div align="center">适配器模式（Adapter Pattern）</div></h1><hr>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;适配器模式（Adapter Pattern）是作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。这种模式涉及到一个单一的类，该类负责加入独立的或不兼容的接口功能。<br>&emsp;&emsp;通常在需要开发的具有某种业务功能的组件在现有的组件库中已经存在了，但是与当前系统的接口规范又不大兼容，重新开发成本又很高，这时就应该想到适配器模式，它就能能很好地解决这类问题。</p>
+<h2 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;通过类图，我们可以发现原理性的适配器模式，就是通过一层适配（实际使用时可能扩展为多层）将原本不适配的组件转换为可适配的组件，屏蔽了原组件的特性，对外只会看到Adaptor的存在，而并不会被调用方发现Adaptor内部实际上使用的还是Adaptee来进行适配实现的。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-06.jpg" width="55%"></div>
+
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="适配器接口"><a href="#适配器接口" class="headerlink" title="适配器接口"></a>适配器接口</h3><p>&emsp;&emsp;由于只是对模式进行原理性的模拟，接口定义很简单，这个适配器接口相当于就是我们需要对外提供的新的契约接口，外部调用只会认可Adaptor的operation接口，而不会认可其他接口，这也就导致了我们必须做适配。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Adaptor;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 适配器接口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/3 7:49</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Adaptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对外提供的服务（待适配的操作）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="被适配的实体定义"><a href="#被适配的实体定义" class="headerlink" title="被适配的实体定义"></a>被适配的实体定义</h3><p>&emsp;&emsp;被适配的实体，也就是实际干活的，它一般是已存在的组件，因为接口规范或者各种其他原因不能很好地与外部对接兼容，所以它需要做一个默默无闻的后台工作者存在。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Adaptor;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 被适配的实体定义</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/3 7:50</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adaptee</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 既有组件的传统操作</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">adaptedOperation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am operation from adaptee."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="适配实现"><a href="#适配实现" class="headerlink" title="适配实现"></a>适配实现</h3><p>&emsp;&emsp;对外，我是一个Adaptor，调用者需要进行operation都是通过我，但是剖开我的外衣，其实内部支撑的还是原来那个Adaptee，只不过它不愿抛头露面而已。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Adaptor;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 适配实现</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/3 7:50</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteAdaptor</span> <span class="keyword">implements</span> <span class="title">Adaptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Adaptee adaptee = <span class="keyword">new</span> Adaptee();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 直接通过被适配对象进行操作，但对外接口的兼容性已改变</span></span><br><span class="line">        adaptee.adaptedOperation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>&emsp;&emsp;作为客户端，它只认可Adaptor，只要你Adaptor完成了我需要的功能，我管你实际是张三还是李四在实际干活呢？我从抽象层面依赖你Adaptor，你去屏蔽你的细节，我只需要你的接口功能完备即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Adaptor.Adaptor;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Adaptor.ConcreteAdaptor;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 适配器模式客户端</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/3 7:51</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AdaptorClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Main</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Adaptor adaptor = <span class="keyword">new</span> ConcreteAdaptor();</span><br><span class="line">        adaptor.operation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Console Output</span></span><br><span class="line">I am operation from adaptee.</span><br></pre></td></tr></table></figure></p>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>&emsp;&emsp;适配器有很多不同的实现方式，常见的就有：类适配器模式（class adapter pattern，以继承现有类的方式转换）、对象的适配器模式（object adapter pattern，以聚合对象实例的方式转换）、接口的适配器模式（default adapter pattern，以实现接口的方式转换）；三种模式都可以实现适配器这种效果，殊途同归，今天这个实践因为属于扫盲性质的，所以暂时不会细致的研究每种实现的区别，具体对这三类适配器的细节讨论会在后续的提升专题进行。</p>
+<hr>
+<h1 id="桥接模式（Bridge-Pattern）"><a href="#桥接模式（Bridge-Pattern）" class="headerlink" title="桥接模式（Bridge Pattern）"></a><div align="center">桥接模式（Bridge Pattern）</div></h1><hr>
+<h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;桥接（Bridge）是用于把抽象化与实现化解耦，使得二者可以独立变化，它通过提供抽象化和实现化之间的桥接结构，来实现二者的解耦。这种模式涉及到一个作为桥接的接口，使得实体类的功能独立于接口实现类。这种模式的意图就是将抽象部分与实现部分分离，使它们都可以独立的变化。</p>
+<h2 id="类图-1"><a href="#类图-1" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;这个类图涉及到了桥接模式关键的几个点（但是没有将客户端包含进来），Abstraction对应的就是桥接模式的桥（一般情况下，它内部是包含了一个Implementor的成员变量的），通过这座桥，从而将实际的操作交由具体的Implementor来操作，这个就是桥接模式最基本的用途。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-07.jpg" width="55%"></div>
+
+<h2 id="实践-1"><a href="#实践-1" class="headerlink" title="实践"></a>实践</h2><h3 id="操作服务接口"><a href="#操作服务接口" class="headerlink" title="操作服务接口"></a>操作服务接口</h3><p>&emsp;&emsp;此接口，用于定义操作的契约（还是那句老话，面向抽象编程），所以我们需要这个接口来定义它对外暴露的服务。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Bridge;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 具体操作服务接口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 7:41</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Implementor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Operations</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operationImpl</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="操作服务实现"><a href="#操作服务实现" class="headerlink" title="操作服务实现"></a>操作服务实现</h3><p>&emsp;&emsp;这个实现类可以有N个，因为只是个演示demo这里就不一一列举了，每个实现类在实现接口方法时都有自己具体的逻辑，这个实际上也是使用接口的好处之一（一个定义，多重实现）。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Bridge;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实际操作实现类A</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 7:41</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteImplementorA</span> <span class="keyword">implements</span> <span class="title">Implementor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationImpl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am operation implementor A, i am working."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="桥的定义"><a href="#桥的定义" class="headerlink" title="桥的定义"></a>桥的定义</h3><p>&emsp;&emsp;桥的定义，实际上写到这里的时候，就有点懵圈了，桥看起来和其他一些模式都有些神似，但是又有点细微的差别，具体这些模式之间的区别，我们会在后面的提升系列里单独讨论，这里不做扩展。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Bridge;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 桥</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 7:41</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Abstraction</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Implementor implementor;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Abstraction</span><span class="params">(Implementor implementor)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.implementor = implementor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        implementor.operationImpl();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户类"><a href="#客户类" class="headerlink" title="客户类"></a>客户类</h3><p>&emsp;&emsp;通过客户类调用，可以很直观的看出来，客户只需要跟Abstraction来打交道即可，需要用到A就让它启动A，需要用到B就让它启动B，通过Abstraction实现了桥接。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Bridge.Abstraction;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Bridge.ConcreteImplementorA;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Bridge.ConcreteImplementorB;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 桥接模式的客户调用</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 7:45</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BridgeClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Abstraction abstractionA = <span class="keyword">new</span> Abstraction(<span class="keyword">new</span> ConcreteImplementorA());</span><br><span class="line">        abstractionA.operation();</span><br><span class="line"></span><br><span class="line">        Abstraction abstractionB = <span class="keyword">new</span> Abstraction(<span class="keyword">new</span> ConcreteImplementorB());</span><br><span class="line">        abstractionB.operation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="组合模式（Composite-Pattern）"><a href="#组合模式（Composite-Pattern）" class="headerlink" title="组合模式（Composite Pattern）"></a><div align="center">组合模式（Composite Pattern）</div></h1><hr>
+<h2 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;组合模式（Composite Pattern），又叫部分整体模式，是用于把一组相似的对象当作一个单一的对象。组合模式依据树形结构来组合对象，用来表示部分以及整体层次。组合模式主要有以下三个组件：</p>
+<ul>
+<li>组合部件（Component）：它是一个抽象角色，为要组合的对象提供统一的接口。</li>
+<li>叶子（Leaf）：在组合中表示子节点对象，叶子节点不能有子节点。</li>
+<li>合成部件（Composite）：定义有枝节点的行为，用来存储部件，实现在Component接口中的有关操作，如增加（Add）和删除（Remove）。</li>
+</ul>
+<h2 id="类图-2"><a href="#类图-2" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;通过上一节的定义和下图对应就能很清楚的看出组合模式的各个组件，但是单独来看类图还是着实有些抽象，打个实际的比方比较切合这个模式的就是我们操作系统的资源管理器，每个文件夹下面都会包含子文件夹或者文件，组合模式实现的就是类似的效果。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-08.jpg" width="55%"></div>
+
+<h2 id="实践-2"><a href="#实践-2" class="headerlink" title="实践"></a>实践</h2><h3 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h3><p>&emsp;&emsp;这里省略了Component的抽象层（实际使用时也是需要视情况而定具体采用何种方式来实现的），所以这里的逻辑就比较简单了（甚至更简单一些连Leaf都不需要定义了，但是这里为了更好的契合类图的描述也提供了）。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Composite;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 合成部件</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:04</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;Component&gt; list;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Component</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Component e)</span> </span>&#123;</span><br><span class="line">        list.add(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Component e)</span> </span>&#123;</span><br><span class="line">        list.remove(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Leaf"><a href="#Leaf" class="headerlink" title="Leaf"></a>Leaf</h3><p>&emsp;&emsp;叶子结点实际上也是一种Component，只是它对operation进行了重新的定义而已；个人认为实际开发中若没有这类的操作区别，也没有必要为了抽象而抽象的非要挤出一个Leaf类来。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Composite;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 叶子结点</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:03</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaf</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Leaf</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am a leaf ------&gt; I am a pretty leaf."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户类-1"><a href="#客户类-1" class="headerlink" title="客户类"></a>客户类</h3><p>&emsp;&emsp;鉴于这个结构打印起来比较麻烦，所以没有花太多时间来重写Component的toString方法，而是直接偷懒了一下，把Debug出来的Component的最终结构直接copy过来的，看起来也清晰透彻的发现这个树真的是一棵树。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Composite.Component;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Composite.Leaf;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 组合模式客户类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:12</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompositeClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Component leaf1A = <span class="keyword">new</span> Leaf(<span class="string">"Level 1-A"</span>);</span><br><span class="line">        Component leaf1B = <span class="keyword">new</span> Leaf(<span class="string">"Level 1-B"</span>);</span><br><span class="line"></span><br><span class="line">        Component componentB = <span class="keyword">new</span> Component(<span class="string">"Level 2"</span>);</span><br><span class="line">        componentB.add(leaf1A);</span><br><span class="line">        componentB.add(leaf1B);</span><br><span class="line"></span><br><span class="line">        Component componentA = <span class="keyword">new</span> Component(<span class="string">"Level 3"</span>);</span><br><span class="line">        componentA.add(componentB);</span><br><span class="line"></span><br><span class="line">        System.out.println(componentA);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output by debug</span></span><br><span class="line">componentA = &#123;Component@<span class="number">626</span>&#125; </span><br><span class="line">  name = <span class="string">"Level 3"</span></span><br><span class="line">  list = &#123;ArrayList@<span class="number">628</span>&#125;  size = <span class="number">1</span></span><br><span class="line">    <span class="number">0</span> = &#123;Component@<span class="number">625</span>&#125; </span><br><span class="line">    name = <span class="string">"Level 2"</span></span><br><span class="line">    list = &#123;ArrayList@<span class="number">631</span>&#125;  size = <span class="number">2</span></span><br><span class="line">      <span class="number">0</span> = &#123;Leaf@<span class="number">623</span>&#125; </span><br><span class="line">        name = <span class="string">"Level 1-A"</span></span><br><span class="line">        list = &#123;ArrayList@<span class="number">634</span>&#125;  size = <span class="number">0</span></span><br><span class="line">      <span class="number">1</span> = &#123;Leaf@<span class="number">624</span>&#125; </span><br><span class="line">        name = <span class="string">"Level 1-B"</span></span><br><span class="line">        list = &#123;ArrayList@<span class="number">636</span>&#125;  size = <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="装饰器模式（Decorator-Pattern）"><a href="#装饰器模式（Decorator-Pattern）" class="headerlink" title="装饰器模式（Decorator Pattern）"></a><div align="center">装饰器模式（Decorator Pattern）</div></h1><hr>
+<h2 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。就好比我们买煎饼果子一样，有个最基础的煎饼果子实体，在这个实体上你可以添加各种装饰（比如：加煎蛋，加烤肠，加熏肉等等）。</p>
+<h2 id="类图-3"><a href="#类图-3" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;如果单纯看类图，有时候真的不那么容易理解，这里涉及到的Decorator实际上就是装饰器了，它内部包含了Component的实例，在具体使用时，完全可以在Operation之前再添加一些额外的装饰功能，从而实现装饰器。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-09.jpg" width="55%"></div>
+
+<h2 id="实践-3"><a href="#实践-3" class="headerlink" title="实践"></a>实践</h2><h3 id="Component-1"><a href="#Component-1" class="headerlink" title="Component"></a>Component</h3><p>&emsp;&emsp;这个就是我们的实体接口Component，它内部定义了该接口服务对外需要提供的接口方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Decorator;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Component</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:56</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="ConcreteComponent"><a href="#ConcreteComponent" class="headerlink" title="ConcreteComponent"></a>ConcreteComponent</h3><p>&emsp;&emsp;实现一下前面的实体接口，完成基本服务的定义。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Decorator;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Component实现类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:58</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteComponent</span> <span class="keyword">implements</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am the ConcreteComponent, i am doing my work."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h3><p>&emsp;&emsp;Decorator里面是包含了Component的，但是这里实际上有两个容易产生疑问的地方：</p>
+<blockquote>
+<p><strong>既然Decorator内部已经有了Component实例对象了，为何还要实现Component接口呢？</strong><br>个人理解：从外部调用来考虑，对外我们开放的只是Component接口而不是Decorator，所以这里需要将Decorator作为一个Component提供</p>
+</blockquote>
+<blockquote>
+<p><strong>这里的operation操作实际上已经可以实现装饰效果了吧？那为何还要衍生一个子类来装饰呢？</strong><br>个人理解：为了实现装饰器本身的可扩展性，比如我要实现多种装饰效果，就不必写多个Decorator了，而是基于一个Decorator做多种实现即可</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Decorator;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Decorator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:56</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Decorator</span> <span class="keyword">implements</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Component component;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Decorator</span><span class="params">(Component component)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.component = component;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 实际上在这里已经可以做装饰了，但为何还要衍生一个子类ConcreteDecorator？还不是太明白</span></span><br><span class="line">        component.operation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ConcreteDecorator"><a href="#ConcreteDecorator" class="headerlink" title="ConcreteDecorator"></a>ConcreteDecorator</h3><p>&emsp;&emsp;基于上面对Decorator的疑问分析，基本上对这个实现类我们也不会有太多疑问了；当这里有多个Decorator的实现时可能更好理解一些。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Decorator;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Decorator添加了装饰的实现类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 8:57</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteDecorator</span> <span class="keyword">extends</span> <span class="title">Decorator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConcreteDecorator</span><span class="params">(Component component)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(component);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 这里可以做很多事情了，额外调用一些方法什么的都ok</span></span><br><span class="line">        System.out.println(<span class="string">"Wow, I am the decorator itself, i can add sth as i want."</span>);</span><br><span class="line">        <span class="keyword">super</span>.operation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户类-2"><a href="#客户类-2" class="headerlink" title="客户类"></a>客户类</h3><p>&emsp;&emsp;通过客户类我们可以发现，对外我们只暴露了Component这个接口，但是实际使用的却是加了装饰的具体实现，在不改变Component既有的方法签名完整性的基础上实现了功能的扩展。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Decorator.ConcreteComponent;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Decorator.ConcreteDecorator;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Decorator.Decorator;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 装饰器模式客户类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 9:02</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DecoratorClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Component component = <span class="keyword">new</span> ConcreteDecorator(<span class="keyword">new</span> ConcreteComponent());</span><br><span class="line">        component.operation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output</span></span><br><span class="line">Wow, I am the decorator itself, i can add sth as i want.</span><br><span class="line">I am the ConcreteComponent, i am doing my work.</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="外观模式（Facade-Pattern）"><a href="#外观模式（Facade-Pattern）" class="headerlink" title="外观模式（Facade Pattern）"></a><div align="center">外观模式（Facade Pattern）</div></h1><hr>
+<h2 id="定义-4"><a href="#定义-4" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;外观模式（Facade Pattern）隐藏了系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这么描述，看起来还是云里雾里的。<br>&emsp;&emsp;稍微通俗一些的定义：外观模式定义了一个高层的功能，为子系统中的多个模块协同的完成某种功能需求提供简单的对外功能调用方式，使得这一子系统更加容易被外部使用。这个模式涉及到三个角色：</p>
+<ul>
+<li>门面角色：外观模式的核心，它提供了对外暴露的服务用于被客户角色调用。</li>
+<li>子系统角色：实现具体功能，不对外暴露，它内部可以有系统内的交互，也可以有供外界调用的接口。</li>
+<li>客户角色：通过调用Facade接口来完成要实现的具体功能。</li>
+</ul>
+<h2 id="类图-4"><a href="#类图-4" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;这个类图真的是简单到写不了什么解释性的话语了，对外就是一个Facade，内部封装了所有复杂的操作。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-10.jpg" width="55%"></div>
+
+<h2 id="实践-4"><a href="#实践-4" class="headerlink" title="实践"></a>实践</h2><p>&emsp;&emsp;鉴于此处Demo的方法都比较抽象而且也很简单，所以很多方法注释都省略掉了。</p>
+<h3 id="Component-2"><a href="#Component-2" class="headerlink" title="Component"></a>Component</h3><p>&emsp;&emsp;外观模式内部封装的组件接口定义，实际上也是一套普通的操作接口，它也可以独立对外的提供服务。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Facade;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 被封装的组件接口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 9:32</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="ConcreteComponentX"><a href="#ConcreteComponentX" class="headerlink" title="ConcreteComponentX"></a>ConcreteComponentX</h3><p>&emsp;&emsp;服务实现类，可以有多个，也只有在有多个的情况下，才有外观模式的用武之地，外观模式简单理解也就是为调用方屏蔽掉了多实现之间的调用逻辑。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Facade;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Component实现类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 9:33</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteComponentA</span> <span class="keyword">implements</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"This is component A operating."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Facade"><a href="#Facade" class="headerlink" title="Facade"></a>Facade</h3><p>&emsp;&emsp;外观实际上有些地方也被称为门面模式，它就像是对外提供的一个大门一样，通过它你可以知道你能使用哪些功能，但具体它是怎么在内部运转的，都不重要。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Facade;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 对外提供的服务（实际上也可以抽象一层接口，此处偷个懒）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 9:31</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Component componentA;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Component componentB;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Facade</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        componentA = <span class="keyword">new</span> ConcreteComponentA();</span><br><span class="line">        componentB = <span class="keyword">new</span> ConcreteComponentB();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        componentA.operation();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operationB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        componentB.operation();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户类-3"><a href="#客户类-3" class="headerlink" title="客户类"></a>客户类</h3><p>&emsp;&emsp;客户调用就显得相对简单了许多了，它不用关注具体谁来干这个活儿，只需要告诉门面我要完成某项功能，门面就在内部替它把这些细节给组织好完成就可以了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Facade.Facade;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 客户类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/11 9:36</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FacadeClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Facade facade = <span class="keyword">new</span> Facade();</span><br><span class="line">        facade.operationA();</span><br><span class="line">        facade.operationB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output</span></span><br><span class="line">This is component A operating.</span><br><span class="line">This is component B operating.</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="享元模式（Flyweight-Pattern）"><a href="#享元模式（Flyweight-Pattern）" class="headerlink" title="享元模式（Flyweight Pattern）"></a><div align="center">享元模式（Flyweight Pattern）</div></h1><hr>
+<h2 id="定义-5"><a href="#定义-5" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;说实话，23中设计模式中，个人觉得名字最怪异的就是享元模式，也不知最初的译者有没有考虑到我等知识有限，观其名却不知其意。<br>&emsp;&emsp;享元模式（Flyweight Pattern）主要是用于减少创建对象的数量的，以减少内存占用和提高性能。那具体怎么减少的呢？实际上是使用共享技术实现相同或者相似对象的重用，也就是说实现了相同或者相似对象的代码共享。<br>&emsp;&emsp;说到享元模式，第一个想到的应该就是池技术了，String常量池、数据库连接池、缓冲池等等都是享元模式的应用，所以说享元模式是池技术的重要实现方式。</p>
+<h2 id="类图-5"><a href="#类图-5" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;Flyweight是抽象享元角色，它是产品的一个抽象类，同时定义出对象的外部状态和内部状态的接口或实现；ConcreteFlyweight是具体享元角色，是具体的产品类，实现抽象角色定义的业务；UnsharedConcreteFlyweight是不可共享的享元角色，一般不会出现在享元工厂中；FlyweightFactory是享元工厂，它用于构造一个池容器，同时提供从池中获得对象的方法。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-11.jpg" width="55%"></div>
+
+<h2 id="实践-5"><a href="#实践-5" class="headerlink" title="实践"></a>实践</h2><h3 id="抽象享元"><a href="#抽象享元" class="headerlink" title="抽象享元"></a>抽象享元</h3><p>&emsp;&emsp;定义一个带内部和外部状态的享元抽象角色，内部状态就是可共享的状态，外部状态则是个性化的状态，组合起来就是一个完整的享元角色了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Flyweight;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Getter;</span><br><span class="line"><span class="keyword">import</span> lombok.Setter;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 抽象享元角色</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 7:14</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Flyweight</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Setter</span></span><br><span class="line">    <span class="meta">@Getter</span></span><br><span class="line">    <span class="comment">// 内部状态</span></span><br><span class="line">    <span class="keyword">public</span> String intrinsic;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 外部状态</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> String extrinsic;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通过构造方法强制享元角色必须接受一个外部状态参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Flyweight</span><span class="params">(String extrinsic)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.extrinsic = extrinsic;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">operate</span><span class="params">(<span class="keyword">int</span> extrinsic)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="共享享元"><a href="#共享享元" class="headerlink" title="共享享元"></a>共享享元</h3><p>&emsp;&emsp;在共享相似对象的情况下，使用此享元结合类单例模式的工厂，即可实现享元模式。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Flyweight;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实际享元角色</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 7:12</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteFlyweight</span> <span class="keyword">extends</span> <span class="title">Flyweight</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConcreteFlyweight</span><span class="params">(String extrinsic)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(extrinsic);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operate</span><span class="params">(<span class="keyword">int</span> extrinsic)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am ConcreteFlyweight, extrinsic :"</span> + extrinsic);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="不共享享元"><a href="#不共享享元" class="headerlink" title="不共享享元"></a>不共享享元</h3><p>&emsp;&emsp;并不是所有的享元类都需要被共享，有些时候需要有一些个性化的东西，这是的享元类就不能被共享，可以通过本享元类来实例一个非共享享元对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Flyweight;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实际享元角色（不需要共享）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 7:12</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnsharedConcreteFlyweight</span> <span class="keyword">extends</span> <span class="title">Flyweight</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UnsharedConcreteFlyweight</span><span class="params">(String extrinsic)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(extrinsic);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operate</span><span class="params">(<span class="keyword">int</span> extrinsic)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am UnsharedConcreteFlyweight, extrinsic :"</span> + extrinsic);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="享元工厂"><a href="#享元工厂" class="headerlink" title="享元工厂"></a>享元工厂</h3><p>&emsp;&emsp;享元模式的核心在于享元工厂类，享元工厂类的作用在于提供一个用于存储享元对象的享元池，用户需要对象时，首先从享元池中获取，如果享元池中不存在，则创建一个新的享元对象返回给用户，并在享元池中保存该新增对象。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Flyweight;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 享元工厂</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 7:15</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlyweightFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 享元管理池</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> HashMap&lt;String, Flyweight&gt; pool = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取一个享元角色对象</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> extrinsic</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Flyweight <span class="title">getFlyweight</span><span class="params">(String extrinsic)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!pool.containsKey(extrinsic)) &#123;</span><br><span class="line">            pool.put(extrinsic, <span class="keyword">new</span> ConcreteFlyweight(extrinsic));</span><br><span class="line">            System.out.println(<span class="string">"Create new Flyweight by "</span> + extrinsic);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 此处纯粹是为了演示需要的无效分支</span></span><br><span class="line">            System.out.println(<span class="string">"Use existing Flyweight by "</span> + extrinsic);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pool.get(extrinsic);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户类-4"><a href="#客户类-4" class="headerlink" title="客户类"></a>客户类</h3><p>&emsp;&emsp;当我们需要用到享元时，通过工厂获取即可，当不需要使用共享这种方式时，手动创建一个非共享的享元也是可以的（遗留问题：那UnsharedConcreteFlyweight在这个模式中还有存在价值么？）。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Flyweight.Flyweight;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Flyweight.FlyweightFactory;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Flyweight.UnsharedConcreteFlyweight;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 享元模式客户类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 7:19</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlyweightClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> extrinsic = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"-------------------------------------------------------"</span>);</span><br><span class="line">        Flyweight flyweightX = FlyweightFactory.getFlyweight(<span class="string">"X"</span>);</span><br><span class="line">        flyweightX.operate(++extrinsic);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"-------------------------------------------------------"</span>);</span><br><span class="line">        Flyweight flyweightY = FlyweightFactory.getFlyweight(<span class="string">"Y"</span>);</span><br><span class="line">        flyweightY.operate(++extrinsic);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"-------------------------------------------------------"</span>);</span><br><span class="line">        Flyweight flyweightReX = FlyweightFactory.getFlyweight(<span class="string">"X"</span>);</span><br><span class="line">        flyweightReX.operate(++extrinsic);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"-------------------------------------------------------"</span>);</span><br><span class="line">        Flyweight flyweightUnX = <span class="keyword">new</span> UnsharedConcreteFlyweight(<span class="string">"X"</span>);</span><br><span class="line">        flyweightUnX.operate(++extrinsic);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output</span></span><br><span class="line">-------------------------------------------------------</span><br><span class="line">Create <span class="keyword">new</span> Flyweight by X</span><br><span class="line">I am ConcreteFlyweight, extrinsic :<span class="number">11</span></span><br><span class="line">-------------------------------------------------------</span><br><span class="line">Create <span class="keyword">new</span> Flyweight by Y</span><br><span class="line">I am ConcreteFlyweight, extrinsic :<span class="number">12</span></span><br><span class="line">-------------------------------------------------------</span><br><span class="line">Use existing Flyweight by X</span><br><span class="line">I am ConcreteFlyweight, extrinsic :<span class="number">13</span></span><br><span class="line">-------------------------------------------------------</span><br><span class="line">I am UnsharedConcreteFlyweight, extrinsic :<span class="number">14</span></span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>&emsp;&emsp;在实际使用过程中，有时候会稍加改变，即存在两种特殊的享元模式：单纯享元模式和复合享元模式；这个区分也解决了前一节最后的关于UnsharedConcreteFlyweight存在价值的疑问。简单理解呢，单纯享元模式就是不带UnsharedConcreteFlyweight的，所有的具体享元类都是可以共享的；复合享元模式中的有些享元对象是由一些单纯享元对象组合而成的。以下是两种模式的类图：</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2019/2019-06-13-01.png" width="90%"></div>
+
+<hr>
+<h1 id="代理模式（Proxy-Pattern）"><a href="#代理模式（Proxy-Pattern）" class="headerlink" title="代理模式（Proxy Pattern）"></a><div align="center">代理模式（Proxy Pattern）</div></h1><hr>
+<h2 id="定义-6"><a href="#定义-6" class="headerlink" title="定义"></a>定义</h2><p>&emsp;&emsp;相信大多数人都有点印象的，Java面试，基本上出现频率最高的两种设计模式之一就是代理模式了（另一种自然是单例），那为什么大家这么喜欢它呢？我们就来好好研究一下。<br>&emsp;&emsp;通常，由于某些原因需要给某对象提供一个代理以控制对该对象的访问；这时，访问对象不适合或者不能直接引用目标对象，代理对象作为访问对象和目标对象之间的中介。跟现实生活类似，比如房产中介就是房主的代理，律师就是委托人的代理，都是一个性质。</p>
+<h2 id="类图-6"><a href="#类图-6" class="headerlink" title="类图"></a>类图</h2><p>&emsp;&emsp;代理模式的类图也很简单，既然你是我的代理，那么很多事情通过你对外发布，但是实际操作还是我来，那么必然我们要有一套共同的约定，这个约定就是一个统一的接口Subject；既然是代理，那么就有代理角色（Proxy）和被代理角色（RealSubject），而代理角色也必须获得被代理角色的授权（包含一个对被代理角色的引用）。</p>
+<div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-20-12.jpg" width="55%"></div>
+
+<h2 id="实践-6"><a href="#实践-6" class="headerlink" title="实践"></a>实践</h2><h3 id="代理接口"><a href="#代理接口" class="headerlink" title="代理接口"></a>代理接口</h3><p>&emsp;&emsp;代理接口用于定义一个统一的对外开放的服务。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 代理接口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 8:02</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">request</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="被代理者"><a href="#被代理者" class="headerlink" title="被代理者"></a>被代理者</h3><p>&emsp;&emsp;被代理者，实际干活的角色，拥有代理接口的服务功能，但自己不对外抛头露面。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 被代理者</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 8:02</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealSubject</span> <span class="keyword">implements</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">request</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am RealSubject dealing request."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><p>&emsp;&emsp;代理，对外服务的具体角色，外部调用方只知道代理的存在，所有的事务都是通过代理来提交；代理本身内部又将该事务转交给被代理者来执行。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.dp.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 代理</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 8:03</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Proxy</span> <span class="keyword">implements</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> RealSubject realSubject;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Proxy</span><span class="params">(RealSubject realSubject)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.realSubject = realSubject;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">request</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"I am Proxy starting"</span>);</span><br><span class="line">        realSubject.request();</span><br><span class="line">        System.out.println(<span class="string">"I am Proxy ending"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户类-5"><a href="#客户类-5" class="headerlink" title="客户类"></a>客户类</h3><p>&emsp;&emsp;客户只看到Subject以及Proxy（其实也可以将RealSubject的初始化放在Proxy内部），所有的请求都是通过代理类来受理的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.linc.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Proxy.Proxy;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Proxy.RealSubject;</span><br><span class="line"><span class="keyword">import</span> com.linc.dp.Proxy.Subject;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 代理模式客户类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Lin.C</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/6/13 8:06</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Subject subject = <span class="keyword">new</span> Proxy(<span class="keyword">new</span> RealSubject());</span><br><span class="line">        subject.request();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="扩展-1"><a href="#扩展-1" class="headerlink" title="扩展"></a>扩展</h2><p>&emsp;&emsp;相信很多同学都知道这里讲的只是静态代理，在实际使用时我们更常用的却是动态代理，一般我们常见的有两种动态代理：JDKProxy和CGLib，当然也有一些其他第三方库只是很少用到，也很少被提及。这里因为只做扫盲我们就不做过多的扩展，留在提升章节详细讨论不同的实现方式有什么区别。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/29de2e1f.html" rel="next" title="设计模式扫盲系列（二）：创建型模式集">
+                <i class="fa fa-chevron-left"></i> 设计模式扫盲系列（二）：创建型模式集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/4a0e1b25.html" rel="prev" title="设计模式扫盲系列（四）：行为型模式集">
+                设计模式扫盲系列（四）：行为型模式集 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#适配器模式（Adapter-Pattern）"><span class="nav-number">1.</span> <span class="nav-text">适配器模式（Adapter Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图"><span class="nav-number">1.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">1.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器接口"><span class="nav-number">1.3.1.</span> <span class="nav-text">适配器接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#被适配的实体定义"><span class="nav-number">1.3.2.</span> <span class="nav-text">被适配的实体定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适配实现"><span class="nav-number">1.3.3.</span> <span class="nav-text">适配实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">1.4.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾声"><span class="nav-number">1.5.</span> <span class="nav-text">尾声</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桥接模式（Bridge-Pattern）"><span class="nav-number">2.</span> <span class="nav-text">桥接模式（Bridge Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-1"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图-1"><span class="nav-number">2.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践-1"><span class="nav-number">2.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作服务接口"><span class="nav-number">2.3.1.</span> <span class="nav-text">操作服务接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作服务实现"><span class="nav-number">2.3.2.</span> <span class="nav-text">操作服务实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桥的定义"><span class="nav-number">2.3.3.</span> <span class="nav-text">桥的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户类"><span class="nav-number">2.3.4.</span> <span class="nav-text">客户类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#组合模式（Composite-Pattern）"><span class="nav-number">3.</span> <span class="nav-text">组合模式（Composite Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-2"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图-2"><span class="nav-number">3.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践-2"><span class="nav-number">3.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Component"><span class="nav-number">3.3.1.</span> <span class="nav-text">Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leaf"><span class="nav-number">3.3.2.</span> <span class="nav-text">Leaf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户类-1"><span class="nav-number">3.3.3.</span> <span class="nav-text">客户类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#装饰器模式（Decorator-Pattern）"><span class="nav-number">4.</span> <span class="nav-text">装饰器模式（Decorator Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-3"><span class="nav-number">4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图-3"><span class="nav-number">4.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践-3"><span class="nav-number">4.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-1"><span class="nav-number">4.3.1.</span> <span class="nav-text">Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteComponent"><span class="nav-number">4.3.2.</span> <span class="nav-text">ConcreteComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decorator"><span class="nav-number">4.3.3.</span> <span class="nav-text">Decorator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteDecorator"><span class="nav-number">4.3.4.</span> <span class="nav-text">ConcreteDecorator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户类-2"><span class="nav-number">4.3.5.</span> <span class="nav-text">客户类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#外观模式（Facade-Pattern）"><span class="nav-number">5.</span> <span class="nav-text">外观模式（Facade Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-4"><span class="nav-number">5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图-4"><span class="nav-number">5.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践-4"><span class="nav-number">5.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-2"><span class="nav-number">5.3.1.</span> <span class="nav-text">Component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcreteComponentX"><span class="nav-number">5.3.2.</span> <span class="nav-text">ConcreteComponentX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Facade"><span class="nav-number">5.3.3.</span> <span class="nav-text">Facade</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户类-3"><span class="nav-number">5.3.4.</span> <span class="nav-text">客户类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#享元模式（Flyweight-Pattern）"><span class="nav-number">6.</span> <span class="nav-text">享元模式（Flyweight Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-5"><span class="nav-number">6.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图-5"><span class="nav-number">6.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践-5"><span class="nav-number">6.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象享元"><span class="nav-number">6.3.1.</span> <span class="nav-text">抽象享元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享享元"><span class="nav-number">6.3.2.</span> <span class="nav-text">共享享元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不共享享元"><span class="nav-number">6.3.3.</span> <span class="nav-text">不共享享元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#享元工厂"><span class="nav-number">6.3.4.</span> <span class="nav-text">享元工厂</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户类-4"><span class="nav-number">6.3.5.</span> <span class="nav-text">客户类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">6.4.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代理模式（Proxy-Pattern）"><span class="nav-number">7.</span> <span class="nav-text">代理模式（Proxy Pattern）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-6"><span class="nav-number">7.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图-6"><span class="nav-number">7.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践-6"><span class="nav-number">7.3.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理接口"><span class="nav-number">7.3.1.</span> <span class="nav-text">代理接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#被代理者"><span class="nav-number">7.3.2.</span> <span class="nav-text">被代理者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理"><span class="nav-number">7.3.3.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户类-5"><span class="nav-number">7.3.4.</span> <span class="nav-text">客户类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展-1"><span class="nav-number">7.4.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

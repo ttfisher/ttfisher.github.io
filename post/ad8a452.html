@@ -1,0 +1,849 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Big Data,Kafka,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】同样是作为消息中间件（虽然具体的应用场景不同），为什么Kafka优于其他的中间件呢？都说Kafka高性能，具体为什么会有那么高的性能呢？除了在软件本身层面的设计优化，其他层面是否有新的技术运用呢？针对这一系列的问题，就通过这个进阶系列的专题来详细的探究探究……">
+<meta name="keywords" content="Big Data,Kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka入门系列（四）：为什么你要选择Kafka（未完成...)">
+<meta property="og:url" content="https://ttfisher.github.io/post/ad8a452.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】同样是作为消息中间件（虽然具体的应用场景不同），为什么Kafka优于其他的中间件呢？都说Kafka高性能，具体为什么会有那么高的性能呢？除了在软件本身层面的设计优化，其他层面是否有新的技术运用呢？针对这一系列的问题，就通过这个进阶系列的专题来详细的探究探究……">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-24-02.jpg">
+<meta property="og:updated_time" content="2019-05-30T23:15:45.575Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kafka入门系列（四）：为什么你要选择Kafka（未完成...)">
+<meta name="twitter:description" content="【引言】同样是作为消息中间件（虽然具体的应用场景不同），为什么Kafka优于其他的中间件呢？都说Kafka高性能，具体为什么会有那么高的性能呢？除了在软件本身层面的设计优化，其他层面是否有新的技术运用呢？针对这一系列的问题，就通过这个进阶系列的专题来详细的探究探究……">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-08-24-02.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/ad8a452.html">
+
+
+
+
+
+  <title>Kafka入门系列（四）：为什么你要选择Kafka（未完成...) | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/ad8a452.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kafka入门系列（四）：为什么你要选择Kafka（未完成...)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T16:25:55+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/消息和缓存系列之Kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">消息和缓存系列之Kafka</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】同样是作为消息中间件（虽然具体的应用场景不同），为什么Kafka优于其他的中间件呢？都说Kafka高性能，具体为什么会有那么高的性能呢？除了在软件本身层面的设计优化，其他层面是否有新的技术运用呢？针对这一系列的问题，就通过这个进阶系列的专题来详细的探究探究……<br><img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-24-02.jpg" width="55%"><br><a id="more"></a></p>
+<h1 id="Kafka的特性"><a href="#Kafka的特性" class="headerlink" title="Kafka的特性"></a>Kafka的特性</h1><h2 id="特性列举"><a href="#特性列举" class="headerlink" title="特性列举"></a>特性列举</h2><p>&emsp;&emsp;在研究Kafka为什么比其他MQ快之前呢，我们先来看看Kafka有哪些特性（其中可能有部分概念目前还不熟悉，后面会逐一补充解释）：</p>
+<ul>
+<li>通过O(1)的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能够保持长时间的稳定性能。</li>
+<li>高吞吐量：即使是非常普通的硬件kafka也可以支持每秒数十万的消息。</li>
+<li>支持同步和异步复制两种HA</li>
+<li>Consumer客户端pull，随机读,利用sendfile系统调用，zero-copy ,批量拉数据</li>
+<li>消费状态保存在客户端</li>
+<li>消息存储顺序写</li>
+<li>数据迁移、扩容对用户透明</li>
+<li>支持Hadoop并行数据加载。</li>
+<li>支持online和offline的场景。</li>
+<li>持久化：通过将数据持久化到硬盘以及replication防止数据丢失。</li>
+<li>scale out：无需停机即可扩展机器。</li>
+<li>定期删除机制，支持设定partitions的segment file保留时间。</li>
+</ul>
+<h2 id="重点说明"><a href="#重点说明" class="headerlink" title="重点说明"></a>重点说明</h2><h3 id="Kafka如何保证消息的可靠送达"><a href="#Kafka如何保证消息的可靠送达" class="headerlink" title="Kafka如何保证消息的可靠送达"></a>Kafka如何保证消息的可靠送达</h3><p>&emsp;&emsp;传统的MQ系统通常都是通过broker和consumer间的确认（ack）机制实现的，并在broker保存消息分发的状态。即使这样一致性也是很难保证的。而kafka的做法是由consumer自己保存状态，也不要做任何的确认。这样虽然consumer负担更重，但其实更灵活了。因为不管consumer上任何原因导致需要重新处理消息，都可以再次从broker获得。</p>
+<h3 id="Kafka的系统扩展性如何保证"><a href="#Kafka的系统扩展性如何保证" class="headerlink" title="Kafka的系统扩展性如何保证"></a>Kafka的系统扩展性如何保证</h3><p>&emsp;&emsp;kafka使用zookeeper来实现动态的集群扩展（现在很多大数据组件都是用这一套），所以kafka集群的变动对外是无感知的，也不需要更改客户端（producer和consumer）的配置；broker会在zookeeper注册并保持相关的元数据（topic，partition信息等）更新。而客户端会在zookeeper上注册相关的watcher。一旦zookeeper发生变化，客户端能及时感知并作出相应调整。这样就保证了添加或去除broker时，各broker间仍能自动实现负载均衡。</p>
+<blockquote>
+<p>ACK: Acknowledgement的缩写，即确认字符，在数据通信中，接收站发给发送站的一种传输类控制字符。表示发来的数据已确认接收无误。</p>
+</blockquote>
+<h3 id="Kafka的核心设计目标"><a href="#Kafka的核心设计目标" class="headerlink" title="Kafka的核心设计目标"></a>Kafka的核心设计目标</h3><ul>
+<li>数据磁盘持久化：消息不在内存中cache，直接写入到磁盘，充分利用磁盘的顺序读写性能。</li>
+<li>zero-copy：减少IO操作步骤。</li>
+<li>支持数据批量发送和拉取。</li>
+<li>支持数据压缩。</li>
+<li>Topic划分为多个partition，提高并行处理能力。</li>
+</ul>
+<h3 id="Producer相关特性"><a href="#Producer相关特性" class="headerlink" title="Producer相关特性"></a>Producer相关特性</h3><ul>
+<li>producer会根据用户指定的算法，将消息发送到指定的partition</li>
+<li>一般都会有多个partition，而每个partition都有自己的replica（分布在不同的broker上）</li>
+<li>多个partition会由系统选举出一个leader，由leader来负责读写，但是状态管理（fail over）由zookeeper来控制</li>
+<li>所有相关节点（比如：broker）加入和退出都由zookeeper来管理</li>
+</ul>
+<h3 id="Consumer的相关特性"><a href="#Consumer的相关特性" class="headerlink" title="Consumer的相关特性"></a>Consumer的相关特性</h3><ul>
+<li>由于Kafka不是缓存型的，它的数据是持久化的，所以consumer采用pull的方式消费数据</li>
+<li>consumer本身可根据自身能力控制消费的频度</li>
+<li>consumer可自由选择消费模式：批量消费、从固定位置消费（offset）</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Big-Data/" rel="tag"># Big Data</a>
+          
+            <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/17f0c072.html" rel="next" title="Kafka入门系列（三）：Demo in SpringBoot">
+                <i class="fa fa-chevron-left"></i> Kafka入门系列（三）：Demo in SpringBoot
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/8c9ab59b.html" rel="prev" title="【原】读博有感（javadoop）">
+                【原】读博有感（javadoop） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka的特性"><span class="nav-number">1.</span> <span class="nav-text">Kafka的特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特性列举"><span class="nav-number">1.1.</span> <span class="nav-text">特性列举</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重点说明"><span class="nav-number">1.2.</span> <span class="nav-text">重点说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka如何保证消息的可靠送达"><span class="nav-number">1.2.1.</span> <span class="nav-text">Kafka如何保证消息的可靠送达</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka的系统扩展性如何保证"><span class="nav-number">1.2.2.</span> <span class="nav-text">Kafka的系统扩展性如何保证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka的核心设计目标"><span class="nav-number">1.2.3.</span> <span class="nav-text">Kafka的核心设计目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Producer相关特性"><span class="nav-number">1.2.4.</span> <span class="nav-text">Producer相关特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consumer的相关特性"><span class="nav-number">1.2.5.</span> <span class="nav-text">Consumer的相关特性</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

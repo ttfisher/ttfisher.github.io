@@ -1,0 +1,835 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="踩坑记,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】很久之前就想搞这么一个知识库，搜集日常工作中常遇到的一些坑，想来也是因为自己有些懒惰，竟至于拖到今日方才成行；本章为此踩坑启示录系列的第1篇，力求开个好头。">
+<meta name="keywords" content="踩坑记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【原】踩坑启示录其零壹">
+<meta property="og:url" content="https://ttfisher.github.io/post/2b6f4e2b.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】很久之前就想搞这么一个知识库，搜集日常工作中常遇到的一些坑，想来也是因为自己有些懒惰，竟至于拖到今日方才成行；本章为此踩坑启示录系列的第1篇，力求开个好头。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-12-11-01.jpg">
+<meta property="og:updated_time" content="2019-07-01T00:00:23.347Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【原】踩坑启示录其零壹">
+<meta name="twitter:description" content="【引言】很久之前就想搞这么一个知识库，搜集日常工作中常遇到的一些坑，想来也是因为自己有些懒惰，竟至于拖到今日方才成行；本章为此踩坑启示录系列的第1篇，力求开个好头。">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-12-11-01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/2b6f4e2b.html">
+
+
+
+
+
+  <title>【原】踩坑启示录其零壹 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/2b6f4e2b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【原】踩坑启示录其零壹</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T08:20:43+08:00">
+                2018-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Lin-C杂文集之泛技术系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Lin.C杂文集之泛技术系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】很久之前就想搞这么一个知识库，搜集日常工作中常遇到的一些坑，想来也是因为自己有些懒惰，竟至于拖到今日方才成行；本章为此踩坑启示录系列的第1篇，力求开个好头。</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/2018/2018-12-11-01.jpg" width="55%"></div><br><a id="more"></a></p>
+<h1 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h1><p>&emsp;&emsp;工作多年，技术岗是一个常学常新的岗位，即使是同一个东西，版本的不断升级也要求我们必须要时刻保持着一颗好好学习天天向上的精神去追逐。<br>&emsp;&emsp;当然，新的东西往往都是我们未知的，不熟悉的；既然不熟悉，那难免多多少少会遇到一些坑，如今虽内有百度外有谷歌，但总的来讲查到的还是别人的，可能解决了这次，还有下次，不总结的知识永远也不可能为我们所用的。<br>&emsp;&emsp;最近偶尔翻阅今日头条，总有个主题冒出来，大致是说《不要假装很努力，不会总结都是白搭》，具体的内容我也草草扫过几眼，其实跟我个人的感悟雷同；这么些年，我们学过的东西不少，但我们存下来的东西有多少呢？我们不能把自己当做管道，我们要试着让自己变成缓存，甚至更高的要求一些让自己变成一个数据库，我们要试着让经过我们的知识持久化。<br>&emsp;&emsp;当然，技术有难易，一如不同的排序算法还有不同的复杂度呢；个人的悟性也有区别，一如我们机械硬盘和SSD的存储效率也是不在一个级别的；所以各人还是要摸索出适合自己的法门，一如因材施教，教自己也是一门学问。<br>&emsp;&emsp;80年代生的我们，想必都对这句歌词记忆犹新吧：“看时光飞驰我祈祷明天，每个小小梦想能够漫漫实现！”；今天的祈祷，明天的现实，并不是空穴来风一蹴而就的，需要的是日积月累的历练和沉淀的。<br>&emsp;&emsp;前面说了很多废话，到现在还没有提到这个系列的主题，本系列个人的愿望是打造成自己的一个踩坑知识库，很多坑总会不止一次的遇到，所以想做起这么一个系列，每个章节围绕一个主题坑的解决来写，不限篇幅，也为将来再次遇到的时候有个查阅的地方。<br>&emsp;&emsp;最后，以开篇图古人之词与同仁共勉，路漫漫其修远兮，吾辈尚任重而道远。</p>
+<h1 id="Maven编译时找不到rt-jar里的类"><a href="#Maven编译时找不到rt-jar里的类" class="headerlink" title="Maven编译时找不到rt.jar里的类"></a>Maven编译时找不到rt.jar里的类</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;在使用Maven编译tools-common包的时候，发现某个类始终报找不到，经过查询，发现该类属于rt.jar，如何解决这个问题呢？</p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;在pom.xml的maven编译插件定义中，加入了compilerArguments定义引入rt.jar（另需要在pom头部定义java.home为当前主机的java主目录方可编译通过）<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoding</span>&gt;</span>utf8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">compilerArguments</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">verbose</span> /&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">bootclasspath</span>&gt;</span>$&#123;java.home&#125;\lib\rt.jar;$&#123;java.home&#125;\lib\jce.jar</span><br><span class="line">           <span class="tag">&lt;/<span class="name">bootclasspath</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">compilerArguments</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="JDK的Date比实际时间差8小时"><a href="#JDK的Date比实际时间差8小时" class="headerlink" title="JDK的Date比实际时间差8小时"></a>JDK的Date比实际时间差8小时</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;在记录某些数据更新时间时，使用JDK的new Date()方法，发现在未设置时间时，记录的时间默认比当前时间要推迟8小时（推测基本上是因为标准时间和东八区的差异引起的），那要如何解决呢？</p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;在系统上执行以下命令： sudo dpkg-reconfigure tzdata</p>
+<h1 id="The-last-packet-sent-successfully-to-the-server-was-0-milliseconds-ago"><a href="#The-last-packet-sent-successfully-to-the-server-was-0-milliseconds-ago" class="headerlink" title="The last packet sent successfully to the server was 0 milliseconds ago"></a>The last packet sent successfully to the server was 0 milliseconds ago</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;今天在使用JDBC操作mysql时遇到下面的异常信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server. </span><br><span class="line">at com.tomymap.galaxy.virgo.util.DbService.getConnection(DbService.java:66) </span><br><span class="line">at com.tomymap.galaxy.virgo.util.DbService.getConnection(DbService.java:46) </span><br><span class="line">at com.tomymap.galaxy.virgo.dao.PNNDao.getConnection(PNNDao.java:51) </span><br><span class="line">at com.tomymap.galaxy.virgo.dao.DaoBase.executeUpdate(DaoBase.java:69) </span><br><span class="line">at com.tomymap.galaxy.virgo.dao.PNNDao.updatePNNRelation(PNNDao.java:161) </span><br><span class="line">at com.tomymap.galaxy.virgo.pnn.PyramidNeuralNetwork.buildPNNRelations(PyramidNeuralNetwork.java:400)</span><br><span class="line">at com.tomymap.galaxy.virgo.pnn.PyramidNeuralNetwork.incrementalGenPNN(PyramidNeuralNetwork.java:144)</span><br><span class="line">at com.tomymap.galaxy.virgo.pnn.PyramidNeuralNetwork.main(PyramidNeuralNetwork.java:410)</span><br></pre></td></tr></table></figure></p>
+<p><strong>【解决方法】</strong><br>（1）使用JDBC URL中使用autoReconnect属性，url添加<code>&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;maxReconnects=10</code><br>（2） 修改MySQL的参数. /etc/my.cnf 添加如下配置后重启服务<code>service mysql restart</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]  </span><br><span class="line">wait_timeout=31536000  </span><br><span class="line">interactive_timeout=31536000</span><br></pre></td></tr></table></figure></p>
+<p><strong>【补充说明】</strong><br>（1）大量并发访问情况下，mysql connection连接有可能失效<br>（2）长时间不妨问，connection会失效 </p>
+<h1 id="Maven编译插件如何配置？"><a href="#Maven编译插件如何配置？" class="headerlink" title="Maven编译插件如何配置？"></a>Maven编译插件如何配置？</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;需要使用Maven编译出jar、source、jdoc三个包，该如何配置pom文件？</p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;在pom.xml的尾部添加如下部分配置即可：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.6.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">compilerArguments</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">verbose</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">bootclasspath</span>&gt;</span>$&#123;java.home&#125;/lib/rt.jar;$&#123;java.home&#125;/lib/jce.jar<span class="tag">&lt;/<span class="name">bootclasspath</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">compilerArguments</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-source-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">attach</span>&gt;</span>true<span class="tag">&lt;/<span class="name">attach</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">phase</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goal</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-javadoc-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">charset</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">docencoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">docencoding</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span>&gt;</span>attach-javadocs<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goal</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Tomcat启动时卡在“INFO-Deploying-web-application-directory-”"><a href="#Tomcat启动时卡在“INFO-Deploying-web-application-directory-”" class="headerlink" title="Tomcat启动时卡在“INFO Deploying web application directory ”"></a>Tomcat启动时卡在“INFO Deploying web application directory ”</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;Tomcat启动时卡在“INFO: Deploying web application directory ”</p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;在 $JAVA_HOME/jre/lib/security/java.security内,将securerandom.source的内容改为file:/dev/./urandom</p>
+<p><strong>【补充说明】</strong><br>&emsp;&emsp;原来linux或者部分unix系统提供随机数设备是/dev/random 和/dev/urandom ，两个有区别，urandom安全性没有random高，但random需要时间间隔生成随机数。可能在生成随机数的时候卡住了,导致tomcat启动不了，在服务器启动时也可以加上参数 -Djava.security.egd=file:/dev/./urandom </p>
+<h1 id="怎么通过Java临时修改环境变量？"><a href="#怎么通过Java临时修改环境变量？" class="headerlink" title="怎么通过Java临时修改环境变量？"></a>怎么通过Java临时修改环境变量？</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;因某些特殊场景需要，需在程序中临时修改环境变量，如何通过Java来实现呢？</p>
+<p><strong>【解决方法】</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 文件名：EnviromentChangeUtil.java</span></span><br><span class="line"><span class="comment"> * 描述：环境变量修改</span></span><br><span class="line"><span class="comment"> * 创建人：chenglin</span></span><br><span class="line"><span class="comment"> * 创建时间：2017-3-10</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> com.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 临时修改系统环境变量（仅对内存生效）</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> chenglin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> 1.0</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;</span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;修订人        修订时间            描述信息</span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;-----------------------------------------------------</span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;chenglin        2017-3-10        初始创建</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnviromentChangeUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 临时修改系统环境变量（仅对内存生效）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> envMap</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(&#123; <span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span> &#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setEnv</span><span class="params">(Map&lt;String, String&gt; envMap)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class&lt;?&gt; processEnvironmentClass = Class</span><br><span class="line">                    .forName(<span class="string">"java.lang.ProcessEnvironment"</span>);</span><br><span class="line">            Field theEnvironmentField = processEnvironmentClass</span><br><span class="line">                    .getDeclaredField(<span class="string">"theEnvironment"</span>);</span><br><span class="line">            theEnvironmentField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            Map&lt;String, String&gt; env = (Map&lt;String, String&gt;) theEnvironmentField</span><br><span class="line">                    .get(<span class="keyword">null</span>);</span><br><span class="line">            env.putAll(envMap);</span><br><span class="line">            Field theCaseInsensitiveEnvironmentField = processEnvironmentClass</span><br><span class="line">                    .getDeclaredField(<span class="string">"theCaseInsensitiveEnvironment"</span>);</span><br><span class="line">            theCaseInsensitiveEnvironmentField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            Map&lt;String, String&gt; cienv = (Map&lt;String, String&gt;) theCaseInsensitiveEnvironmentField</span><br><span class="line">                    .get(<span class="keyword">null</span>);</span><br><span class="line">            cienv.putAll(envMap);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class[] classes = Collections.class.getDeclaredClasses();</span><br><span class="line">                Map&lt;String, String&gt; env = System.getenv();</span><br><span class="line">                <span class="keyword">for</span> (Class cl : classes) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="string">"java.util.Collections$UnmodifiableMap"</span>.equals(cl</span><br><span class="line">                            .getName())) &#123;</span><br><span class="line">                        Field field = cl.getDeclaredField(<span class="string">"m"</span>);</span><br><span class="line">                        field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                        Object obj = field.get(env);</span><br><span class="line">                        Map&lt;String, String&gt; map = (Map&lt;String, String&gt;) obj;</span><br><span class="line">                        map.clear();</span><br><span class="line">                        map.putAll(envMap);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e2) &#123;</span><br><span class="line">                e2.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e1) &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Tomcat-8-5-版本文件上传后无权限访问的问题"><a href="#Tomcat-8-5-版本文件上传后无权限访问的问题" class="headerlink" title="Tomcat 8.5+版本文件上传后无权限访问的问题"></a>Tomcat 8.5+版本文件上传后无权限访问的问题</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;之前在tomcat 7下文件上传后访问一直没问题，现在tomcat版本升到8.5，在测试文件http上传时，发现所传文件无法通过nginx访问了。PS：tomcat通过root用户来启动。（Tomcat默认写的文件权限是740，实际访问需要的是755）</p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;在catalina.sh文件的大约第270行左右有下面一段配置，这里的UMASK就是用于管理文件访问权限的（实际权限为：777-UMASK）；所以将其改为UMASK=”0022”并重启tomcat 8.5后，文件上传后访问恢复正常。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># UMASK           (Optional) Override Tomcat's default UMASK of 0027</span></span><br><span class="line"><span class="comment"># Set UMASK unless it has been overridden</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$UMASK</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">    UMASK=<span class="string">"0027"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">umask</span> <span class="variable">$UMASK</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>【补充说明】</strong><br>&emsp;&emsp;英文文档也是在定位了tomcat 8.5问题后搜索关键词tomcat8.5 umask后在tomcat官网文档及相关英文论坛里发现了踪迹。<br>&emsp;&emsp;参考文档1： <a href="http://tomcat.apache.org/tomcat-8.5-doc/changelog.html" target="_blank" rel="noopener">http://tomcat.apache.org/tomcat-8.5-doc/changelog.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Tomcat 8.5.0 (markt)</span><br><span class="line">General</span><br><span class="line">Update:  Remove support for Comet. (markt)</span><br><span class="line">Update:  Tighten up the default file permissions for the .tar.gz distribution so no files or directories are world readable by default. </span><br><span class="line">         Configure Tomcat to run with a default umask of 0027 which may be overridden by setting UMASK in setenv.sh. (markt)</span><br><span class="line">Update:  Remove native code (Windows Service Wrapper, APR/native connector) support for Windows Itanium. (markt)</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;参考文档2：<a href="http://tomcat.apache.org/tomcat-8.5-doc/security-howto.html" target="_blank" rel="noopener">http://tomcat.apache.org/tomcat-8.5-doc/security-howto.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Non-Tomcat settings</span><br><span class="line">Tomcat configuration should not be the only line of defense. The other components in the system (operating system, network, database, etc.) should also be secured.</span><br><span class="line"></span><br><span class="line">Tomcat should not be run under the root user. Create a dedicated user for the Tomcat process and provide that user with the minimum necessary permissions for the operating system. </span><br><span class="line">For example, it should not be possible to log on remotely using the Tomcat user.</span><br><span class="line"></span><br><span class="line">File permissions should also be suitably restricted. In the .tar.gz distribution, files and directories are not world readable and the group does not have write access.</span><br><span class="line">On Unix like operating systems, Tomcat runs with a default umask of 0027 to maintain these permissions for files created while Tomcat is running (e.g. log files, expanded WARs, etc.).</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<h1 id="bash-fork-Cannot-allocate-memory"><a href="#bash-fork-Cannot-allocate-memory" class="headerlink" title="-bash: fork: Cannot allocate memory"></a>-bash: fork: Cannot allocate memory</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;在阿里云上有一台服务器（4vCPU 32G），突然有同学反映连不上去了，服务也用不了了（幸好是测试环境），强登上去之后发现各种报 Cannot allocate memory，但是硬执行了下free查看，内存还丰富的很，那这是为啥呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@smart0002 ~]# free -m</span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:         32241      23690       8550          0         16        112</span><br><span class="line">-/+ buffers/cache:      23561       8679</span><br><span class="line">Swap:            0          0          0</span><br><span class="line">[root@smart0002 ~]#</span><br></pre></td></tr></table></figure></p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;经过度娘的协助，最终确认是进程数满了导致的，于是修改了一下<code>kernel.pid_max</code>内核参数，顺利解决此问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[root@smart0002 ~]# sysctl kernel.pid_max</span><br><span class="line">kernel.pid_max = 32768</span><br><span class="line">[root@smart0002 ~]# ps -eLf | wc -l</span><br><span class="line">-bash: fork: Cannot allocate memory</span><br><span class="line">[root@smart0002 ~]# ps -eLf | wc -l</span><br><span class="line">32545</span><br><span class="line">[root@smart0002 ~]# echo &quot;kernel.pid_max=1000000 &quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">[root@smart0002 ~]# sysctl -p</span><br><span class="line">net.ipv4.ip_forward = 0</span><br><span class="line">net.ipv4.conf.default.accept_source_route = 0</span><br><span class="line">kernel.core_uses_pid = 1</span><br><span class="line">kernel.msgmnb = 65536</span><br><span class="line">kernel.msgmax = 65536</span><br><span class="line">kernel.shmmax = 68719476736</span><br><span class="line">kernel.shmall = 4294967296</span><br><span class="line">vm.swappiness = 0</span><br><span class="line">net.ipv4.neigh.default.gc_stale_time = 120</span><br><span class="line">net.ipv4.conf.all.rp_filter = 0</span><br><span class="line">net.ipv4.conf.default.rp_filter = 0</span><br><span class="line">net.ipv4.conf.default.arp_announce = 2</span><br><span class="line">net.ipv4.conf.lo.arp_announce = 2</span><br><span class="line">net.ipv4.conf.all.arp_announce = 2</span><br><span class="line">net.ipv4.tcp_max_tw_buckets = 5000</span><br><span class="line">net.ipv4.tcp_syncookies = 1</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 1024</span><br><span class="line">net.ipv4.tcp_synack_retries = 2</span><br><span class="line">error: &quot;net.ipv6.conf.all.disable_ipv6&quot; is an unknown key</span><br><span class="line">error: &quot;net.ipv6.conf.default.disable_ipv6&quot; is an unknown key</span><br><span class="line">error: &quot;net.ipv6.conf.lo.disable_ipv6&quot; is an unknown key</span><br><span class="line">kernel.sysrq = 1</span><br><span class="line">kernel.pid_max = 1000000</span><br><span class="line">[root@smart0002 ~]#</span><br></pre></td></tr></table></figure></p>
+<h1 id="CentOS大量cache内存如何处理？"><a href="#CentOS大量cache内存如何处理？" class="headerlink" title="CentOS大量cache内存如何处理？"></a>CentOS大量cache内存如何处理？</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;使用CentOS时发现，经常会出现top查看可用内存剩余很少的情况，然后free一看就是下面这种情况（大部分剩余内存都在cached里面），这种情况怎么处理呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@smart0003 local]# free -m</span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:          8001       5510       2491          0         91       2125</span><br><span class="line">-/+ buffers/cache:       3293       4708</span><br><span class="line">Swap:            0          0          0</span><br><span class="line">[root@smart0003 local]#</span><br></pre></td></tr></table></figure></p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;实际上因为LINUX的内核机制导致出现这种缓存现状，而这些cache起来的内存是可以增加文件的读写速度的，一般情况下不需要特意去释放已经使用的cache。<br>&emsp;&emsp;如果非要释放，也是可以通过几条命令实现的（注：释放前最好sync一下，防止丢数据）；具体的操作命令如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 释放网页缓存（To free pagecache）; sync命令用于强制被改变的内容立刻写入磁盘,更新超块信息</span></span><br><span class="line">sync</span><br><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/vm/drop_caches</span><br><span class="line"></span><br><span class="line"><span class="comment"># 释放目录项和索引（To free dentries and inodes）</span></span><br><span class="line">sync</span><br><span class="line"><span class="built_in">echo</span> 2 &gt; /proc/sys/vm/drop_caches</span><br><span class="line"></span><br><span class="line"><span class="comment"># 释放网页缓存，目录项和索引（To free pagecache，dentries and inodes）</span></span><br><span class="line">sync</span><br><span class="line"><span class="built_in">echo</span> 3 &gt; /proc/sys/vm/drop_caches</span><br></pre></td></tr></table></figure></p>
+<h1 id="MySQL锁表了或卡死了如何处理？"><a href="#MySQL锁表了或卡死了如何处理？" class="headerlink" title="MySQL锁表了或卡死了如何处理？"></a>MySQL锁表了或卡死了如何处理？</h1><p><strong>【问题缘起】</strong><br>&emsp;&emsp;曾几何时，大家想必都遇到过想在数据库中改一条测试数据却迟迟无法提交的问题吧？又或者是突然发现数据库卡到你怀疑人生，这个时候要怎么办呢？</p>
+<p><strong>【解决方法】</strong><br>&emsp;&emsp;首先我们一般需要查看一下当前的process，也就是下面的列表；通过Command和Info基本可以判断是什么操作，有没有锁表或者大量占用CPU（曾经我们测试库就因为数据团队大量同步数据入库导致数据库服务器直接宕机的情况）；到这一步基本能找到出问题的连接和操作了，接下来暴力一点的方式就是直接kill了，如果不想采用这么暴力的方式，则可以从源头上看到底是哪个地方触发了这个操作（当然即使kill解决了当前问题，事后也需要分析以避免问题再次出现）；以下操作仅供参考。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@smart0002 ~]# mysql -u root -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 4693</span><br><span class="line">Server version: 5.7.24-log MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; show full processlist;</span><br><span class="line">+------+------+---------------------+-----------+---------+------+----------+-----------------------+</span><br><span class="line">| Id   | User | Host                | db        | Command | Time | State    | Info                  |</span><br><span class="line">+------+------+---------------------+-----------+---------+------+----------+-----------------------+</span><br><span class="line">| 4102 | root | 218.2.198.246:60014 | linc-test | Sleep   | 3009 |          | NULL                  |</span><br><span class="line">| 4188 | root | 120.27.231.47:40642 | linc-test | Sleep   |    1 |          | NULL                  |</span><br><span class="line">......</span><br><span class="line">| 4688 | root | 218.2.198.246:54642 | linc-test | Sleep   |  404 |          | NULL                  |</span><br><span class="line">| 4689 | root | 218.2.198.246:54667 | linc-test | Sleep   |  400 |          | NULL                  |</span><br><span class="line">| 4691 | root | 218.2.198.246:54487 | linc-test | Sleep   |  349 |          | NULL                  |</span><br><span class="line">| 4692 | root | 218.2.198.246:55163 | linc-test | Sleep   |   50 |          | NULL                  |</span><br><span class="line">| 4693 | root | localhost           | NULL      | Query   |    0 | starting | show full processlist |</span><br><span class="line">+------+------+---------------------+-----------+---------+------+----------+-----------------------+</span><br><span class="line">47 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; kill 4692;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/踩坑记/" rel="tag"># 踩坑记</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/52a8548e.html" rel="next" title="数据库理论杂谈（二）：关于事务">
+                <i class="fa fa-chevron-left"></i> 数据库理论杂谈（二）：关于事务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/4a027f14.html" rel="prev" title="微技能扫盲（一）：Websocket（未完成...)">
+                微技能扫盲（一）：Websocket（未完成...) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#说在前面"><span class="nav-number">1.</span> <span class="nav-text">说在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Maven编译时找不到rt-jar里的类"><span class="nav-number">2.</span> <span class="nav-text">Maven编译时找不到rt.jar里的类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JDK的Date比实际时间差8小时"><span class="nav-number">3.</span> <span class="nav-text">JDK的Date比实际时间差8小时</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-last-packet-sent-successfully-to-the-server-was-0-milliseconds-ago"><span class="nav-number">4.</span> <span class="nav-text">The last packet sent successfully to the server was 0 milliseconds ago</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Maven编译插件如何配置？"><span class="nav-number">5.</span> <span class="nav-text">Maven编译插件如何配置？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomcat启动时卡在“INFO-Deploying-web-application-directory-”"><span class="nav-number">6.</span> <span class="nav-text">Tomcat启动时卡在“INFO Deploying web application directory ”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#怎么通过Java临时修改环境变量？"><span class="nav-number">7.</span> <span class="nav-text">怎么通过Java临时修改环境变量？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomcat-8-5-版本文件上传后无权限访问的问题"><span class="nav-number">8.</span> <span class="nav-text">Tomcat 8.5+版本文件上传后无权限访问的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bash-fork-Cannot-allocate-memory"><span class="nav-number">9.</span> <span class="nav-text">-bash: fork: Cannot allocate memory</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS大量cache内存如何处理？"><span class="nav-number">10.</span> <span class="nav-text">CentOS大量cache内存如何处理？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL锁表了或卡死了如何处理？"><span class="nav-number">11.</span> <span class="nav-text">MySQL锁表了或卡死了如何处理？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

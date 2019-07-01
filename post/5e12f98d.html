@@ -1,0 +1,830 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="OpenResty,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://github.com/ttfisher/images/raw/master/00-head.jpg?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="【引言】其实前一节引入Lua操作Redis的应用意图是很明显的，也是为了本节做一个铺垫，有了Redis，我们可以很方便的记录很多信息，而且Redis的自动过期特性对我们做反爬监控也是如虎添翼，所以本章我们基于前面的积累来探讨一下反爬的策略，当然还很粗浅，只是实现了一些非常基础的反爬策略。">
+<meta name="keywords" content="OpenResty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenResty应用系列（三）：反爬虫策略小试牛刀">
+<meta property="og:url" content="https://ttfisher.github.io/post/5e12f98d.html">
+<meta property="og:site_name" content="Modern Shine">
+<meta property="og:description" content="【引言】其实前一节引入Lua操作Redis的应用意图是很明显的，也是为了本节做一个铺垫，有了Redis，我们可以很方便的记录很多信息，而且Redis的自动过期特性对我们做反爬监控也是如虎添翼，所以本章我们基于前面的积累来探讨一下反爬的策略，当然还很粗浅，只是实现了一些非常基础的反爬策略。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/public/000025.jpg">
+<meta property="og:image" content="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-07.jpg">
+<meta property="og:updated_time" content="2019-05-30T23:15:45.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenResty应用系列（三）：反爬虫策略小试牛刀">
+<meta name="twitter:description" content="【引言】其实前一节引入Lua操作Redis的应用意图是很明显的，也是为了本节做一个铺垫，有了Redis，我们可以很方便的记录很多信息，而且Redis的自动过期特性对我们做反爬监控也是如虎添翼，所以本章我们基于前面的积累来探讨一下反爬的策略，当然还很粗浅，只是实现了一些非常基础的反爬策略。">
+<meta name="twitter:image" content="https://github.com/ttfisher/images/raw/master/public/000025.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":15,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '0TSUY3VASO',
+      apiKey: '304d5df2e2f136515f540ea8c77beb60',
+      indexName: 'ttfisher',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ttfisher.github.io/post/5e12f98d.html">
+
+
+
+
+
+  <title>OpenResty应用系列（三）：反爬虫策略小试牛刀 | Modern Shine</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Modern Shine</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">莫等闲，白了少年头...</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+			<!--增加的代码 start-->
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ttfisher.github.io/post/5e12f98d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lin.C">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Modern Shine">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenResty应用系列（三）：反爬虫策略小试牛刀</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T09:26:00+08:00">
+                2018-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式服务辅助之OpenResty/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式服务辅助之OpenResty</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【引言】其实前一节引入Lua操作Redis的应用意图是很明显的，也是为了本节做一个铺垫，有了Redis，我们可以很方便的记录很多信息，而且Redis的自动过期特性对我们做反爬监控也是如虎添翼，所以本章我们基于前面的积累来探讨一下反爬的策略，当然还很粗浅，只是实现了一些非常基础的反爬策略。</p>
+<p><div align="center"><img src="https://github.com/ttfisher/images/raw/master/public/000025.jpg" width="55%"></div><br><a id="more"></a></p>
+<h1 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h1><p>&emsp;&emsp;首先，nginx自带了反爬的一些基础配置，虽然功能不是那么强大，但是起码可以防止一些低级爬虫的出现，所以在这里首先在nginx侧做了一份基本的配置（anti_spider.conf）。<br>&emsp;&emsp;其次，因为需要拦截爬虫，那就需要对所有的请求进行统计，所以在nginx配置时对外端口对所有请求进行拦截，走lua进行访问频率统计，若出现疑似爬虫，则在这一层进行拦截（anti_spider.lua）。在通过第一层拦截后，会进入第二个server，这个server的控制比较简单，也就是限制本端口只能通过localhost进行访问，避免外部主机通过IP+Port方式绕过第一层。<br>&emsp;&emsp;本次反爬试验的实现的思路其实还比较简单，拦截的方式也比较粗暴（按1分钟的访问数量进行拦截的），后面实际应用是肯定还需要进行一些优化的（比如：统计不同时间段的访问频度，统计访问的API类型是否有共性，等等），路漫漫其修远兮，这里小试牛刀，所有脚本也正常通过验证，再次记下一笔，后续如有优化升级再做记录补充。<br>&emsp;&emsp;鉴于本人在这块儿也是新手，属于边学边用的状态，如有什么使用或描述不当的地方，后续发现再做更正。</p>
+<h1 id="脚本概览"><a href="#脚本概览" class="headerlink" title="脚本概览"></a>脚本概览</h1><p>&emsp;&emsp;本次试验主要涉及以下4个脚本：</p>
+<ul>
+<li>nginx.conf：无需多言了，nginx的默认配置文件嘛</li>
+<li>anti_spider.conf：这个文件定义的就是nginx自带的一些基础反爬检测策略</li>
+<li>anti_spider.lua：这个就是第一层全量请求统计检测的脚本</li>
+<li>anti_spider_internal.lua：这个是针对内部跳转后的server的localhost控制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator\Desktop\反爬策略\实用版&gt;tree /f</span><br><span class="line">文件夹 PATH 列表</span><br><span class="line">卷序列号为 34E0-D97F</span><br><span class="line">C:.</span><br><span class="line">│  anti_spider.conf</span><br><span class="line">│  anti_spider.lua</span><br><span class="line">│  anti_spider_internal.lua</span><br><span class="line">│  nginx.conf</span><br><span class="line">│</span><br><span class="line">└─lib</span><br><span class="line">    └─resty</span><br><span class="line">            redis.lua</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Desktop\反爬策略\实用版&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="anti-spider-conf"><a href="#anti-spider-conf" class="headerlink" title="anti_spider.conf"></a>anti_spider.conf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">##########################################################################</span><br><span class="line"># Description ： Nginx自带的反爬功能，虽然比较弱，总比没有好</span><br><span class="line"># Author ： chenglin</span><br><span class="line"># Date ： 2018-09-14</span><br><span class="line"># Ana ： - 第一层策略使用user-agent，拦截比较低级的爬虫</span><br><span class="line">#        - 第二层根据请求的方式，屏蔽异常方式的请求</span><br><span class="line">#        - 第三层可根据Nginx的日志分析人工补充异常IP，亡羊补牢之策</span><br><span class="line">##########################################################################</span><br><span class="line"></span><br><span class="line"># 禁止一般的爬虫工具（实际上稍微有点水平的爬虫都不会傻到用默认UA的）</span><br><span class="line">if ($http_user_agent ~* (Scrapy|Curl|HttpClient)) &#123;  </span><br><span class="line">     return 403;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 禁止指定UA及UA为空的访问  </span><br><span class="line">if ($http_user_agent ~ &quot;WinHttp|WebZIP|FetchURL|node-superagent|java/|FeedDemon|Jullo|JikeSpider|Indy Library|Alexa Toolbar|AskTbFXTV|AhrefsBot|CrawlDaddy|Java|Feedly|Apache-HttpAsyncClient|UniversalFeedParser|ApacheBench|Microsoft URL Control|Swiftbot|ZmEu|oBot|jaunty|Python-urllib|lightDeckReports Bot|YYSpider|DigExt|HttpClient|MJ12bot|heritrix|EasouSpider|Ezooms|BOT/0.1|YandexBot|FlightDeckReports|Linguee Bot|^$&quot; ) &#123;  </span><br><span class="line">     return 403;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 禁止非GET|POST方式的抓取  </span><br><span class="line">if ($request_method !~ ^(GET|POST)$) &#123;  </span><br><span class="line">    return 403;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 禁止某IP/IP段的访问（因为现在还没有发现异常IP，后期若有发现可以手工添加）</span><br><span class="line"># deny 58.95.66.0/24;</span><br></pre></td></tr></table></figure>
+<h1 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">##########################################################################</span><br><span class="line"># Description ： Nginx配置</span><br><span class="line"># Author ： chenglin</span><br><span class="line"># Date ： 2018-09-14</span><br><span class="line"># Ana ： 基本策略：在所有请求上添加access_by_lua_file来进行访问控制</span><br><span class="line">##########################################################################</span><br><span class="line"></span><br><span class="line"># 这里用root的目的是为了执行lua脚本需要一定的权限</span><br><span class="line">user root;</span><br><span class="line">worker_processes  4;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">                      &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                      &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    # lua库的地址（比如：redis）</span><br><span class="line">    lua_package_path &quot;/root/anti_spider/lib/?.lua;;&quot;;</span><br><span class="line">    </span><br><span class="line">    # 反爬的server</span><br><span class="line">    server &#123;</span><br><span class="line">    </span><br><span class="line">        # 监控域名和端口号</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        access_log  logs/host.access.80.log  main;</span><br><span class="line">        </span><br><span class="line">        # nginx自带的反爬策略文件位置</span><br><span class="line">        include /usr/local/nginx/ext/anti_spider.conf;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            default_type &apos;text/html&apos;;</span><br><span class="line">            lua_code_cache off;</span><br><span class="line">            access_by_lua_file /root/anti_spider/anti_spider.lua;</span><br><span class="line">            proxy_pass http://localhost:8011/;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 跳转的server</span><br><span class="line">    server &#123;</span><br><span class="line">    </span><br><span class="line">        # 监控域名和端口号</span><br><span class="line">        listen       8011;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        access_log  logs/host.access.8011.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            # access_by_lua_file /root/anti_spider/anti_spider_internal.lua;</span><br><span class="line">            </span><br><span class="line">            # proxy_pass   http://demoV2/demo-api/</span><br><span class="line">            proxy_pass http://localhost:8080/;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="anti-spider-lua"><a href="#anti-spider-lua" class="headerlink" title="anti_spider.lua"></a>anti_spider.lua</h1><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Description ： 根据客户端的访问频率进行拦截，出发点是为了避免被爬虫入侵</span></span><br><span class="line"><span class="comment">-- Author ： chenglin</span></span><br><span class="line"><span class="comment">-- Date ： 2018-09-13</span></span><br><span class="line"><span class="comment">-- Ana ： - 当某个周期内超过访问频率，则标记封禁一个单位</span></span><br><span class="line"><span class="comment">--        - 一次解封后，记录上次封禁时长，下次若再触发封禁，封禁时间增加一个单位</span></span><br><span class="line"><span class="comment">--        - 封禁时长的有效期是可配置的（默认是一天）</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-0：常量部分</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 日志文件路径；日志记录开关</span></span><br><span class="line"><span class="keyword">local</span> log_path = <span class="string">'/root/anti_spider/anti_spider.log'</span></span><br><span class="line"><span class="keyword">local</span> log_switch = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Redis连接IP和端口号</span></span><br><span class="line"><span class="keyword">local</span> redis_ip = <span class="string">'127.0.0.1'</span></span><br><span class="line"><span class="keyword">local</span> redis_port = <span class="string">'6379'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 封禁指标：一段时间内内达到一定的访问次数就禁止（比如：每60秒10次以上）</span></span><br><span class="line"><span class="keyword">local</span> monitor_cycle = <span class="number">60</span> </span><br><span class="line"><span class="keyword">local</span> monitor_toplimit = <span class="number">10</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 单次禁入时长（多次触发封禁会线性递增）</span></span><br><span class="line"><span class="keyword">local</span> ban_time_unit = <span class="number">600</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 禁入时间缓存周期（禁入周期以天为单位，隔天归零）</span></span><br><span class="line"><span class="keyword">local</span> ban_time_expire = <span class="number">86400</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 被封的时间周期在redis的key</span></span><br><span class="line"><span class="keyword">local</span> key_ban_time_by_ip = <span class="string">'ban_time_'</span> .. ngx.var.remote_addr</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 被封的标志在redis的key</span></span><br><span class="line"><span class="keyword">local</span> key_ban_flag_by_ip = <span class="string">'ban_flag_'</span> .. ngx.var.remote_addr</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 所有访问过的IP在redis的key</span></span><br><span class="line"><span class="keyword">local</span> key_access_total_ip = <span class="string">'access_total_'</span> .. <span class="built_in">os</span>.<span class="built_in">date</span>(<span class="string">'%x'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计时起始点在redis的key</span></span><br><span class="line"><span class="keyword">local</span> key_timing_start_by_ip = <span class="string">'monitor_start_'</span> .. ngx.var.remote_addr</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计时周期内的访问次数在redis的key</span></span><br><span class="line"><span class="keyword">local</span> key_access_count_by_ip = <span class="string">'access_count_'</span> .. ngx.var.remote_addr</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 所有被封过的IP在redis的key</span></span><br><span class="line"><span class="keyword">local</span> key_banned_total = <span class="string">'banned_total_'</span> .. <span class="built_in">os</span>.<span class="built_in">date</span>(<span class="string">'%x'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-1.1：redis连接操作方法部分</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 连接redis</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">conn_redis</span><span class="params">()</span></span></span><br><span class="line">    <span class="comment">-- 连接redis，同时设置连接超时时间</span></span><br><span class="line">    <span class="keyword">local</span> m_redis = <span class="built_in">require</span> <span class="string">'resty.redis'</span> </span><br><span class="line">    <span class="keyword">local</span> redis = m_redis.new() </span><br><span class="line">    <span class="keyword">local</span> ok ,err = redis.connect(redis, redis_ip, redis_port) </span><br><span class="line">    redis:set_timeout(<span class="number">60000</span>) </span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 连接Redis失败</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span> </span><br><span class="line">        ngx.say(<span class="string">"Error : "</span>,err)</span><br><span class="line">        close_redis(redis) </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> redis</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 关闭redis连接</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">close_redis</span><span class="params">(redis)</span></span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> redis <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">local</span> ok,err = redis:<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> ok <span class="keyword">then</span></span><br><span class="line">        ngx.say(<span class="string">"Error : "</span>,err);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-1.2：记录日志的公共方法</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 写几句日志，调试时用的</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">write_log</span><span class="params">(content)</span></span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 开关判断</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">tonumber</span>(log_switch) == <span class="number">1</span> <span class="keyword">then</span> </span><br><span class="line">    </span><br><span class="line">        <span class="comment">-- 追加方式打开文件</span></span><br><span class="line">        <span class="keyword">local</span> file = <span class="built_in">io</span>.<span class="built_in">open</span>(log_path, <span class="string">"a"</span>)</span><br><span class="line">        <span class="keyword">if</span> file <span class="keyword">then</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">-- 写文件</span></span><br><span class="line">            <span class="keyword">if</span> file:<span class="built_in">write</span>(content .. <span class="string">"\n"</span>) == <span class="literal">nil</span> <span class="keyword">then</span> </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span> </span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">-- 关闭流</span></span><br><span class="line">            <span class="built_in">io</span>.<span class="built_in">close</span>(file)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-2：获取redis连接和一些初始化操作</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> redis_conn = conn_redis()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> redis_conn <span class="keyword">then</span> </span><br><span class="line">    ngx.say(<span class="string">"Error : "</span>,err)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 统计当日访问ip集合（通过set的不重复性实现）；可以通过SMEMBERS statistic_total_ip:09/13/18查看</span></span><br><span class="line">redis_conn:sadd(key_access_total_ip, ngx.var.remote_addr) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-3.1：黑白名单校验</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Redis白名单（set）</span></span><br><span class="line"><span class="keyword">local</span> is_white ,err = redis_conn:sismember(<span class="string">'white_list'</span>, ngx.var.remote_addr) </span><br><span class="line"><span class="keyword">if</span> is_white == <span class="number">1</span> <span class="keyword">then</span> </span><br><span class="line">    <span class="keyword">return</span> </span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">-- Redis黑名单（set） </span></span><br><span class="line"><span class="keyword">local</span> is_black ,err = redis_conn:sismember(<span class="string">'black_list'</span>, ngx.var.remote_addr) </span><br><span class="line"><span class="keyword">if</span> is_black == <span class="number">1</span> <span class="keyword">then</span> </span><br><span class="line">    close_redis(redis);</span><br><span class="line">    ngx.<span class="built_in">exit</span>(ngx.HTTP_FORBIDDEN) </span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-3.2：确定是否已经被封禁，如果已经被封禁，则走封禁逻辑并结束流程</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询ip是否已经被封禁，若已经被封禁，则做封禁处理（验证码 ，403等）</span></span><br><span class="line"><span class="keyword">local</span> is_banned , err = redis_conn:get(key_ban_flag_by_ip) </span><br><span class="line">    </span><br><span class="line"><span class="comment">-- 被封了</span></span><br><span class="line"><span class="keyword">if</span> is_banned <span class="keyword">and</span> <span class="built_in">tonumber</span>(is_banned) == <span class="number">1</span> <span class="keyword">then</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 原始请求</span></span><br><span class="line">    <span class="comment">-- local origin_request = ngx.encode_base64(ngx.var.scheme .. '://' .. ngx.var.host .. ':' .. ngx.var.server_port .. ngx.var.request_uri) </span></span><br><span class="line">    <span class="comment">-- 推荐插件：极验，可以通过如下dest请求进行验证</span></span><br><span class="line">    <span class="comment">-- local dest = 'http://127.0.0.1:5000/' .. '?continue=' .. origin_request </span></span><br><span class="line">    <span class="comment">-- ngx.redirect(dest,302) </span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 别忘了释放redis连接</span></span><br><span class="line">    close_redis(redis);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 跳转到封禁页面，结束；这里直接返回403</span></span><br><span class="line">    ngx.<span class="built_in">exit</span>(ngx.HTTP_FORBIDDEN)</span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-4：获取redis已有的封禁数据，没有就初始化为一个封禁周期</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- redis中本IP下一轮封禁的时长（秒）</span></span><br><span class="line"><span class="keyword">local</span> ban_time, err = redis_conn:get(key_ban_time_by_ip) </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ban_time == ngx.null <span class="keyword">then</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 没设置的话就设置一个封禁单位</span></span><br><span class="line">    redis_conn:set(key_ban_time_by_ip, ban_time_unit) </span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 设置redis中的封禁时间expire（在没有达到expire有效期内，每封禁一次，时长增加一个单位）</span></span><br><span class="line">    redis_conn:expire(key_ban_time_by_ip, ban_time_expire) </span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-5：如果还未被封禁，则需要累计当前请求数，并判断是否达到封禁要求</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- ip监控起始时间</span></span><br><span class="line"><span class="keyword">local</span> monitor_start , err = redis_conn:get(key_timing_start_by_ip) </span><br><span class="line"></span><br><span class="line"><span class="comment">-- 还没记录过（新请求）、超过一个监控周期（monitor_cycle）；则启动一轮新的监控</span></span><br><span class="line"><span class="keyword">if</span> monitor_start == ngx.null <span class="keyword">or</span> <span class="built_in">os</span>.<span class="built_in">time</span>() - <span class="built_in">tonumber</span>(monitor_start) &gt; monitor_cycle <span class="keyword">then</span> </span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 起始时间为当前时间</span></span><br><span class="line">    redis_conn:set(key_timing_start_by_ip , <span class="built_in">os</span>.<span class="built_in">time</span>()) </span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 访问量为1</span></span><br><span class="line">    redis_conn:set(key_access_count_by_ip , <span class="number">1</span>) </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 访问量（基于IP的）</span></span><br><span class="line">    <span class="keyword">local</span> access_count , err = redis_conn:get(key_access_count_by_ip) </span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 在局部变量记录本次访问</span></span><br><span class="line">    access_count = access_count + <span class="number">1</span> </span><br><span class="line">    </span><br><span class="line">    write_log(<span class="string">"Access once ...."</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 向redis记录本次访问</span></span><br><span class="line">    redis_conn:incr(key_access_count_by_ip) </span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 达到封禁条件</span></span><br><span class="line">    <span class="keyword">if</span> access_count &gt;= monitor_toplimit <span class="keyword">then</span> </span><br><span class="line">    </span><br><span class="line">        <span class="comment">-- 封禁一个IP，记录封禁标志</span></span><br><span class="line">        redis_conn:set(key_ban_flag_by_ip , <span class="number">1</span>) </span><br><span class="line">        </span><br><span class="line">        <span class="comment">-- 设置封禁过期时间（到期redis直接expire就解禁了）</span></span><br><span class="line">        redis_conn:expire(key_ban_flag_by_ip , ban_time) </span><br><span class="line">        </span><br><span class="line">        <span class="comment">-- 每被封禁一次，封禁时间延长一个周期（也可以更狠一些，每轮翻倍之类的）</span></span><br><span class="line">        redis_conn:incrby(key_ban_time_by_ip, ban_time_unit) </span><br><span class="line">        </span><br><span class="line">        <span class="comment">-- 统计当日屏蔽ip总数 </span></span><br><span class="line">        redis_conn:sadd(key_banned_total, ngx.var.remote_addr) </span><br><span class="line">    <span class="keyword">end</span> </span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- Part-6：没有被封禁就继续，这个由nginx的配置来控制，所以下面的代码没用了</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 获取请求参数；再次发起请求</span></span><br><span class="line"><span class="comment">-- local action = ngx.var.request_method</span></span><br><span class="line"><span class="comment">-- if action == "POST" then</span></span><br><span class="line"><span class="comment">--     ngx.location.capture(</span></span><br><span class="line"><span class="comment">--         "/smart/" .. ngx.var.request_uri,</span></span><br><span class="line"><span class="comment">--         &#123; method = ngx.HTTP_POST, body = ngx.req.read_body() &#125;</span></span><br><span class="line"><span class="comment">--     )</span></span><br><span class="line"><span class="comment">-- else</span></span><br><span class="line"><span class="comment">--     ngx.location.capture(</span></span><br><span class="line"><span class="comment">--         "/smart/" .. ngx.var.request_uri,</span></span><br><span class="line"><span class="comment">--         &#123; method = ngx.HTTP_GET&#125;</span></span><br><span class="line"><span class="comment">--     )</span></span><br><span class="line"><span class="comment">-- end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- ngx.say("This is normal page ......")</span></span><br><span class="line"><span class="comment">-- ngx.redirect(ngx.var.scheme .. '://' .. ngx.var.host .. ':' .. ngx.var.server_port .. uri, 301)</span></span><br><span class="line"><span class="comment">-- ngx.req.set_uri(ngx.var.scheme .. '://' .. ngx.var.host .. ':' .. ngx.var.server_port .. uri, true);  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-- The End</span></span><br><span class="line"><span class="comment">------------------------------------------------------------------------------------</span></span><br></pre></td></tr></table></figure>
+<h1 id="anti-spider-internal-lua"><a href="#anti-spider-internal-lua" class="headerlink" title="anti_spider_internal.lua"></a>anti_spider_internal.lua</h1><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ngx.var.host ~= <span class="string">"localhost"</span>  <span class="keyword">then</span>  </span><br><span class="line">    ngx.<span class="built_in">exit</span>(ngx.HTTP_FORBIDDEN)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h1 id="成果验证"><a href="#成果验证" class="headerlink" title="成果验证"></a>成果验证</h1><p>&emsp;&emsp;本次针对反爬策略的验证，使用的是tomcat自带的example来进行的，通过浏览器多次访问后触发拦截限制，会出现403的现象，实际证明拦截策略生效。<br><img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-07.jpg" width="60%"></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>&emsp;&emsp;此次试验仅简单的针对同一IP的高频度访问进行了拦截，效果是实现了，但是距离实际使用可能还有一段距离；因为实际业务场景中，爬虫远不会如此简单粗暴，所以后面还是要考虑从其他层面来进行拦截策略的补充；所以后面会有个大展拳脚的专题来对反爬进行升级优化，虽然理论上爬虫是无法完全被检测到的，但是在能力范围内能做的尽量还是要去做到。<br>&emsp;&emsp;下一步的反爬策略升级的方向（当然这里提到的策略还并不完善，还有待补充形成一套成熟的方案）：</p>
+<ul>
+<li>比如基于URL的类型进行重点拦截，往往最担心被爬虫获取的是检索列表页和详情页，所以可以考虑对这两种接口的拦截策略进行定制</li>
+<li>比如基于访问路线的分析，这个可能比较困难，也就是说针对不是通过常规路径进入系统（比如没有列表访问请求直接访问详情页）的情况，进行专门的定制拦截</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+    
+    <div>
+	  
+		  <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            ------<i class="fa fa-copyright">2019<a style="font-family:Microsoft YaHei;color:#9D9D9D;border-bottom:none;" href="https://ttfisher.github.io/" title="Lin.C的个人主页"> Lin.C </a></i>------
+        </div>
+    
+</div>
+	  
+    </div>
+    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenResty/" rel="tag"># OpenResty</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/1cf451ee.html" rel="next" title="OpenResty应用系列（二）：OpenResty环境搭建">
+                <i class="fa fa-chevron-left"></i> OpenResty应用系列（二）：OpenResty环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/d50f3a65.html" rel="prev" title="Linux小步走（一）：从安装系统开始">
+                Linux小步走（一）：从安装系统开始 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg" alt="Lin.C">
+          <p class="site-author-name" itemprop="name">Lin.C</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">74</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ttfisher" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本思路"><span class="nav-number">1.</span> <span class="nav-text">基本思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#脚本概览"><span class="nav-number">2.</span> <span class="nav-text">脚本概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#anti-spider-conf"><span class="nav-number">3.</span> <span class="nav-text">anti_spider.conf</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx-conf"><span class="nav-number">4.</span> <span class="nav-text">nginx.conf</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#anti-spider-lua"><span class="nav-number">5.</span> <span class="nav-text">anti_spider.lua</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#anti-spider-internal-lua"><span class="nav-number">6.</span> <span class="nav-text">anti_spider_internal.lua</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#成果验证"><span class="nav-number">7.</span> <span class="nav-text">成果验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-number">8.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lin.C</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
