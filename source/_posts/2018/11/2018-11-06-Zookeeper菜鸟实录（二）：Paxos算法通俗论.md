@@ -1,5 +1,5 @@
 ---
-title: Zookeeper菜鸟实录（二）：Paxos算法通俗论
+title: Zookeeper菜鸟实录（二）：Paxos算法通俗论（未完成...)
 categories:
   - 分布式服务框架之Zookeeper
 tags:
@@ -9,7 +9,7 @@ abbrlink: 8de4cc5d
 date: 2018-11-06 09:48:43
 ---
 【引言】基本上来说，作为Java程序员，很少有人会去关心太多关于算法的东西，但作为Zookeeper的核心算法，而且在其他框架中也被多次使用的Paxos，想必还是值得一探究竟的。
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-11-12-02.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-11-12-02.jpg" width="55%"/></div>
 <!-- more -->
 
 # 概念

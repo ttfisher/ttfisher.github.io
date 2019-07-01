@@ -9,7 +9,7 @@ abbrlink: f29d3a59
 date: 2018-08-03 14:07:00
 ---
 【引言】接着上一篇，在纲领性的说明完成后，从本篇开始，按照不同的类型和特性，逐步的对不同的集合类型进行一一的分析和解读，从细节上把控所有的集合特性。
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-02-10.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-02-10.jpg" width="55%"/></div>
 <!-- more -->
 
 # Collection的定义

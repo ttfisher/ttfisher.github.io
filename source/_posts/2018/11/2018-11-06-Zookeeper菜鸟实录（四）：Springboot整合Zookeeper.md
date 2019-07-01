@@ -1,5 +1,5 @@
 ---
-title: Zookeeper菜鸟实录（四）：Springboot整合Zookeeper
+title: Zookeeper菜鸟实录（四）：Springboot整合Zookeeper（未完成...)
 categories:
   - 分布式服务框架之Zookeeper
 tags:
@@ -9,7 +9,7 @@ abbrlink: 92eb1cd1
 date: 2018-11-06 16:26:43
 ---
 【引言】说完了那么多理论性的东西，是时候开始动手进行实际操作了。古人说得好：“纸上得来终觉浅，绝知此事要躬行”；结合时下非常流行的Springboot，我们来看看Zookeeper可以怎么玩。
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000017.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/public/000017.jpg" width="55%"/></div>
 <!-- more -->
 
 # 环境准备

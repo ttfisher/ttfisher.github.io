@@ -10,7 +10,7 @@ abbrlink: 23d37792
 date: 2018-08-01 14:55:55
 ---
 【引言】作为一个开发人员，稍微有一些开发经验的话，多多少少也会听说过redis的大名，你可以把它当做缓存，也可以把它作为消息队列，它可以做很多事情，而且它的性能还很强大，所以，这里开一个专题来聊聊关于Redis的点点滴滴吧！
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-01-08.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-01-08.jpg" width="55%"/></div>
 <!-- more -->
 
 # Redis入门

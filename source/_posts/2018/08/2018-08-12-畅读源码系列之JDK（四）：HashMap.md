@@ -9,7 +9,7 @@ abbrlink: 94cbc8cc
 date: 2018-08-12 16:34:00
 ---
 【引言】针对线性结构的两类主要集合前面已经做了解读，这一章里面，我们来阅读阅读另外一种key-value模式的数据结构，日常编码中我们最常用的想必就是HashMap了！
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-12-03.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-12-03.jpg" width="55%"/></div>
 <!-- more -->
 
 # 类的定义

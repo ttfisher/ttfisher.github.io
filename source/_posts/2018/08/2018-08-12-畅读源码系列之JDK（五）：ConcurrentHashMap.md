@@ -9,7 +9,7 @@ abbrlink: 98444c68
 date: 2018-08-12 17:22:00
 ---
 【引言】ConcurrentHashMap，从名字上来看呢，是Concurrent和HashMap的结合体，实际就是线程安全的HashMap了，但是它如何实现这个线程安全呢？和Hashtable又有何区别呢？这里面就有的说道说道了。
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-12-04.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-12-04.jpg" width="55%"/></div>
 <!-- more -->
 
 # 类的定义

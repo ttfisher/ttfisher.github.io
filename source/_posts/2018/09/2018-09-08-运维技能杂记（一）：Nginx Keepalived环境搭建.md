@@ -1,7 +1,7 @@
 ---
 title: 运维技能杂记（一）：Nginx Keepalived环境搭建
 categories:
-  - 架构师野蛮生长之系统运维
+  - 多元化技能储备之细微见真章
 tags:
   - Nginx
   - Keepalived
@@ -9,7 +9,7 @@ abbrlink: ae7da3ed
 date: 2018-09-08 10:03:00
 ---
 【引言】借着此次用到了Nginx和Keepalived来实现负载均衡的双机热备的机会，整理一下基本的安装和配置，很多东西都是在使用中熟知的，但是没多久就会遗忘，所以还是写几笔吧！
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-09-13-01.jpg" width="55%"/></div>
 <!-- more -->
 
 # 概念

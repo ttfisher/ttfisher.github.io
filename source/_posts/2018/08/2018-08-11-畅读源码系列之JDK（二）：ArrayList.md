@@ -9,7 +9,7 @@ abbrlink: 773b69e2
 date: 2018-08-11 10:11:00
 ---
 【引言】针对集合实际上我们有一个专题有了一个基础的说明，但是还不够深入，所以，借着这个源码畅读系列的整理的机会，在这里好好的读读几个重点集合类的源码，第一个最常接触的集合类就是ArrayList了，所以就从它开始了！
-<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-11-01.jpg" width="500"/></div>
+<div align=center><img src="https://github.com/ttfisher/images/raw/master/2018/2018-08-11-01.jpg" width="55%"/></div>
 <!-- more -->
 
 # 类的定义

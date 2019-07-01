@@ -4,7 +4,7 @@
 
 # Put your favicon.ico into `hexo-site/source/` directory.
 # favicon: /favicon.ico
-favicon: http://pm4hdun71.bkt.clouddn.com/img/00-head.jpg
+favicon: https://github.com/ttfisher/images/raw/master/00-head.jpg
 
 # Set default keywords (Use a comma to separate)
 keywords: "Hexo, NexT"
