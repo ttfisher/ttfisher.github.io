@@ -296,7 +296,7 @@ Disconnected: No supported authentication methods available (server sent: public
 ```
 &emsp;&emsp;原因是因为TortoiseGit和Git的冲突，解决方法：将小乌龟的TortoiseGit->settings->Network->SSH Client的值由原来的TortoiseGitPlink.exe的地址改为本地安装的Git下的ssh.exe即可；比如我本机原来是C:\Program Files\TortoiseGit\bin\TortoiseGitPlink.exe，修改后为C:\Program Files\Git\usr\bin\ssh.exe。
 
-## 国内GitHub访问经常很慢的问题
+## 国内GitHub访问慢的问题
 &emsp;&emsp;某次想看看博客资料，差点就因为受不了网络加载的小圈圈一直转着却刷不出页面，都差点转投码云阵营了，后来无意间看到一个分享的方式，一试还挺好用（做人，真的要专一，困难总会有解决的办法的）：
 - 打开 http://tool.chinaz.com/dns （这是一个查询域名映射关系的工具）
 - 查询 github.global.ssl.fastly.net 和 assets-cdn.github.com 两个地址；多查几次，选择一个稳定，延迟较低的 ip 
