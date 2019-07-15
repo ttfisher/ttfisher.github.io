@@ -1706,7 +1706,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff677c;
+  background: #a346fa;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2453,7 +2453,7 @@ pre .javascript .function {
   content: ") ";
 }
 .category-all-page .category-list-child {
-  padding-left: 10px;
+  padding-left: 35px;
 }
 #schedule ul#event-list {
   padding-left: 30px;
