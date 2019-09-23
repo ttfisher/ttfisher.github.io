@@ -1,7 +1,8 @@
 ---
 title: GitHub博客平台搭建（三）：GitHub博客的搭建与迁移
 categories:
-  - 多元化技能储备之Git&GitHub
+  - 多元化技能储备
+  - Git&GitHub
 tags:
   - GitHub
 abbrlink: 30aba86c

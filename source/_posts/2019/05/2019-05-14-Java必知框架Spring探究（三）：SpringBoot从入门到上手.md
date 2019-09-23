@@ -2,7 +2,8 @@
 title: Java必知框架Spring探究（三）：SpringBoot从入门到上手
 comments: true
 categories:
-  - 经典框架之Spring全家桶
+  - 技术结构升级
+  - Spring全家桶
 tags:
   - SpringBoot
 abbrlink: 1bebc134

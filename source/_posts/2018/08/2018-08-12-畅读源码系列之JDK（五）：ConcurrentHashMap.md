@@ -2,7 +2,8 @@
 title: 畅读源码系列之JDK（五）：ConcurrentHashMap（未完成...)
 comments: true
 categories:
-  - 技术结构升级之JDK源码汇
+  - 技术结构升级
+  - JDK源码汇
 tags:
   - 畅读源码
 abbrlink: 98444c68

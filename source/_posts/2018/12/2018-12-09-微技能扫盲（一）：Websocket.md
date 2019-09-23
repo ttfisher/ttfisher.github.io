@@ -1,7 +1,8 @@
 ---
 title: 微技能扫盲（一）：Websocket（未完成...)
 categories:
-  - 多元化技能储备之细微见真章
+  - 多元化技能储备
+  - 细微见真章
 tags:
   - Websocket
 comments: true

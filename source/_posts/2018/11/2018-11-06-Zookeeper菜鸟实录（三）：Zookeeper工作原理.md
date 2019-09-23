@@ -1,7 +1,8 @@
 ---
 title: Zookeeper菜鸟实录（三）：Zookeeper工作原理（未完成...)
 categories:
-  - 分布式服务框架之Zookeeper
+  - 分布式服务
+  - Zookeeper
 tags:
   - Zookeeper
 comments: true

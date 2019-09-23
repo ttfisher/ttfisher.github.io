@@ -1,7 +1,8 @@
 ---
 title: 运维技能杂记（一）：Nginx Keepalived环境搭建
 categories:
-  - 多元化技能储备之细微见真章
+  - 多元化技能储备
+  - 细微见真章
 tags:
   - Nginx
   - Keepalived

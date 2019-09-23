@@ -2,7 +2,8 @@
 title: Redis扫盲系列（三）：Redis高级特性（未完成...)
 comments: true
 categories:
-  - 消息和缓存系列之Redis
+  - 缓存&消息&数据库
+  - Redis
 tags:
   - Redis
   - Big Data

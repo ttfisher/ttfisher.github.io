@@ -2,7 +2,8 @@
 title: Kafka入门系列（四）：为什么你要选择Kafka（未完成...)
 comments: true
 categories:
-  - 消息和缓存系列之Kafka
+  - 缓存&消息&数据库
+  - Kafka
 tags:
   - Kafka
   - Big Data

@@ -1,7 +1,8 @@
 ---
 title: OpenResty应用系列（三）：反爬虫策略小试牛刀
 categories:
-  - 分布式服务辅助之OpenResty
+  - 分布式服务
+  - OpenResty
 tags:
   - OpenResty
 abbrlink: 5e12f98d

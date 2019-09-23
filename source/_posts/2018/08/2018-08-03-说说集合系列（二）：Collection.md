@@ -2,7 +2,8 @@
 title: 说说集合系列（二）：Collection
 comments: true
 categories:
-  - 技术结构升级之JDK微专题
+  - 技术结构升级
+  - JDK微专题
 tags:
   - Java集合
 abbrlink: f29d3a59
@@ -17,7 +18,7 @@ date: 2018-08-03 14:07:00
 （1）Collection是继承Iterable接口的；
 （2）Iterable提供了迭代器获取的方法；
 （3）Collection内提供了基本的增删查等常用操作；
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-02-11.jpg" width="60%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-02-11.jpg" width="50%">
 
 # Collection的分类
 
@@ -76,7 +77,7 @@ public class ArrayList<E> extends AbstractList<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-01.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-01.jpg" width="55%">
 
 ### 数据结构扩容
 &emsp;&emsp;ArrayList的扩容是在容量已经无法支撑服务的情况下才会触发的
@@ -243,7 +244,7 @@ public class LinkedList<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-02.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-02.jpg" width="55%">
 
 ### 数据结构扩容
 **&emsp;&emsp;因为LinkedList本身是以链表作为存储结构的，理论上在不超过内存限制和链表本身限制的情况下，是没有容量大小的说法的，所以也谈不上扩容**
@@ -322,7 +323,7 @@ public class Vector<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-03.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-03.jpg" width="55%">
 
 ### 数据结构扩容
 ```java
@@ -371,7 +372,7 @@ public class Stack<E> extends Vector<E> {
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-04.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-04.jpg" width="55%">
 
 ### 数据结构扩容
 ```java
@@ -466,7 +467,7 @@ public class CopyOnWriteArrayList<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-05.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-05.jpg" width="55%">
 
 ### 数据结构扩容
 &emsp;&emsp;实际上CopyOnWriteArrayList每完成一次数据的写入或删除，都涉及到数组大小的调整，而不是像ArrayList那样达到固定大小才做扩容，可以理解为CopyOnWriteArrayList每次只扩容一个元素
@@ -593,7 +594,7 @@ public class HashSet<E>
 
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-06.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-06.jpg" width="55%">
 
 ### 数据结构扩容
 &emsp;&emsp;实际上也不涉及独立的扩容操作，底层只是往HashMap里面put一个新值而已（具体HashMap怎么扩容的，就在下一篇文章见分晓吧！）
@@ -690,7 +691,7 @@ public class TreeSet<E> extends AbstractSet<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-07.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-07.jpg" width="55%">
 
 ### 数据结构扩容
 ```java
@@ -762,7 +763,7 @@ public class HashSet<E>
 ```
 
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-08.jpg" width="75%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-08.jpg" width="55%">
 
 ### 数据结构扩容
 ```java
@@ -889,7 +890,7 @@ public class CopyOnWriteArraySet<E> extends AbstractSet<E>
     Value is :nanjing
 ```
 ### 继承关系简图
-<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-09.jpg" width="50%">
+<img style="clear: both;display: block;margin:auto;" src="https://github.com/ttfisher/images/raw/master/2018/2018-08-03-09.jpg" width="45%">
 
 ### 数据结构扩容
 ```java

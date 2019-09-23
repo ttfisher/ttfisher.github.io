@@ -2,7 +2,8 @@
 title: 畅读源码系列之JDK（六）：Collections
 comments: true
 categories:
-  - 技术结构升级之JDK源码汇
+  - 技术结构升级
+  - JDK源码汇
 tags:
   - 畅读源码
 abbrlink: 1ebf7315

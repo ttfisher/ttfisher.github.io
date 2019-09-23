@@ -2,7 +2,8 @@
 title: Redis扫盲系列（一）：Redis基础入门
 comments: true
 categories:
-  - 消息和缓存系列之Redis
+  - 缓存&消息&数据库
+  - Redis
 tags:
   - Redis
   - Big Data

@@ -1,7 +1,8 @@
 ---
 title: Kafka入门系列（三）：Demo in SpringBoot
 categories:
-  - 消息和缓存系列之Kafka
+  - 缓存&消息&数据库
+  - Kafka
 tags:
   - Kafka
   - Big Data

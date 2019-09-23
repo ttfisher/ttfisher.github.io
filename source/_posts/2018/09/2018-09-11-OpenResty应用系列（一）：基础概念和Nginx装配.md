@@ -1,7 +1,8 @@
 ---
 title: OpenResty应用系列（一）：基础概念和Nginx装配
 categories:
-  - 分布式服务辅助之OpenResty
+  - 分布式服务
+  - OpenResty
 tags:
   - OpenResty
 abbrlink: 4fbd6846

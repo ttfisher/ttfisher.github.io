@@ -1,7 +1,8 @@
 ---
 title: Zookeeper菜鸟实录（一）：入门和安装
 categories:
-  - 分布式服务框架之Zookeeper
+  - 分布式服务
+  - Zookeeper
 tags:
   - Zookeeper
 comments: true

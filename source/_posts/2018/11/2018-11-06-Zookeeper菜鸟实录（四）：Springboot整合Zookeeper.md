@@ -1,7 +1,8 @@
 ---
 title: Zookeeper菜鸟实录（四）：Springboot整合Zookeeper（未完成...)
 categories:
-  - 分布式服务框架之Zookeeper
+  - 分布式服务
+  - Zookeeper
 tags:
   - Zookeeper
 comments: true

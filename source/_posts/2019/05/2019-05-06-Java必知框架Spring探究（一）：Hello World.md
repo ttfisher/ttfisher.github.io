@@ -2,7 +2,8 @@
 title: Java必知框架Spring探究（一）：Hello World
 comments: true
 categories:
-  - 经典框架之Spring全家桶
+  - 技术结构升级
+  - Spring全家桶
 tags:
   - Spring
 abbrlink: 8138b98c

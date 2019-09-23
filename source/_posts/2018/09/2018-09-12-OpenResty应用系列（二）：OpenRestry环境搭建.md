@@ -1,7 +1,8 @@
 ---
 title: OpenResty应用系列（二）：OpenResty环境搭建
 categories:
-  - 分布式服务辅助之OpenResty
+  - 分布式服务
+  - OpenResty
 tags:
   - OpenResty
 abbrlink: 1cf451ee
